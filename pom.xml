@@ -16,7 +16,7 @@
         M5 fails in integration tests with a strange error
         -->
         <surefire.and.failsafe.plugin.version>3.0.0-M3</surefire.and.failsafe.plugin.version>
-        <vs-commom-document-files.version>0.2.0</vs-commom-document-files.version>
+        <vs-commom-document-files.version>0.2.0-SNAPSHOT</vs-commom-document-files.version>
     </properties>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.exasol</groupId>
