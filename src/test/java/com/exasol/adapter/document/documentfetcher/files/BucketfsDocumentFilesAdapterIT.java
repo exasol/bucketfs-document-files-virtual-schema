@@ -39,7 +39,7 @@ import com.exasol.containers.ExasolContainer;
 @Testcontainers
 class BucketfsDocumentFilesAdapterIT {
     private static final String TEST_SCHEMA = "TEST_SCHEMA";
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-0.2.0-bucketfs-0.1.0.jar";
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-0.2.0-SNAPSHOT-bucketfs-0.1.0.jar";
     private static final Logger LOGGER = LoggerFactory.getLogger(BucketfsDocumentFilesAdapterIT.class);
     @Container
     private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>()
