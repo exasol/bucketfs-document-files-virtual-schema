@@ -31,7 +31,6 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import com.exasol.adapter.document.files.FilesVsExasolTestDatabaseBuilder;
 import com.exasol.bucketfs.BucketAccessException;
 import com.exasol.containers.ExasolContainer;
 
@@ -78,7 +77,7 @@ class BucketfsDocumentFilesAdapterIT {
     @Test
     void testReadJson()
             throws SQLException, InterruptedException, BucketAccessException, TimeoutException, IOException {
-        final FilesVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder = new FilesVsExasolTestDatabaseBuilder(
+        final BucketfsVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder = new BucketfsVsExasolTestDatabaseBuilder(
                 container, ADAPTER_JAR);
         final Path mappingFile = saveResourceToFile("mapJsonFile.json");
         filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
@@ -102,7 +101,7 @@ class BucketfsDocumentFilesAdapterIT {
     @Test
     void testReadJsonLines()
             throws IOException, InterruptedException, BucketAccessException, TimeoutException, SQLException {
-        final FilesVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder = new FilesVsExasolTestDatabaseBuilder(
+        final BucketfsVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder = new BucketfsVsExasolTestDatabaseBuilder(
                 container, ADAPTER_JAR);
         final Path mappingFile = saveResourceToFile("mapJsonLinesFile.json");
         filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
@@ -157,7 +156,7 @@ class BucketfsDocumentFilesAdapterIT {
 
     private Map<String, Object> getDataTypesTestResult(final String mappingFileName)
             throws SQLException, InterruptedException, BucketAccessException, TimeoutException, IOException {
-        final FilesVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder = new FilesVsExasolTestDatabaseBuilder(
+        final BucketfsVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder = new BucketfsVsExasolTestDatabaseBuilder(
                 container, ADAPTER_JAR);
         final Path mappingFile = saveResourceToFile(mappingFileName);
         filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);

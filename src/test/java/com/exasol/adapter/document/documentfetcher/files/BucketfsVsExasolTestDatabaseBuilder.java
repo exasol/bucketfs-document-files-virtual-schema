@@ -61,7 +61,7 @@ public class BucketfsVsExasolTestDatabaseBuilder {
     }
 
     private ConnectionDefinition createConnectionDefinition() {
-        return exasolObjectFactory.createConnectionDefinition("CONNECTION", "bucketfs:/bfsdefault/default/", "", "");
+        return exasolObjectFactory.createConnectionDefinition("CONNECTION", "/bfsdefault/default/", "", "");
     }
 
     private AdapterScript createAdapterScript() throws InterruptedException, BucketAccessException, TimeoutException {
