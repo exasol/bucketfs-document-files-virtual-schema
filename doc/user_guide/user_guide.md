@@ -17,7 +17,7 @@ Next create the Adapter Script:
  ```
 CREATE OR REPLACE JAVA ADAPTER SCRIPT ADAPTER.BUCKET_FS_FILES_ADAPTER AS
     %scriptclass com.exasol.adapter.RequestDispatcher;
-    %jar /buckets/bfsdefault/default/document-virtual-schema-dist-2.0.0-SNAPSHOT-files-0.2.0.jar;
+    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-0.2.0-SNAPSHOT-bucketfs-0.1.0.jar;
 /
 ```
 
@@ -29,7 +29,7 @@ CREATE OR REPLACE JAVA SET SCRIPT ADAPTER.IMPORT_FROM_BUCKETFS_DOCUMENT_FILES(
   CONNECTION_NAME VARCHAR(500))
   EMITS(...) AS
     %scriptclass com.exasol.adapter.document.UdfEntryPoint;
-    %jar /buckets/bfsdefault/default/document-virtual-schema-dist-2.0.0-SNAPSHOT-files-0.2.0.jar;
+    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-0.2.0-SNAPSHOT-bucketfs-0.1.0.jar;
 /
 ```
 
@@ -55,13 +55,13 @@ For security reasons you can however not navigate to directories outside of the 
 Before creating a Virtual Schema you need to create a mapping definition that defines how the document data is mapped to Exasol tables.
 
 For that we use the Exasol Document Mapping Language (EDML). It is universal over all document Virtual Schemas. 
-To learn how to  define such EDML definitions check the [user guide in the common repository for all document virtual schemas](https://github.com/exasol/virtual-schema-common-document/doc/user_guide/edml_user_guide.md).
+To learn how to  define such EDML definitions check the [user guide in the common repository for all document Virtual Schemas](https://github.com/exasol/virtual-schema-common-document/doc/user_guide/edml_user_guide.md).
 
 In the definitions you have to define the `source` property. 
 There you define the path to the files you can load relative to the path you defined in the connection.
 
 This Virtual Schema adapter automatically detects the type of the document file by the file extension.
-You can find a list of supported file types and their extensions in the [user guide of the common repository for all file virtual schemas](https://github.com/exasol/virtual-schema-common-document-files/doc/user_guide/user_guide.md).
+You can find a list of supported file types and their extensions in the [user guide of the common repository for all file Virtual Schemas](https://github.com/exasol/virtual-schema-common-document-files/doc/user_guide/user_guide.md).
 
 ### Example
 
