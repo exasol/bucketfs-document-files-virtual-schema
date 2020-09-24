@@ -35,7 +35,7 @@ CREATE OR REPLACE JAVA SET SCRIPT ADAPTER.IMPORT_FROM_BUCKETFS_DOCUMENT_FILES(
 
 ## Creating a Connection
  
-Now you need to define a connection to place where the Files are stored:
+Now you need to define a connection that includes the location of stored files:
 
  ```
 CREATE CONNECTION BUCKETFS_CONNECTION
@@ -50,16 +50,15 @@ The path you define in the `CONNECTION` is the base path for the file names you 
 The adapter will concatenate the base path and the path defined in the mapping definition. 
 For security reasons you can however not navigate to directories outside of the base path (using `../`). 
 
-
 ## Defining the Schema Mapping
 
 Before creating a Virtual Schema you need to create a mapping definition that defines how the document data is mapped to Exasol tables.
 
-For that we use the Exasol Document Mapping Language (EDML). It is universal over all document virtual schemas. 
+For that we use the Exasol Document Mapping Language (EDML). It is universal over all document Virtual Schemas. 
 To learn how to  define such EDML definitions check the [user guide in the common repository for all document virtual schemas](https://github.com/exasol/virtual-schema-common-document/doc/user_guide/edml_user_guide.md).
 
 In the definitions you have to define the `source` property. 
-There you define the path to the files you can to load relative to the path you defined in the connection.
+There you define the path to the files you can load relative to the path you defined in the connection.
 
 This Virtual Schema adapter automatically detects the type of the document file by the file extension.
 You can find a list of supported file types and their extensions in the [user guide of the common repository for all file virtual schemas](https://github.com/exasol/virtual-schema-common-document-files/doc/user_guide/user_guide.md).
@@ -68,7 +67,7 @@ You can find a list of supported file types and their extensions in the [user gu
 
 You want to define a mapping for the file `test.json` that you uploaded to the default BucketFS (`bfsdefault`) to the default bucket (`default`).
 
-In your `CONNECTION` you set the address to `/bfsdefault/defaul/`
+In your `CONNECTION` you set the address to `/bfsdefault/default/`
 
 Now you create a mapping definition definition with `source` set to `test.json`. 
 
@@ -77,7 +76,7 @@ Now you create a mapping definition definition with `source` set to `test.json`.
 For some file type (for example JSON) each source file contains only a single document. 
 That means, that you have one file for each row in the mapped table.
 To define mappings for such types, you can use the GLOB syntax.
-That means, that you can use `*` and `?` as wildcards, where `*` matches multiple characters and `?` a single one.
+That means, you can use `*` and `?` as wildcards, where `*` matches multiple characters and `?` a single one.
 
 
 ## Creating the Virtual Schema

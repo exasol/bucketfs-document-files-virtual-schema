@@ -15,11 +15,10 @@
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Abucketfs-document-files-virtual-schema&metric=ncloc)](https://sonarcloud.io/dashboard?id=com.exasol%3Abucketfs-document-files-virtual-schema)
 
 
-This Virtual Schemas allows you to access document files from BucketFS stored in files like any regular Exasol table.
+This Virtual Schemas allows you to access document files stored in BucketFS like any regular Exasol table.
 For different file systems sources check the [files virtual schema][files-vs]
 
 For supported document file formats: see [files virtual schema][files-vs]
-
 
 * [User Guide](doc/user_guide/user_guide.md)
 * [Changelog](doc/changes/changelog.md)
