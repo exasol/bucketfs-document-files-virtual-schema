@@ -6,14 +6,12 @@ matrix:
 addons:
   sonarcloud:
     organization: exasol
-    token:
-      secure: FoH6RwTdyFbGk/W/YXBW1mZBQM12dJ0rh5kJSOpZ2eeAOJfB8jCPTt/194L7qrAmCJ0CGVCworGUWj0oPw5wOyJlcat0hUhm41cshauPTqxnpXu2Z0o9o6mfuaLOSOqay7N3QsX4ujAQTWXhw2RArm4EgNq8VYo3eOAnp7ULZJ+UVWAuwlG5GsmGPH1s7HZzJMVE6D50R0qE7VQtoxG/vCuQOgekFbiGBTZ/KnY1idMOVvTHxWro8coHAAw0N2KP32IgpiwA/s/zk+XcNueFynI2qqRcCGQeZQiKMy+E+ddIof7+0LfUxch6LByVj4klPrYBpxyxzhomJwIi02nVep7h3I6V72r+A1RGs4VmLUPUC7+tMN6gd5Kku/nuJfjkxjTJDv3QVxJAq+uKWSsReWagXCblAyQ/JPYoxqFwuM5GAHvvs4ygQRDW1bOcZ0eMRNfkLaMTocGE+knSCKr5RmkfoNKBr0EFTNx+pM8Xkx1Du66gfMdoveQDgSbVSsz8Vo6L+C8H6Zv4fz+tEY919PjQI54ueOJWIYRUYeDNZ9Hokci74AHbzn/jCXw7Vo766pw5tN/IXBPfJ6Tmai5ayEzZ5E4KFNpRsv2XQ6hBmnbGcY5ai8zeMpBNYR+zz77BYq2edpKQZAQnSyVZaKttFRgKN7BHBGv+m0Dvjf3cHh0=
 install:
   - rm -rf "$HOME/.m2/repository/com/exasol/virtual-schema-common-*"
   - travis_retry mvn dependency:resolve
 script:
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent org.jacoco:jacoco-maven-plugin:prepare-agent-integration
-    verify sonar:sonar -Dsonar.login=${SONAR_TOKEN} -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml,target/site/jacoco-it/jacoco.xml,target/site/jacoco-udf/jacoco.xml
+    verify sonar:sonar -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml,target/site/jacoco-it/jacoco.xml,target/site/jacoco-udf/jacoco.xml
 cache:
   directories:
     - "$HOME/.m2"
