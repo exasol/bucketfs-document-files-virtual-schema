@@ -4,4 +4,8 @@ Code name: Initial release
 
 ## Features / Enhancements
 
-* #1: Extracted BucketFS dialect from virtual-schemas-common-document-files 
+* #1: Extracted BucketFS dialect from virtual-schemas-common-document-files
+
+## Refactoring
+
+* #3 Use the hamcrest-resultset-matcher in integration tests
