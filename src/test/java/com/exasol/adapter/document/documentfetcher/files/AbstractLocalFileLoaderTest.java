@@ -32,11 +32,8 @@ class AbstractLocalFileLoaderTest {
                 SegmentDescription.NO_SEGMENTATION);
         final List<InputStream> inputStreams = fileLoader.loadFiles().map(InputStreamWithResourceName::getInputStream)
                 .collect(Collectors.toList());
-        final List<String> fileNames = fileLoader.loadFiles().map(InputStreamWithResourceName::getResourceName)
-                .collect(Collectors.toList());
         final List<String> result = readFirstLineFromStreams(inputStreams);
         assertThat(result, containsInAnyOrder("file-1", "file-2"));
-        assertThat(fileNames, containsInAnyOrder("file-1", "file-2"));
     }
 
     @NotNull
