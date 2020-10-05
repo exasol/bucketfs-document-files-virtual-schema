@@ -8,7 +8,7 @@ This project has the following dependencies:
   asm-analysis under BSD-3-Clause
   asm-commons under BSD-3-Clause
   asm-tree under BSD-3-Clause
-  bucketfs-document-files-virtua-schema under MIT
+  bucketfs-document-files-virtual-schema under MIT
   Byte Buddy (without dependencies) under Apache License, Version 2.0
   Byte Buddy agent under Apache License, Version 2.0
   Common module of Exasol Virtual Schemas Adapters under MIT
@@ -43,6 +43,7 @@ This project has the following dependencies:
   junixsocket-common under Apache License, Version 2.0
   junixsocket-native-common under Apache License, Version 2.0
   LogicNG under The Apache License, Version 2.0
+  Matcher for SQL Result Sets under MIT
   mockito-core under The MIT License
   MySQL Connector/J under The GNU General Public License, v2 with FOSS exception
   Native Library Loader under CC0 1.0 Universal License

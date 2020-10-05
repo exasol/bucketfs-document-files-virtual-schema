@@ -30,7 +30,8 @@ class AbstractLocalFileLoaderTest {
         createTestFile(tempDir, "otherFiles", "file-3");
         final FileLoaderStub fileLoader = new FileLoaderStub(tempDir.toString(), "testFile*.json",
                 SegmentDescription.NO_SEGMENTATION);
-        final List<InputStream> inputStreams = fileLoader.loadFiles().collect(Collectors.toList());
+        final List<InputStream> inputStreams = fileLoader.loadFiles().map(InputStreamWithResourceName::getInputStream)
+                .collect(Collectors.toList());
         final List<String> result = readFirstLineFromStreams(inputStreams);
         assertThat(result, containsInAnyOrder("file-1", "file-2"));
     }

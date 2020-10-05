@@ -1,15 +1,13 @@
 package com.exasol.adapter.document.documentfetcher.files;
 
 import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADAPTER_NAME;
+import static com.exasol.matcher.ResultSetStructureMatcher.table;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -17,10 +15,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 import org.junit.jupiter.api.*;
@@ -38,7 +32,7 @@ import com.exasol.containers.ExasolContainer;
 @Testcontainers
 class BucketfsDocumentFilesAdapterIT {
     private static final String TEST_SCHEMA = "TEST_SCHEMA";
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-0.2.0-SNAPSHOT-bucketfs-0.1.0.jar";
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-0.2.0-bucketfs-0.1.0.jar";
     private static final Logger LOGGER = LoggerFactory.getLogger(BucketfsDocumentFilesAdapterIT.class);
     @Container
     private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>()
@@ -83,13 +77,8 @@ class BucketfsDocumentFilesAdapterIT {
         filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
         uploadResource("testData-1.json");
         uploadResource("testData-2.json");
-
-        final ResultSet resultSet = statement.executeQuery("SELECT ID FROM " + TEST_SCHEMA + ".BOOKS;");
-        final List<String> result = new ArrayList<>();
-        while (resultSet.next()) {
-            result.add(resultSet.getString("ID"));
-        }
-        assertThat(result, containsInAnyOrder("book-1", "book-2"));
+        final ResultSet result = statement.executeQuery("SELECT ID FROM " + TEST_SCHEMA + ".BOOKS ORDER BY ID ASC;");
+        assertThat(result, table("VARCHAR").row("book-1").row("book-2").matches());
     }
 
     private void uploadResource(final String s)
@@ -107,66 +96,56 @@ class BucketfsDocumentFilesAdapterIT {
         filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
         uploadResource("test.jsonl");
 
-        final ResultSet resultSet = statement.executeQuery("SELECT ID FROM " + TEST_SCHEMA + ".BOOKS;");
-        final List<String> result = new ArrayList<>();
-        while (resultSet.next()) {
-            result.add(resultSet.getString("ID"));
-        }
-        assertThat(result, containsInAnyOrder("book-1", "book-2"));
+        final ResultSet result = statement.executeQuery("SELECT ID FROM " + TEST_SCHEMA + ".BOOKS;");
+        assertThat(result, table().row("book-1").row("book-2").matches());
     }
 
     @Test
     void testJsonDataTypesAsVarcharColumn()
             throws InterruptedException, SQLException, TimeoutException, BucketAccessException, IOException {
-        final Map<String, Object> result = getDataTypesTestResult("mapDataTypesToVarchar.json");
-        assertAll(//
-                () -> assertThat(result.get("number"), equalTo("1.23")),
-                () -> assertThat(result.get("null"), equalTo(null)),
-                () -> assertThat(result.get("string"), equalTo("test")),
-                () -> assertThat(result.get("true"), equalTo("true")),
-                () -> assertThat(result.get("false"), equalTo("false"))//
-        );
+        final ResultSet result = getDataTypesTestResult("mapDataTypesToVarchar.json");
+        assertThat(result, table("VARCHAR", "VARCHAR")//
+                .row("false", "false")//
+                .row("null", equalTo(null))//
+                .row("number", "1.23")//
+                .row("string", "test")//
+                .row("true", "true")//
+                .matches());
     }
 
     @Test
     void testJsonDataTypesAsDecimal()
             throws InterruptedException, SQLException, TimeoutException, BucketAccessException, IOException {
-        final Map<String, Object> result = getDataTypesTestResult("mapDataTypesToDecimal.json");
-        assertAll(//
-                () -> assertThat(result.get("number"), equalTo(BigDecimal.valueOf(1.23))),
-                () -> assertThat(result.get("null"), equalTo(null)),
-                () -> assertThat(result.get("string"), equalTo(null)),
-                () -> assertThat(result.get("true"), equalTo(null)),
-                () -> assertThat(result.get("false"), equalTo(null))//
-        );
+        final ResultSet result = getDataTypesTestResult("mapDataTypesToDecimal.json");
+        assertThat(result, table("VARCHAR", "DECIMAL")//
+                .row("false", equalTo(null))//
+                .row("null", equalTo(null))//
+                .row("number", 1.23)//
+                .row("string", equalTo(null))//
+                .row("true", equalTo(null))//
+                .matchesFuzzily());
     }
 
     @Test
     void testJsonDataTypesAsJson()
             throws InterruptedException, SQLException, TimeoutException, BucketAccessException, IOException {
-        final Map<String, Object> result = getDataTypesTestResult("mapDataTypesToJson.json");
-        assertAll(//
-                () -> assertThat(result.get("number"), equalTo("1.23")),
-                () -> assertThat(result.get("null"), equalTo("null")),
-                () -> assertThat(result.get("string"), equalTo("\"test\"")),
-                () -> assertThat(result.get("true"), equalTo("true")),
-                () -> assertThat(result.get("false"), equalTo("false"))//
-        );
+        final ResultSet result = getDataTypesTestResult("mapDataTypesToJson.json");
+        assertThat(result, table("VARCHAR", "VARCHAR")//
+                .row("false", "false")//
+                .row("null", "null")//
+                .row("number", "1.23")//
+                .row("string", "\"test\"")//
+                .row("true", "true")//
+                .matches());
     }
 
-    private Map<String, Object> getDataTypesTestResult(final String mappingFileName)
+    private ResultSet getDataTypesTestResult(final String mappingFileName)
             throws SQLException, InterruptedException, BucketAccessException, TimeoutException, IOException {
         final BucketfsVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder = new BucketfsVsExasolTestDatabaseBuilder(
                 container, ADAPTER_JAR);
         final Path mappingFile = saveResourceToFile(mappingFileName);
         filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
         uploadResource("dataTypeTests.jsonl");
-
-        final ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TEST_SCHEMA + ".DATA_TYPES;");
-        final Map<String, Object> result = new HashMap<>();
-        while (resultSet.next()) {
-            result.put(resultSet.getString("TYPE"), resultSet.getObject("VALUE"));
-        }
-        return result;
+        return statement.executeQuery("SELECT * FROM " + TEST_SCHEMA + ".DATA_TYPES ORDER BY TYPE ASC;");
     }
 }

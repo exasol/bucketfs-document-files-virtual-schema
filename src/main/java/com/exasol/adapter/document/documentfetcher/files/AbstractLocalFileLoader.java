@@ -47,7 +47,7 @@ abstract class AbstractLocalFileLoader implements FileLoader {
     }
 
     @Override
-    public Stream<InputStream> loadFiles() {
+    public Stream<InputStreamWithResourceName> loadFiles() {
         try {
             final Matcher matcher = NON_GLOB_PATH_PATTERN.matcher(this.path);
             if (!matcher.matches()) {
@@ -56,7 +56,7 @@ abstract class AbstractLocalFileLoader implements FileLoader {
             final Path nonGlobPath = new File(matcher.group(1)).toPath();
             final PathMatcher globMatcher = FileSystems.getDefault().getPathMatcher("glob:" + this.path);
             return Files.walk(nonGlobPath).filter(globMatcher::matches).filter(this::isFilePartOfThisSegment)
-                    .map(this::getInputStream);
+                    .map(filePath -> new InputStreamWithResourceName(getInputStream(filePath), filePath.toString()));
         } catch (final IOException exception) {
             throw new IllegalArgumentException(
                     "Could not open " + this.path + " from BucketFS. Cause: " + exception.getMessage(), exception);
