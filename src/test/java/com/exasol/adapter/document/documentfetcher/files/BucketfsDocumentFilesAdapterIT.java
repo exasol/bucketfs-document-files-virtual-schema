@@ -32,7 +32,7 @@ import com.exasol.containers.ExasolContainer;
 @Testcontainers
 class BucketfsDocumentFilesAdapterIT {
     private static final String TEST_SCHEMA = "TEST_SCHEMA";
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-0.2.0-SNAPSHOT-bucketfs-0.1.0.jar";
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-0.2.0-bucketfs-0.1.0.jar";
     private static final Logger LOGGER = LoggerFactory.getLogger(BucketfsDocumentFilesAdapterIT.class);
     @Container
     private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>()
@@ -77,7 +77,7 @@ class BucketfsDocumentFilesAdapterIT {
         filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
         uploadResource("testData-1.json");
         uploadResource("testData-2.json");
-        final ResultSet result = statement.executeQuery("SELECT ID FROM " + TEST_SCHEMA + ".BOOKS;");
+        final ResultSet result = statement.executeQuery("SELECT ID FROM " + TEST_SCHEMA + ".BOOKS ORDER BY ID ASC;");
         assertThat(result, table("VARCHAR").row("book-1").row("book-2").matches());
     }
 
@@ -105,11 +105,11 @@ class BucketfsDocumentFilesAdapterIT {
             throws InterruptedException, SQLException, TimeoutException, BucketAccessException, IOException {
         final ResultSet result = getDataTypesTestResult("mapDataTypesToVarchar.json");
         assertThat(result, table("VARCHAR", "VARCHAR")//
-                .row("number", "1.23")//
+                .row("false", "false")//
                 .row("null", equalTo(null))//
+                .row("number", "1.23")//
                 .row("string", "test")//
                 .row("true", "true")//
-                .row("false", "false")//
                 .matches());
     }
 
@@ -118,11 +118,11 @@ class BucketfsDocumentFilesAdapterIT {
             throws InterruptedException, SQLException, TimeoutException, BucketAccessException, IOException {
         final ResultSet result = getDataTypesTestResult("mapDataTypesToDecimal.json");
         assertThat(result, table("VARCHAR", "DECIMAL")//
-                .row("number", 1.23)//
+                .row("false", equalTo(null))//
                 .row("null", equalTo(null))//
+                .row("number", 1.23)//
                 .row("string", equalTo(null))//
                 .row("true", equalTo(null))//
-                .row("false", equalTo(null))//
                 .matchesFuzzily());
     }
 
@@ -131,11 +131,11 @@ class BucketfsDocumentFilesAdapterIT {
             throws InterruptedException, SQLException, TimeoutException, BucketAccessException, IOException {
         final ResultSet result = getDataTypesTestResult("mapDataTypesToJson.json");
         assertThat(result, table("VARCHAR", "VARCHAR")//
-                .row("number", "1.23")//
+                .row("false", "false")//
                 .row("null", "null")//
+                .row("number", "1.23")//
                 .row("string", "\"test\"")//
                 .row("true", "true")//
-                .row("false", "false")//
                 .matches());
     }
 
@@ -146,6 +146,6 @@ class BucketfsDocumentFilesAdapterIT {
         final Path mappingFile = saveResourceToFile(mappingFileName);
         filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
         uploadResource("dataTypeTests.jsonl");
-        return statement.executeQuery("SELECT * FROM " + TEST_SCHEMA + ".DATA_TYPES;");
+        return statement.executeQuery("SELECT * FROM " + TEST_SCHEMA + ".DATA_TYPES ORDER BY TYPE ASC;");
     }
 }

@@ -16,7 +16,7 @@
         M5 fails in integration tests with a strange error
         -->
         <surefire.and.failsafe.plugin.version>3.0.0-M3</surefire.and.failsafe.plugin.version>
-        <vs-commom-document-files.version>0.2.0-SNAPSHOT</vs-commom-document-files.version>
+        <vs-commom-document-files.version>0.2.0</vs-commom-document-files.version>
     </properties>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.exasol</groupId>
@@ -108,13 +108,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.5.10</version>
+            <version>3.5.13</version>
         </dependency>
         <!-- integration tests -->
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>exasol-testcontainers</artifactId>
-            <version>3.0.0</version>
+            <version>3.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -145,7 +145,7 @@
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>hamcrest-resultset-matcher</artifactId>
-            <version>1.2.0</version>
+            <version>1.2.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -311,6 +311,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <rulesUri>file:///${project.basedir}/versionsMavenPluginRules.xml</rulesUri>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.sonatype.ossindex.maven</groupId>
@@ -356,6 +359,22 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.exasol</groupId>
+                <artifactId>project-keeper-maven-plugin</artifactId>
+                <version>0.1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <modules>
+                    </modules>
+                </configuration>
             </plugin>
             <!-- Disabled since not yet released
             <plugin>
