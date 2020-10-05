@@ -8,4 +8,4 @@ Code name: Initial release
 
 ## Refactoring
 
-* #3 Use the hamcrest-resultset-matcher in integration tests
+* #3: Use the hamcrest-resultset-matcher in integration tests
