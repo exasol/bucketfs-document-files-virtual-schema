@@ -21,7 +21,7 @@ For different file systems sources check the [files Virtual Schema][files-vs]
 **Important:** BucketFS synchronizes all files over all Exasol nodes.
 For that reason it is not an appropriate choice for storing large files.
 This Virtual Schema exists mainly for testing and training reasons. 
-For production choose a different data source.
+We recommend choosing a different data source for production purposes.
 
 For supported document file formats: see [files Virtual Schema][files-vs]
 
