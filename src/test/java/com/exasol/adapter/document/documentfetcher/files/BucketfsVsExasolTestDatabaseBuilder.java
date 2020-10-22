@@ -82,7 +82,7 @@ public class BucketfsVsExasolTestDatabaseBuilder {
         // statementBuilder.append(getDebuggerOptions(true));
         statementBuilder.append("    %scriptclass " + UdfEntryPoint.class.getName() + ";\n");
         statementBuilder.append("    %jar /buckets/bfsdefault/default/" + this.jarName + ";\n");
-        statementBuilder.append("    %jvmoption -agentlib:jdwp=transport=dt_socket,server=n,address=" + getTestHostIp() + ":8000;\n");
+        //statementBuilder.append("    %jvmoption -agentlib:jdwp=transport=dt_socket,server=n,address=" + getTestHostIp() + ":8000;\n");
         statementBuilder.append("/");
         final String sql = statementBuilder.toString();
         this.testContainer.createConnectionForUser(this.testContainer.getUsername(), this.testContainer.getPassword())
