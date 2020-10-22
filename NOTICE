@@ -30,6 +30,7 @@ This project has the following dependencies:
   JetBrains Java Annotations under The Apache Software License, Version 2.0
   Joda-Time under Apache 2
   JSON in Java under The JSON License
+  JSR 374 (JSON Processing) API under Dual license consisting of the CDDL v1.1 and GPL v2
   JSR 374 (JSON Processing) Default Provider under Dual license consisting of the CDDL v1.1 and GPL v2
   JUnit under Eclipse Public License 1.0
   JUnit Jupiter API under Eclipse Public License v2.0
@@ -61,6 +62,7 @@ This project has the following dependencies:
   Testcontainers :: JDBC under MIT
   Testcontainers :: JUnit Jupiter Extension under MIT
   Testcontainers Core under MIT
+  udf-debugging-java under MIT
   Virtual Schema for document data in files under MIT
   Visible Assertions under MIT
 

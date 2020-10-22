@@ -1,8 +1,9 @@
 {
-  "$schema": "https://schemas.exasol.com/edml-1.0.0.json",
+  "$schema": "https://schemas.exasol.com/edml-1.2.0.json",
   "source": "testData-*.json",
   "destinationTable": "BOOKS",
   "description": "Maps MY_BOOKS to BOOKS",
+  "addSourceReferenceColumn": true,
   "mapping": {
     "fields": {
       "id": {

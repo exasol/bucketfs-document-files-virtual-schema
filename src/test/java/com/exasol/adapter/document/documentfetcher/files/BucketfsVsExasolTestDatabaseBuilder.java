@@ -1,13 +1,5 @@
 package com.exasol.adapter.document.documentfetcher.files;
 
-import static com.exasol.adapter.document.UdfEntryPoint.*;
-import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADAPTER_NAME;
-
-import java.nio.file.Path;
-import java.sql.SQLException;
-import java.util.Map;
-import java.util.concurrent.TimeoutException;
-
 import com.exasol.adapter.document.UdfEntryPoint;
 import com.exasol.bucketfs.BucketAccessException;
 import com.exasol.containers.ExasolContainer;
@@ -16,6 +8,14 @@ import com.exasol.dbbuilder.dialects.exasol.ConnectionDefinition;
 import com.exasol.dbbuilder.dialects.exasol.ExasolObjectFactory;
 import com.exasol.dbbuilder.dialects.exasol.ExasolSchema;
 import com.github.dockerjava.api.model.ContainerNetwork;
+
+import java.nio.file.Path;
+import java.sql.SQLException;
+import java.util.Map;
+import java.util.concurrent.TimeoutException;
+
+import static com.exasol.adapter.document.UdfEntryPoint.*;
+import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADAPTER_NAME;
 
 public class BucketfsVsExasolTestDatabaseBuilder {
     public static final String BUCKETS_BFSDEFAULT_DEFAULT = "/buckets/bfsdefault/default/";
@@ -56,7 +56,7 @@ public class BucketfsVsExasolTestDatabaseBuilder {
                 .connectionDefinition(this.connection)//
                 .adapterScript(this.adapterScript)//
                 .dialectName(adapterName)//
-                .properties(Map.of("MAPPING", "/bfsdefault/default/" + this.mappingInBucketfs))//
+                .properties(Map.of("MAPPING", "/bfsdefault/default/" + this.mappingInBucketfs, "MAX_PARALLEL_UDFS", "1"))//
                 .build();
     }
 
@@ -77,11 +77,12 @@ public class BucketfsVsExasolTestDatabaseBuilder {
     private void createUdf() throws SQLException {
         final StringBuilder statementBuilder = new StringBuilder(
                 "CREATE OR REPLACE JAVA SET SCRIPT ADAPTER." + UDF_PREFIX + ADAPTER_NAME + "(" + PARAMETER_DATA_LOADER
-                        + " VARCHAR(2000000), " + PARAMETER_REMOTE_TABLE_QUERY + " VARCHAR(2000000), "
+                        + " VARCHAR(2000000), " + PARAMETER_SCHEMA_MAPPING_REQUEST + " VARCHAR(2000000), "
                         + PARAMETER_CONNECTION_NAME + " VARCHAR(500)) EMITS(...) AS\n");
         // statementBuilder.append(getDebuggerOptions(true));
         statementBuilder.append("    %scriptclass " + UdfEntryPoint.class.getName() + ";\n");
         statementBuilder.append("    %jar /buckets/bfsdefault/default/" + this.jarName + ";\n");
+        statementBuilder.append("    %jvmoption -agentlib:jdwp=transport=dt_socket,server=n,address=" + getTestHostIp() + ":8000;\n");
         statementBuilder.append("/");
         final String sql = statementBuilder.toString();
         this.testContainer.createConnectionForUser(this.testContainer.getUsername(), this.testContainer.getPassword())

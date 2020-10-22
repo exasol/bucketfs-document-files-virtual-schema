@@ -1,9 +1,14 @@
 package com.exasol.adapter.document.documentfetcher.files;
 
-import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADAPTER_NAME;
-import static com.exasol.matcher.ResultSetStructureMatcher.table;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import com.exasol.bucketfs.BucketAccessException;
+import com.exasol.containers.ExasolContainer;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.io.TempDir;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testcontainers.containers.output.Slf4jLogConsumer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,34 +22,32 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.TimeoutException;
 
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.io.TempDir;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testcontainers.containers.output.Slf4jLogConsumer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-
-import com.exasol.bucketfs.BucketAccessException;
-import com.exasol.containers.ExasolContainer;
+import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADAPTER_NAME;
+import static com.exasol.matcher.ResultSetStructureMatcher.table;
+import static com.exasol.udfdebugging.PushDownTesting.getPushDownSql;
+import static com.exasol.udfdebugging.PushDownTesting.getSelectionThatIsSentToTheAdapter;
+import static org.hamcrest.CoreMatchers.endsWith;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @Tag("integration")
 @Testcontainers
 class BucketfsDocumentFilesAdapterIT {
     private static final String TEST_SCHEMA = "TEST_SCHEMA";
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-0.2.0-bucketfs-0.1.0.jar";
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-0.3.0-SNAPSHOT-bucketfs-0.1.0.jar";
     private static final Logger LOGGER = LoggerFactory.getLogger(BucketfsDocumentFilesAdapterIT.class);
     @Container
-    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>()
+    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>("7.0.2")
             .withLogConsumer(new Slf4jLogConsumer(LOGGER)).withReuse(true);
     @TempDir
     static File tempDir;
     private static Connection connection;
     private static Statement statement;
+    private BucketfsVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder;
 
     @BeforeAll
     static void beforeAll() throws Exception {
-
         connection = container.createConnectionForUser(container.getUsername(), container.getPassword());
         statement = connection.createStatement();
     }
@@ -63,6 +66,12 @@ class BucketfsDocumentFilesAdapterIT {
         return tempFile;
     }
 
+    @BeforeEach
+    void beforeEach() throws InterruptedException, SQLException, TimeoutException, BucketAccessException {
+        this.filesVsExasolTestDatabaseBuilder = new BucketfsVsExasolTestDatabaseBuilder(
+                container, ADAPTER_JAR);
+    }
+
     @AfterEach
     void afterEach() {
         container.purgeDatabase();
@@ -71,14 +80,10 @@ class BucketfsDocumentFilesAdapterIT {
     @Test
     void testReadJson()
             throws SQLException, InterruptedException, BucketAccessException, TimeoutException, IOException {
-        final BucketfsVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder = new BucketfsVsExasolTestDatabaseBuilder(
-                container, ADAPTER_JAR);
-        final Path mappingFile = saveResourceToFile("mapJsonFile.json");
-        filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
-        uploadResource("testData-1.json");
-        uploadResource("testData-2.json");
-        final ResultSet result = statement.executeQuery("SELECT ID FROM " + TEST_SCHEMA + ".BOOKS ORDER BY ID ASC;");
-        assertThat(result, table("VARCHAR").row("book-1").row("book-2").matches());
+        createJsonVirtualSchema();
+        final ResultSet result = statement
+                .executeQuery("SELECT ID, SOURCE_REFERENCE FROM " + TEST_SCHEMA + ".BOOKS ORDER BY ID ASC;");
+        assertThat(result, table().row("book-1", "testData-1.json").row("book-2", "testData-2.json").matches());
     }
 
     private void uploadResource(final String s)
@@ -90,8 +95,6 @@ class BucketfsDocumentFilesAdapterIT {
     @Test
     void testReadJsonLines()
             throws IOException, InterruptedException, BucketAccessException, TimeoutException, SQLException {
-        final BucketfsVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder = new BucketfsVsExasolTestDatabaseBuilder(
-                container, ADAPTER_JAR);
         final Path mappingFile = saveResourceToFile("mapJsonLinesFile.json");
         filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
         uploadResource("test.jsonl");
@@ -141,11 +144,68 @@ class BucketfsDocumentFilesAdapterIT {
 
     private ResultSet getDataTypesTestResult(final String mappingFileName)
             throws SQLException, InterruptedException, BucketAccessException, TimeoutException, IOException {
-        final BucketfsVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder = new BucketfsVsExasolTestDatabaseBuilder(
-                container, ADAPTER_JAR);
         final Path mappingFile = saveResourceToFile(mappingFileName);
         filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
         uploadResource("dataTypeTests.jsonl");
         return statement.executeQuery("SELECT * FROM " + TEST_SCHEMA + ".DATA_TYPES ORDER BY TYPE ASC;");
+    }
+
+    @Test
+    void testFilterOnSourceReference() throws IOException, InterruptedException, BucketAccessException, TimeoutException, SQLException {
+        createJsonVirtualSchema();
+        String query = "SELECT ID FROM " + TEST_SCHEMA + ".BOOKS WHERE SOURCE_REFERENCE = 'testData-1.json'";
+        try (
+                final ResultSet result = statement
+                        .executeQuery(query)) {
+            assertAll(//
+                    () -> assertThat(result, table().row("book-1").matches()),//
+                    () -> assertThat(getPushDownSql(statement, query), endsWith("WHERE TRUE")),//no post selection
+                    () -> assertThat(getSelectionThatIsSentToTheAdapter(statement, query), equalTo("BOOKS.SOURCE_REFERENCE='testData-1.json'"))//
+            );
+        }
+    }
+
+    @Test
+    void testFilterWithOrOnSourceReference() throws IOException, InterruptedException, BucketAccessException, TimeoutException, SQLException {
+        createJsonVirtualSchema();
+        String query = "SELECT ID FROM " + TEST_SCHEMA + ".BOOKS WHERE SOURCE_REFERENCE = 'testData-1.json' OR SOURCE_REFERENCE = 'testData-2.json' ORDER BY SOURCE_REFERENCE ASC";
+        assertAll(//
+                () -> assertThat(statement.executeQuery(query), table().row("book-1").row("book-2").matches()),//
+                () -> assertThat(getPushDownSql(statement, query), endsWith("WHERE TRUE")),//no post selection
+                () -> assertThat(getSelectionThatIsSentToTheAdapter(statement, query), equalTo("BOOKS.SOURCE_REFERENCE='testData-1.json' OR BOOKS.SOURCE_REFERENCE='testData-2.json'"))//
+        );
+    }
+
+    @Test
+    void testFilterOnSourceReferenceForNonExisting() throws IOException, InterruptedException, BucketAccessException, TimeoutException, SQLException {
+        createJsonVirtualSchema();
+        String query = "SELECT ID FROM " + TEST_SCHEMA + ".BOOKS WHERE SOURCE_REFERENCE = 'UNKNOWN.json'";
+        try (final ResultSet result = statement.executeQuery(query)) {
+            assertAll(//
+                    () -> assertThat(getSelectionThatIsSentToTheAdapter(statement, query), equalTo("BOOKS.SOURCE_REFERENCE='UNKNOWN.json'")),
+                    () -> assertThat(result, table("VARCHAR").matches()),//
+                    () -> assertThat(getPushDownSql(statement, query), endsWith("WHERE NOT(TRUE)"))
+            );
+        }
+    }
+
+    @Test
+    void testFilterOnSourceReferenceUsingLike() throws IOException, InterruptedException, BucketAccessException, TimeoutException, SQLException {
+        createJsonVirtualSchema();
+        String query = "SELECT ID FROM " + TEST_SCHEMA + ".BOOKS WHERE SOURCE_REFERENCE LIKE '%1.json'";
+        try (final ResultSet result = statement.executeQuery(query)) {
+            assertAll(//
+                    () -> assertThat(getSelectionThatIsSentToTheAdapter(statement, query), equalTo("BOOKS.SOURCE_REFERENCE LIKE '%1.json'")),
+                    () -> assertThat(result, table().row("book-1").matches()),//
+                    () -> assertThat(getPushDownSql(statement, query), endsWith("WHERE TRUE"))//no post selection
+            );
+        }
+    }
+
+    private void createJsonVirtualSchema() throws SQLException, InterruptedException, BucketAccessException, TimeoutException, IOException {
+        final Path mappingFile = saveResourceToFile("mapJsonFile.json");
+        this.filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
+        uploadResource("testData-1.json");
+        uploadResource("testData-2.json");
     }
 }
