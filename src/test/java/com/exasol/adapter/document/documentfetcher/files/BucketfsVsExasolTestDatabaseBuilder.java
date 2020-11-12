@@ -9,10 +9,12 @@ import com.exasol.dbbuilder.dialects.exasol.ExasolObjectFactory;
 import com.exasol.dbbuilder.dialects.exasol.ExasolSchema;
 import com.github.dockerjava.api.model.ContainerNetwork;
 
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
 import static com.exasol.adapter.document.UdfEntryPoint.*;
 import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADAPTER_NAME;
@@ -47,15 +49,15 @@ public class BucketfsVsExasolTestDatabaseBuilder {
         return networks.values().iterator().next().getGateway();
     }
 
-    public void createVirtualSchema(final String name, final Path mapping, final String adapterName)
+    public void createVirtualSchema(final String name, final Supplier<InputStream> mapping)
             throws InterruptedException, BucketAccessException, TimeoutException {
         this.mappingInBucketfs = "mapping.json";
-        this.testContainer.getDefaultBucket().uploadFile(mapping, this.mappingInBucketfs);
+        this.testContainer.getDefaultBucket().uploadInputStream(mapping, this.mappingInBucketfs);
         exasolObjectFactory//
                 .createVirtualSchemaBuilder(name)//
                 .connectionDefinition(this.connection)//
                 .adapterScript(this.adapterScript)//
-                .dialectName(adapterName)//
+                .dialectName(ADAPTER_NAME)//
                 .properties(Map.of("MAPPING", "/bfsdefault/default/" + this.mappingInBucketfs, "MAX_PARALLEL_UDFS", "1"))//
                 .build();
     }
@@ -67,9 +69,9 @@ public class BucketfsVsExasolTestDatabaseBuilder {
     private AdapterScript createAdapterScript() throws InterruptedException, BucketAccessException, TimeoutException {
         this.testContainer.getDefaultBucket().uploadFile(Path.of("target", this.jarName), this.jarName);
         final ExasolSchema adapterSchema = exasolObjectFactory.createSchema("ADAPTER");
-        return adapterSchema.createAdapterScriptBuilder().name(FILES_ADAPTER)
+        return adapterSchema.createAdapterScriptBuilder(FILES_ADAPTER)
                 .bucketFsContent("com.exasol.adapter.RequestDispatcher", BUCKETS_BFSDEFAULT_DEFAULT + this.jarName)
-                .language(AdapterScript.Language.JAVA).debuggerConnection(getTestHostIp() + ":" + DEBUGGER_PORT)
+                .language(AdapterScript.Language.JAVA)
                 .build();
     }
 

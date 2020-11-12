@@ -2,7 +2,6 @@ package com.exasol.adapter.document.documentfetcher.files;
 
 import com.exasol.adapter.document.files.stringfilter.StringFilter;
 import com.exasol.adapter.document.files.stringfilter.wildcardexpression.WildcardExpression;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -53,7 +52,6 @@ class AbstractLocalFileLoaderTest {
         );
     }
 
-    @NotNull
     private List<String> readFirstLineFromStreams(final List<InputStream> inputStreams) throws IOException {
         final List<String> result = new ArrayList<>(2);
         for (final InputStream inputStream : inputStreams) {
