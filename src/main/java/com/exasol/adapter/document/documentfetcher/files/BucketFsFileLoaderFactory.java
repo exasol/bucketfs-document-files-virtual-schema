@@ -11,8 +11,7 @@ public class BucketFsFileLoaderFactory implements FileLoaderFactory {
 
     @Override
     public FileLoader getLoader(final StringFilter filePattern, final SegmentDescription segmentDescription,
-                                final ExaConnectionInformation connectionInformation) {
-        connectionInformation.getAddress();
+            final ExaConnectionInformation connectionInformation) {
         return new BucketfsFileLoader(filePattern, segmentDescription);
     }
 }
