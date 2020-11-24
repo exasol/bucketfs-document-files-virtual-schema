@@ -1,52 +1,64 @@
 package com.exasol.adapter.document.documentfetcher.files;
 
+import static com.exasol.adapter.document.UdfEntryPoint.*;
 import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADAPTER_NAME;
-import static com.exasol.matcher.ResultSetStructureMatcher.table;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.io.TempDir;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testcontainers.containers.output.Slf4jLogConsumer;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import com.exasol.adapter.document.UdfEntryPoint;
+import com.exasol.adapter.document.files.AbstractDocumentFilesAdapterIT;
 import com.exasol.bucketfs.BucketAccessException;
 import com.exasol.containers.ExasolContainer;
+import com.exasol.dbbuilder.dialects.DatabaseObject;
+import com.exasol.dbbuilder.dialects.exasol.*;
+import com.exasol.dbbuilder.dialects.exasol.udf.UdfScript;
+import com.exasol.udfdebugging.UdfTestSetup;
+import com.github.dockerjava.api.model.ContainerNetwork;
 
 @Tag("integration")
 @Testcontainers
-class BucketfsDocumentFilesAdapterIT {
-    private static final String TEST_SCHEMA = "TEST_SCHEMA";
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-0.2.0-bucketfs-0.1.0.jar";
-    private static final Logger LOGGER = LoggerFactory.getLogger(BucketfsDocumentFilesAdapterIT.class);
+class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-1.0.0-bucketfs-0.2.0.jar";
+
     @Container
-    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>()
-            .withLogConsumer(new Slf4jLogConsumer(LOGGER)).withReuse(true);
-    @TempDir
-    static File tempDir;
+    private static final ExasolContainer<? extends ExasolContainer<?>> EXASOL = new ExasolContainer<>().withReuse(true);
+    private static final String BUCKETS_BFSDEFAULT_DEFAULT = "/buckets/bfsdefault/default/";
+    private static UdfTestSetup udfTestSetup;
+    private static ExasolObjectFactory testDbBuilder;
+
     private static Connection connection;
     private static Statement statement;
+    private static ConnectionDefinition connectionDefinition;
+    private static AdapterScript adapterScript;
+    private final List<DatabaseObject> createdObjects = new LinkedList<>();
 
     @BeforeAll
     static void beforeAll() throws Exception {
-
-        connection = container.createConnectionForUser(container.getUsername(), container.getPassword());
+        connection = EXASOL.createConnectionForUser(EXASOL.getUsername(), EXASOL.getPassword());
         statement = connection.createStatement();
+        udfTestSetup = new UdfTestSetup(getTestHostIp(), EXASOL.getDefaultBucket());
+        testDbBuilder = new ExasolObjectFactory(EXASOL.createConnection(),
+                ExasolObjectConfiguration.builder().withJvmOptions(udfTestSetup.getJvmOptions()).build());
+        final ExasolSchema adapterSchema = testDbBuilder.createSchema("ADAPTER");
+        adapterScript = createAdapterScript(adapterSchema);
+        createUdf(adapterSchema);
+        connectionDefinition = createConnectionDefinition();
     }
 
     @AfterAll
@@ -55,97 +67,70 @@ class BucketfsDocumentFilesAdapterIT {
         connection.close();
     }
 
-    private static Path saveResourceToFile(final String resource) throws IOException {
-        final InputStream inputStream = BucketfsDocumentFilesAdapterIT.class.getClassLoader()
-                .getResourceAsStream(resource);
-        final Path tempFile = File.createTempFile("resource", "", tempDir).toPath();
-        Files.copy(inputStream, tempFile, StandardCopyOption.REPLACE_EXISTING);
-        return tempFile;
+    private static String getTestHostIp() {
+        final Map<String, ContainerNetwork> networks = EXASOL.getContainerInfo().getNetworkSettings().getNetworks();
+        if (networks.size() == 0) {
+            return null;
+        }
+        return networks.values().iterator().next().getGateway();
+    }
+
+    @Override
+    protected Statement getStatement() {
+        return statement;
+    }
+
+    private static ConnectionDefinition createConnectionDefinition() {
+        return testDbBuilder.createConnectionDefinition("CONNECTION", "/bfsdefault/default/", "", "");
+    }
+
+    private static AdapterScript createAdapterScript(final ExasolSchema adapterSchema)
+            throws InterruptedException, BucketAccessException, TimeoutException {
+        EXASOL.getDefaultBucket().uploadFile(Path.of("target", ADAPTER_JAR), ADAPTER_JAR);
+        return adapterSchema.createAdapterScriptBuilder("BUCKETFS_ADAPTER")
+                .bucketFsContent("com.exasol.adapter.RequestDispatcher", BUCKETS_BFSDEFAULT_DEFAULT + ADAPTER_JAR)
+                .language(AdapterScript.Language.JAVA).build();
+    }
+
+    private static void createUdf(final ExasolSchema adapterSchema) {
+        adapterSchema.createUdfBuilder("IMPORT_FROM_BUCKETFS_DOCUMENT_FILES").language(UdfScript.Language.JAVA)
+                .inputType(UdfScript.InputType.SET).parameter(PARAMETER_DATA_LOADER, "VARCHAR(2000000)")
+                .parameter(PARAMETER_SCHEMA_MAPPING_REQUEST, "VARCHAR(2000000)")
+                .parameter(PARAMETER_CONNECTION_NAME, "VARCHAR(500)").emits()
+                .bucketFsContent(UdfEntryPoint.class.getName(), BUCKETS_BFSDEFAULT_DEFAULT + ADAPTER_JAR).build();
     }
 
     @AfterEach
     void afterEach() {
-        container.purgeDatabase();
+        for (final DatabaseObject createdObject : this.createdObjects) {
+            createdObject.drop();
+        }
+        this.createdObjects.clear();
     }
 
-    @Test
-    void testReadJson()
-            throws SQLException, InterruptedException, BucketAccessException, TimeoutException, IOException {
-        final BucketfsVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder = new BucketfsVsExasolTestDatabaseBuilder(
-                container, ADAPTER_JAR);
-        final Path mappingFile = saveResourceToFile("mapJsonFile.json");
-        filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
-        uploadResource("testData-1.json");
-        uploadResource("testData-2.json");
-        final ResultSet result = statement.executeQuery("SELECT ID FROM " + TEST_SCHEMA + ".BOOKS ORDER BY ID ASC;");
-        assertThat(result, table("VARCHAR").row("book-1").row("book-2").matches());
+    @Override
+    protected void uploadDataFile(final Supplier<InputStream> resource, final String resourceName) {
+        try {
+            EXASOL.getDefaultBucket().uploadInputStream(resource, resourceName);
+        } catch (final InterruptedException | BucketAccessException | TimeoutException exception) {
+            throw new IllegalStateException("Failed to upload test-file to BucketFS.", exception);
+        }
     }
 
-    private void uploadResource(final String s)
-            throws IOException, InterruptedException, BucketAccessException, TimeoutException {
-        final Path testFile = saveResourceToFile(s);
-        container.getDefaultBucket().uploadFile(testFile, s);
-    }
-
-    @Test
-    void testReadJsonLines()
-            throws IOException, InterruptedException, BucketAccessException, TimeoutException, SQLException {
-        final BucketfsVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder = new BucketfsVsExasolTestDatabaseBuilder(
-                container, ADAPTER_JAR);
-        final Path mappingFile = saveResourceToFile("mapJsonLinesFile.json");
-        filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
-        uploadResource("test.jsonl");
-
-        final ResultSet result = statement.executeQuery("SELECT ID FROM " + TEST_SCHEMA + ".BOOKS;");
-        assertThat(result, table().row("book-1").row("book-2").matches());
-    }
-
-    @Test
-    void testJsonDataTypesAsVarcharColumn()
-            throws InterruptedException, SQLException, TimeoutException, BucketAccessException, IOException {
-        final ResultSet result = getDataTypesTestResult("mapDataTypesToVarchar.json");
-        assertThat(result, table("VARCHAR", "VARCHAR")//
-                .row("false", "false")//
-                .row("null", equalTo(null))//
-                .row("number", "1.23")//
-                .row("string", "test")//
-                .row("true", "true")//
-                .matches());
-    }
-
-    @Test
-    void testJsonDataTypesAsDecimal()
-            throws InterruptedException, SQLException, TimeoutException, BucketAccessException, IOException {
-        final ResultSet result = getDataTypesTestResult("mapDataTypesToDecimal.json");
-        assertThat(result, table("VARCHAR", "DECIMAL")//
-                .row("false", equalTo(null))//
-                .row("null", equalTo(null))//
-                .row("number", 1.23)//
-                .row("string", equalTo(null))//
-                .row("true", equalTo(null))//
-                .matchesFuzzily());
-    }
-
-    @Test
-    void testJsonDataTypesAsJson()
-            throws InterruptedException, SQLException, TimeoutException, BucketAccessException, IOException {
-        final ResultSet result = getDataTypesTestResult("mapDataTypesToJson.json");
-        assertThat(result, table("VARCHAR", "VARCHAR")//
-                .row("false", "false")//
-                .row("null", "null")//
-                .row("number", "1.23")//
-                .row("string", "\"test\"")//
-                .row("true", "true")//
-                .matches());
-    }
-
-    private ResultSet getDataTypesTestResult(final String mappingFileName)
-            throws SQLException, InterruptedException, BucketAccessException, TimeoutException, IOException {
-        final BucketfsVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder = new BucketfsVsExasolTestDatabaseBuilder(
-                container, ADAPTER_JAR);
-        final Path mappingFile = saveResourceToFile(mappingFileName);
-        filesVsExasolTestDatabaseBuilder.createVirtualSchema(TEST_SCHEMA, mappingFile, ADAPTER_NAME);
-        uploadResource("dataTypeTests.jsonl");
-        return statement.executeQuery("SELECT * FROM " + TEST_SCHEMA + ".DATA_TYPES ORDER BY TYPE ASC;");
+    @Override
+    protected void createVirtualSchema(final String schemaName, final Supplier<InputStream> mapping) {
+        try {
+            final String mappingInBucketfs = "mapping.json";
+            EXASOL.getDefaultBucket().uploadInputStream(mapping, mappingInBucketfs);
+            this.createdObjects.add(testDbBuilder//
+                    .createVirtualSchemaBuilder(schemaName)//
+                    .connectionDefinition(connectionDefinition)//
+                    .adapterScript(adapterScript)//
+                    .dialectName(ADAPTER_NAME)//
+                    .properties(Map.of("MAPPING", "/bfsdefault/default/" + mappingInBucketfs, "MAX_PARALLEL_UDFS", "1"))//
+                    .build());
+        } catch (final InterruptedException | BucketAccessException | TimeoutException exception) {
+            throw new IllegalStateException("Failed to create virtual schema.", exception);
+        }
     }
 }

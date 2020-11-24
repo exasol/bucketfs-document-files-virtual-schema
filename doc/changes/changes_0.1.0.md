@@ -9,3 +9,4 @@ Code name: Initial release
 ## Refactoring
 
 * #3: Use the hamcrest-resultset-matcher in integration tests
+* #5 Changes from virual-schema-common-document-files

@@ -17,7 +17,7 @@ Next create the Adapter Script:
  ```
 CREATE OR REPLACE JAVA ADAPTER SCRIPT ADAPTER.BUCKET_FS_FILES_ADAPTER AS
     %scriptclass com.exasol.adapter.RequestDispatcher;
-    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-0.2.0-bucketfs-0.1.0.jar;
+    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-1.0.0-bucketfs-0.2.0.jar;
 /
 ```
 
@@ -25,11 +25,11 @@ In addition to the adapter script you need to create a UDF function that will ha
 ```
 CREATE OR REPLACE JAVA SET SCRIPT ADAPTER.IMPORT_FROM_BUCKETFS_DOCUMENT_FILES(
   DATA_LOADER VARCHAR(2000000),
-  REMOTE_TABLE_QUERY VARCHAR(2000000),
+  SCHEMA_MAPPING_REQUEST VARCHAR(2000000),
   CONNECTION_NAME VARCHAR(500))
   EMITS(...) AS
     %scriptclass com.exasol.adapter.document.UdfEntryPoint;
-    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-0.2.0-bucketfs-0.1.0.jar;
+    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-1.0.0-bucketfs-0.2.0.jar;
 /
 ```
 
@@ -71,12 +71,12 @@ In your `CONNECTION` you set the address to `/bfsdefault/default/`
 
 Now you create a mapping definition definition with `source` set to `test.json`. 
 
-### Mapping multiple files
+### Mapping Multiple Files
 
 For some file type (for example JSON) each source file contains only a single document. 
 That means, that you have one file for each row in the mapped table.
 To define mappings for such types, you can use the GLOB syntax.
-That means, you can use `*` and `?` as wildcards, where `*` matches multiple characters and `?` a single one.
+For details see the [user guide of the common repository for all file Virtual Schemas](https://github.com/exasol/virtual-schema-common-document-files/doc/user_guide/user_guide.md#mapping-multiple-files)
 
 
 ## Creating the Virtual Schema

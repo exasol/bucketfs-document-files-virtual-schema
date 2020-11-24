@@ -1,27 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
-        <junit.version>5.6.2</junit.version>
-        <junit.platform.version>1.6.2</junit.platform.version>
+        <junit.version>5.7.0</junit.version>
         <jacoco.version>0.8.5</jacoco.version>
         <gpg.skip>true</gpg.skip>
-        <org.testcontainers.version>1.14.3</org.testcontainers.version>
+        <org.testcontainers.version>1.15.0</org.testcontainers.version>
         <!--
         M4 does not fail tests if beforeAll fails
         M5 fails in integration tests with a strange error
         -->
         <surefire.and.failsafe.plugin.version>3.0.0-M3</surefire.and.failsafe.plugin.version>
-        <vs-commom-document-files.version>0.2.0</vs-commom-document-files.version>
+        <vs-commom-document-files.version>1.0.0</vs-commom-document-files.version>
     </properties>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.exasol</groupId>
     <artifactId>bucketfs-document-files-virtual-schema</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <licenses>
         <license>
             <name>MIT</name>
@@ -94,12 +92,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-runner</artifactId>
-            <version>${junit.platform.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>${junit.version}</version>
@@ -108,13 +100,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.5.13</version>
+            <version>3.6.0</version>
         </dependency>
         <!-- integration tests -->
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>exasol-testcontainers</artifactId>
-            <version>3.2.0</version>
+            <version>3.3.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -144,8 +136,20 @@
         </dependency>
         <dependency>
             <groupId>com.exasol</groupId>
+            <artifactId>test-db-builder-java</artifactId>
+            <version>2.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.exasol</groupId>
             <artifactId>hamcrest-resultset-matcher</artifactId>
-            <version>1.2.1</version>
+            <version>1.2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.exasol</groupId>
+            <artifactId>udf-debugging-java</artifactId>
+            <version>0.3.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -158,9 +162,7 @@
                 <configuration>
                     <!-- Set the highest log level for coverage testing, so that we
                       have a chance to reach branches in the logging lambdas too. -->
-                    <argLine>-Djava.util.logging.config.file=src/test/resources/logging.properties
-                        ${argLine}
-                    </argLine>
+                    <argLine>-Djava.util.logging.config.file=src/test/resources/logging.properties ${argLine}</argLine>
                     <excludes>
                         <exclude>**IT.java</exclude>
                     </excludes>
@@ -232,24 +234,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                        <configuration>
-                            <excludes>
-                                <exclude>**/*Test.class</exclude>
-                                <exclude>**/*IT.class</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
@@ -270,6 +254,7 @@
                         </goals>
                     </execution>
                 </executions>
+                <groupId>org.apache.maven.plugins</groupId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -327,6 +312,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludeVulnerabilityIds>
+                        <!-- Ignores CVE-2020-15250, because we use Java 11 and junit 4.13.1 which contains a fix:
+                        https://ossindex.sonatype.org/vuln/7ea56ad4-8a8b-4e51-8ed9-5aad83d8efb1 -->
+                        <exclude>7ea56ad4-8a8b-4e51-8ed9-5aad83d8efb1</exclude>
+                    </excludeVulnerabilityIds>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -363,7 +355,7 @@
             <plugin>
                 <groupId>com.exasol</groupId>
                 <artifactId>project-keeper-maven-plugin</artifactId>
-                <version>0.1.0</version>
+                <version>0.3.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -373,6 +365,8 @@
                 </executions>
                 <configuration>
                     <modules>
+                        <module>integration_tests</module>
+                        <module>jar_artifact</module>
                     </modules>
                 </configuration>
             </plugin>
