@@ -111,7 +111,7 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
     @Override
     protected void uploadDataFile(final Supplier<InputStream> resource, final String resourceName) {
         try {
-            BucketfsDocumentFilesAdapterIT.EXASOL.getDefaultBucket().uploadInputStream(resource, resourceName);
+            EXASOL.getDefaultBucket().uploadInputStream(resource, resourceName);
         } catch (final InterruptedException | BucketAccessException | TimeoutException exception) {
             throw new IllegalStateException("Failed to upload test-file to BucketFS.", exception);
         }
