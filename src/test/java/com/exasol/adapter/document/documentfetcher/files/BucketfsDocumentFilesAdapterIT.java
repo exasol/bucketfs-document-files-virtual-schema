@@ -4,14 +4,9 @@ import com.exasol.adapter.document.files.AbstractDocumentFilesAdapterIT;
 import com.exasol.bucketfs.BucketAccessException;
 import com.exasol.containers.ExasolContainer;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.io.TempDir;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.io.File;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,13 +17,11 @@ import java.util.function.Supplier;
 @Tag("integration")
 @Testcontainers
 class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-0.3.0-SNAPSHOT-bucketfs-0.1.0.jar";
-    private static final Logger LOGGER = LoggerFactory.getLogger(BucketfsDocumentFilesAdapterIT.class);
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-1.0.0-bucketfs-0.2.0.jar";
+
     @Container
-    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>()
-            .withLogConsumer(new Slf4jLogConsumer(LOGGER)).withReuse(true);
-    @TempDir
-    static File tempDir;
+    private static final ExasolContainer<? extends ExasolContainer<?>> container = new ExasolContainer<>().withReuse(true);
+
     private static Connection connection;
     private static Statement statement;
     private BucketfsVsExasolTestDatabaseBuilder filesVsExasolTestDatabaseBuilder;

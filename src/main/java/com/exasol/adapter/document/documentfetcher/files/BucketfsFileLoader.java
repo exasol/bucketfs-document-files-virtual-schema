@@ -1,5 +1,4 @@
 package com.exasol.adapter.document.documentfetcher.files;
-
 import com.exasol.adapter.document.files.stringfilter.StringFilter;
 
 import java.nio.file.Path;
