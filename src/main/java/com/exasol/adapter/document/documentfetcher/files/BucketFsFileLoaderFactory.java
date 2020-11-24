@@ -12,7 +12,7 @@ public class BucketFsFileLoaderFactory implements FileLoaderFactory {
     @Override
     public FileLoader getLoader(final StringFilter filePattern, final SegmentDescription segmentDescription,
                                 final ExaConnectionInformation connectionInformation) {
-        final String url = connectionInformation.getAddress();
+        connectionInformation.getAddress();
         return new BucketfsFileLoader(filePattern, segmentDescription);
     }
 }

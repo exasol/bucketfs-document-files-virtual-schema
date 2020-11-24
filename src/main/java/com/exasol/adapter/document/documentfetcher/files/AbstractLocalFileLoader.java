@@ -29,9 +29,9 @@ abstract class AbstractLocalFileLoader implements FileLoader {
      * @param filePattern        GLOB pattern for the file set to load
      * @param segmentDescription files to load
      */
-    public AbstractLocalFileLoader(final Path baseDirectory,
-                                   final StringFilter filePattern,
-                                   final SegmentDescription segmentDescription) {
+    AbstractLocalFileLoader(final Path baseDirectory,
+                            final StringFilter filePattern,
+                            final SegmentDescription segmentDescription) {
         this.baseDirectory = baseDirectory;
         this.filePattern = filePattern;
         this.segmentMatcher = new SegmentMatcher(segmentDescription);
