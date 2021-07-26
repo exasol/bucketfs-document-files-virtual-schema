@@ -13,7 +13,7 @@ class BucketFsLoadedFile extends LoadedFile {
     /**
      * Create a new instance of {@link BucketFsLoadedFile}.
      *
-     * @param resourceName description of the file e.g. file name; use for error messages
+     * @param resourceName description of the file e.g. file name; used for error messages
      */
     BucketFsLoadedFile(final Path filePath, final String resourceName) {
         super(resourceName);

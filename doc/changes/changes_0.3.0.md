@@ -4,7 +4,7 @@ Code name: Parquet support
 
 ## Summary
 
-In this release we added support for parquet files. In addition, we did some performance optimizations.
+In this release we added support for Parquet files. In addition, we did some performance optimizations.
 
 ## Dependency Updates
 
