@@ -31,6 +31,14 @@ class AbstractLocalFileLoaderTest {
     }
 
     @Test
+    void testNotStartingWithSlash() {
+        final FileLoaderStub loaderStub = new FileLoaderStub(Path.of("/buckets/"),
+                WildcardExpression.fromGlob("test.json"), SegmentDescription.NO_SEGMENTATION);
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, loaderStub::loadFiles);
+        assertThat(exception.getMessage(), containsString("E-BFSVS-3"));
+    }
+
+    @Test
     void testLoadWithGlob(@TempDir final Path tempDir) throws IOException, ExecutionException, InterruptedException {
         final Path testFile1 = createTestFile(tempDir, "testFile", "file-1");
         final Path testFile2 = createTestFile(tempDir, "testFile", "file-2");

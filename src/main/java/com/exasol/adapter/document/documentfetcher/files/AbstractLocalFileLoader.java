@@ -61,8 +61,9 @@ abstract class AbstractLocalFileLoader implements FileLoader {
         final Path path = getPrefixPath();
         try {
             if (!path.toFile().getCanonicalPath().startsWith(this.baseDirectory.toString())) {
-                throw new IllegalArgumentException("E-BFSVS-2 The path '" + path
-                        + "' is outside of BucketFS. Please make sure, that you do not use '../' to leave BucketFS.");
+                throw new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-2")
+                        .message("The path {{path}} is outside of BucketFS.", path)
+                        .mitigation("Please make sure, that you do not use '../' to leave BucketFS.").toString());
             } else {
                 return path;
             }
@@ -72,9 +73,11 @@ abstract class AbstractLocalFileLoader implements FileLoader {
     }
 
     private IllegalArgumentException getCouldNotOpenException(final Path path, final Exception cause) {
-        return new IllegalArgumentException("E-BFSVS-1 Could not open '" + path + "'. "
-                + "Please make sure that you defined the correct path in the CONNECTION and the mapping definition.",
-                cause);
+        return new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-1")
+                .message("Could not open {{path}}.", path)
+                .mitigation(
+                        "Please make sure that you defined the correct path in the CONNECTION and the mapping definition.")
+                .toString(), cause);
     }
 
     private Path getPrefixPath() {
@@ -90,8 +93,10 @@ abstract class AbstractLocalFileLoader implements FileLoader {
 
     private void validatePrefixStartsWithSlash(final String staticPrefix) {
         if (!staticPrefix.startsWith("/")) {
-            throw new IllegalArgumentException("E-BFDVS-3 Invalid path '" + staticPrefix
-                    + "'. The BucketFS path must have the format '/<bucket>/...'. Please add the trailing slash to the address in the CONNECTION.");
+            throw new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-3")
+                    .message("Invalid path {{path}}. The BucketFS path must have the format '/<bucket>/...'.",
+                            staticPrefix)
+                    .mitigation("Please add the trailing slash to the address in the CONNECTION.").toString());
         }
     }
 
