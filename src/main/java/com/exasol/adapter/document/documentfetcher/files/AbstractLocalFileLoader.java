@@ -1,17 +1,14 @@
 package com.exasol.adapter.document.documentfetcher.files;
 
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.Iterator;
+import java.util.stream.Stream;
 
+import com.exasol.adapter.document.AfterAllCallbackIterator;
 import com.exasol.adapter.document.files.stringfilter.StringFilter;
 import com.exasol.adapter.document.files.stringfilter.matcher.Matcher;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.stream.Stream;
+import com.exasol.errorreporting.ExaError;
 
 /**
  * Abstract basis for {@link FileLoader}s local files.
@@ -29,52 +26,64 @@ abstract class AbstractLocalFileLoader implements FileLoader {
      * @param filePattern        GLOB pattern for the file set to load
      * @param segmentDescription files to load
      */
-    AbstractLocalFileLoader(final Path baseDirectory,
-                            final StringFilter filePattern,
-                            final SegmentDescription segmentDescription) {
+    AbstractLocalFileLoader(final Path baseDirectory, final StringFilter filePattern,
+            final SegmentDescription segmentDescription) {
         this.baseDirectory = baseDirectory;
         this.filePattern = filePattern;
         this.segmentMatcher = new SegmentMatcher(segmentDescription);
     }
 
     @Override
-    public Stream<InputStreamWithResourceName> loadFiles() {
+    public Iterator<LoadedFile> loadFiles() {
         final Path nonGlobPath = getPrefixPathSafely();
+        final Matcher matcher = this.filePattern.getDirectoryAwareMatcher(FileSystems.getDefault().getSeparator());
+        final Stream<Path> filesStream = walkFiles(nonGlobPath);
+        final Iterator<LoadedFile> iterator = filesStream
+                .filter(path -> matcher.matches(this.relativize(path)) && isFilePartOfThisSegment(path))
+                .map(path -> (LoadedFile) new BucketFsLoadedFile(path, relativize(path))).iterator();
+        return new AfterAllCallbackIterator<>(iterator, filesStream::close);
+    }
+
+    private Stream<Path> walkFiles(final Path nonGlobPath) {
         try {
-            final Matcher matcher = filePattern.getDirectoryAwareMatcher(FileSystems.getDefault().getSeparator());
-            return Files.walk(nonGlobPath).filter(path -> matcher.matches(this.relativize(path))).filter(this::isFilePartOfThisSegment)
-                    .map(filePath -> new InputStreamWithResourceName(getInputStream(filePath), this.relativize(filePath)));
+            return Files.walk(nonGlobPath);
         } catch (final IOException exception) {
-            throw getCouldNotOpenException(nonGlobPath, exception);
+            throw new IllegalStateException(ExaError.messageBuilder("F-VFSVS-5")
+                    .message("Failed to list / open file from BucketFs.").ticketMitigation().toString(), exception);
         }
     }
 
-    public String relativize(Path path) {
-        return "/" + baseDirectory.relativize(path).toString();
+    public String relativize(final Path path) {
+        return "/" + this.baseDirectory.relativize(path);
     }
 
     private Path getPrefixPathSafely() {
         final Path path = getPrefixPath();
         try {
-            if (!path.toFile().getCanonicalPath().startsWith(baseDirectory.toString())) {
-                throw new IllegalArgumentException("E-BFSVS-2 The path '" + path + "' is outside of BucketFS. Please make sure, that you do not use '../' to leave BucketFS.");
+            if (!path.toFile().getCanonicalPath().startsWith(this.baseDirectory.toString())) {
+                throw new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-2")
+                        .message("The path {{path}} is outside of BucketFS.", path)
+                        .mitigation("Please make sure, that you do not use '../' to leave BucketFS.").toString());
             } else {
                 return path;
             }
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             throw getCouldNotOpenException(path, exception);
         }
     }
 
-    private IllegalArgumentException getCouldNotOpenException(Path path, Exception cause) {
-        return new IllegalArgumentException("E-BFSVS-1 Could not open '" + path + "'. " +
-                "Please make sure that you defined the correct path in the CONNECTION and the mapping definition.", cause);
+    private IllegalArgumentException getCouldNotOpenException(final Path path, final Exception cause) {
+        return new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-1")
+                .message("Could not open {{path}}.", path)
+                .mitigation(
+                        "Please make sure that you defined the correct path in the CONNECTION and the mapping definition.")
+                .toString(), cause);
     }
 
     private Path getPrefixPath() {
-        final String staticPrefix = filePattern.getStaticPrefix();
+        final String staticPrefix = this.filePattern.getStaticPrefix();
         validatePrefixStartsWithSlash(staticPrefix);
-        final Path path = baseDirectory.resolve(staticPrefix.replaceFirst("/", ""));
+        final Path path = this.baseDirectory.resolve(staticPrefix.replaceFirst("/", ""));
         if (path.toFile().isDirectory()) {
             return path;
         } else {
@@ -82,21 +91,16 @@ abstract class AbstractLocalFileLoader implements FileLoader {
         }
     }
 
-    private void validatePrefixStartsWithSlash(String staticPrefix) {
+    private void validatePrefixStartsWithSlash(final String staticPrefix) {
         if (!staticPrefix.startsWith("/")) {
-            throw new IllegalArgumentException("E-BFDVS-3 Invalid path '" + staticPrefix + "'. The BucketFS path must have the format '/<bucket>/...'. Please add the trailing slash to the address in the CONNECTION.");
+            throw new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-3")
+                    .message("Invalid path {{path}}. The BucketFS path must have the format '/<bucket>/...'.",
+                            staticPrefix)
+                    .mitigation("Please add the trailing slash to the address in the CONNECTION.").toString());
         }
     }
 
     private boolean isFilePartOfThisSegment(final Path path) {
         return this.segmentMatcher.matches(path.toString());
-    }
-
-    private InputStream getInputStream(final Path path) {
-        try {
-            return new FileInputStream(path.toFile());
-        } catch (final FileNotFoundException exception) {
-            throw getCouldNotOpenException(path, exception);
-        }
     }
 }

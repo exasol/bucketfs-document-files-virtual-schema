@@ -1,6 +1,6 @@
 # Virtual Schema for Document Files in BucketFS
 
-[![Build Status](https://travis-ci.com/exasol/bucketfs-document-files-virtual-schema.svg?branch=main)](https://travis-ci.com/exasol/bucketfs-document-files-virtual-schema)
+[![Build Status](https://github.com/exasol/bucketfs-document-files-virtual-schema/actions/workflows/ci-build.yml/badge.svg)](https://github.com/exasol/bucketfs-document-files-virtual-schema/actions/workflows/ci-build.yml)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Abucketfs-document-files-virtual-schema&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.exasol%3Abucketfs-document-files-virtual-schema)
 
@@ -14,19 +14,14 @@
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Abucketfs-document-files-virtual-schema&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=com.exasol%3Abucketfs-document-files-virtual-schema)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=com.exasol%3Abucketfs-document-files-virtual-schema&metric=ncloc)](https://sonarcloud.io/dashboard?id=com.exasol%3Abucketfs-document-files-virtual-schema)
 
+This Virtual Schemas allows you to access document files stored in BucketFS like any regular Exasol table. For different file systems sources check the [files Virtual Schema][files-vs]
 
-This Virtual Schemas allows you to access document files stored in BucketFS like any regular Exasol table.
-For different file systems sources check the [files Virtual Schema][files-vs]
-
-**Important:** BucketFS synchronizes all files over all Exasol nodes.
-For that reason it is not an appropriate choice for storing large files.
-This Virtual Schema exists mainly for testing and training reasons. 
-We recommend choosing a different data source for production purposes.
+**Important:** BucketFS synchronizes all files over all Exasol nodes. For that reason it is not an appropriate choice for storing large files. This Virtual Schema exists mainly for testing and training reasons. We recommend choosing a different data source for production purposes.
 
 For supported document file formats: see [files Virtual Schema][files-vs]
 
 * [User Guide](doc/user_guide/user_guide.md)
 * [Changelog](doc/changes/changelog.md)
-* [Dependencies](NOTICE)
+* [Dependencies](dependencies.md)
 
 [files-vs]: https://github.com/exasol/virtual-schema-common-document-files
