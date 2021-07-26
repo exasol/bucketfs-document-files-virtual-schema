@@ -5,39 +5,27 @@ import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADA
 
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Tag;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.junit.jupiter.api.*;
 
 import com.exasol.adapter.document.UdfEntryPoint;
 import com.exasol.adapter.document.files.AbstractDocumentFilesAdapterIT;
 import com.exasol.bucketfs.BucketAccessException;
-import com.exasol.containers.ExasolContainer;
 import com.exasol.dbbuilder.dialects.DatabaseObject;
 import com.exasol.dbbuilder.dialects.exasol.*;
 import com.exasol.dbbuilder.dialects.exasol.udf.UdfScript;
+import com.exasol.exasoltestsetup.ExasolTestSetup;
+import com.exasol.exasoltestsetup.testcontainers.ExasolTestcontainerTestSetup;
 import com.exasol.udfdebugging.UdfTestSetup;
-import com.github.dockerjava.api.model.ContainerNetwork;
 
 @Tag("integration")
-@Testcontainers
 class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-1.0.0-bucketfs-0.2.0.jar";
-
-    @Container
-    private static final ExasolContainer<? extends ExasolContainer<?>> EXASOL = new ExasolContainer<>().withReuse(true);
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-2.0.0-SNAPSHOT-bucketfs-0.2.0.jar";
+    private static final ExasolTestSetup EXASOL = new ExasolTestcontainerTestSetup();
     private static final String BUCKETS_BFSDEFAULT_DEFAULT = "/buckets/bfsdefault/default/";
     private static UdfTestSetup udfTestSetup;
     private static ExasolObjectFactory testDbBuilder;
@@ -50,29 +38,24 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        connection = EXASOL.createConnectionForUser(EXASOL.getUsername(), EXASOL.getPassword());
+        connection = EXASOL.createConnection();
         statement = connection.createStatement();
-        udfTestSetup = new UdfTestSetup(getTestHostIp(), EXASOL.getDefaultBucket());
+        udfTestSetup = new UdfTestSetup(EXASOL);
+        final List<String> jvmOptions = new ArrayList<>(Arrays.asList(udfTestSetup.getJvmOptions()));
+        jvmOptions.add("-Xmx500m");
         testDbBuilder = new ExasolObjectFactory(EXASOL.createConnection(),
-                ExasolObjectConfiguration.builder().withJvmOptions(udfTestSetup.getJvmOptions()).build());
+                ExasolObjectConfiguration.builder().withJvmOptions(jvmOptions.toArray(String[]::new)).build());
         final ExasolSchema adapterSchema = testDbBuilder.createSchema("ADAPTER");
         adapterScript = createAdapterScript(adapterSchema);
         createUdf(adapterSchema);
         connectionDefinition = createConnectionDefinition();
+        statement.executeUpdate("ALTER SESSION SET SCRIPT_OUTPUT_ADDRESS = '127.0.0.1:3000';");
     }
 
     @AfterAll
     static void afterAll() throws SQLException {
         statement.close();
         connection.close();
-    }
-
-    private static String getTestHostIp() {
-        final Map<String, ContainerNetwork> networks = EXASOL.getContainerInfo().getNetworkSettings().getNetworks();
-        if (networks.size() == 0) {
-            return null;
-        }
-        return networks.values().iterator().next().getGateway();
     }
 
     @Override
@@ -94,7 +77,7 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
 
     private static void createUdf(final ExasolSchema adapterSchema) {
         adapterSchema.createUdfBuilder("IMPORT_FROM_BUCKETFS_DOCUMENT_FILES").language(UdfScript.Language.JAVA)
-                .inputType(UdfScript.InputType.SET).parameter(PARAMETER_DATA_LOADER, "VARCHAR(2000000)")
+                .inputType(UdfScript.InputType.SET).parameter(PARAMETER_DOCUMENT_FETCHER, "VARCHAR(2000000)")
                 .parameter(PARAMETER_SCHEMA_MAPPING_REQUEST, "VARCHAR(2000000)")
                 .parameter(PARAMETER_CONNECTION_NAME, "VARCHAR(500)").emits()
                 .bucketFsContent(UdfEntryPoint.class.getName(), BUCKETS_BFSDEFAULT_DEFAULT + ADAPTER_JAR).build();
@@ -113,6 +96,17 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
         try {
             EXASOL.getDefaultBucket().uploadInputStream(resource, resourceName);
         } catch (final InterruptedException | BucketAccessException | TimeoutException exception) {
+            throw new IllegalStateException("Failed to upload test-file to BucketFS.", exception);
+        }
+    }
+
+    @Override
+    protected void uploadDataFile(final Path path, final String resourceName) {
+        try {
+            EXASOL.getDefaultBucket().uploadFile(path, resourceName);
+        } catch (final InterruptedException exception) {
+            Thread.currentThread().interrupt();
+        } catch (final BucketAccessException | TimeoutException exception) {
             throw new IllegalStateException("Failed to upload test-file to BucketFS.", exception);
         }
     }
