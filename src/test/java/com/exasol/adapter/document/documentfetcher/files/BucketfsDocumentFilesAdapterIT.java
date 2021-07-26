@@ -3,6 +3,7 @@ package com.exasol.adapter.document.documentfetcher.files;
 import static com.exasol.adapter.document.UdfEntryPoint.*;
 import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADAPTER_NAME;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.sql.*;
@@ -68,7 +69,7 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
     }
 
     private static AdapterScript createAdapterScript(final ExasolSchema adapterSchema)
-            throws InterruptedException, BucketAccessException, TimeoutException {
+            throws BucketAccessException, TimeoutException, FileNotFoundException {
         EXASOL.getDefaultBucket().uploadFile(Path.of("target", ADAPTER_JAR), ADAPTER_JAR);
         return adapterSchema.createAdapterScriptBuilder("BUCKETFS_ADAPTER")
                 .bucketFsContent("com.exasol.adapter.RequestDispatcher", BUCKETS_BFSDEFAULT_DEFAULT + ADAPTER_JAR)
@@ -95,7 +96,7 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
     protected void uploadDataFile(final Supplier<InputStream> resource, final String resourceName) {
         try {
             EXASOL.getDefaultBucket().uploadInputStream(resource, resourceName);
-        } catch (final InterruptedException | BucketAccessException | TimeoutException exception) {
+        } catch (final BucketAccessException | TimeoutException exception) {
             throw new IllegalStateException("Failed to upload test-file to BucketFS.", exception);
         }
     }
@@ -104,9 +105,7 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
     protected void uploadDataFile(final Path path, final String resourceName) {
         try {
             EXASOL.getDefaultBucket().uploadFile(path, resourceName);
-        } catch (final InterruptedException exception) {
-            Thread.currentThread().interrupt();
-        } catch (final BucketAccessException | TimeoutException exception) {
+        } catch (final BucketAccessException | TimeoutException | FileNotFoundException exception) {
             throw new IllegalStateException("Failed to upload test-file to BucketFS.", exception);
         }
     }
@@ -123,7 +122,7 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
                     .dialectName(ADAPTER_NAME)//
                     .properties(Map.of("MAPPING", "/bfsdefault/default/" + mappingInBucketfs, "MAX_PARALLEL_UDFS", "1"))//
                     .build());
-        } catch (final InterruptedException | BucketAccessException | TimeoutException exception) {
+        } catch (final BucketAccessException | TimeoutException exception) {
             throw new IllegalStateException("Failed to create virtual schema.", exception);
         }
     }
