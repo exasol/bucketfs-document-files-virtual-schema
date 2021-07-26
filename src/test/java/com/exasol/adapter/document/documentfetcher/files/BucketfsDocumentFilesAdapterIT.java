@@ -50,7 +50,6 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
         adapterScript = createAdapterScript(adapterSchema);
         createUdf(adapterSchema);
         connectionDefinition = createConnectionDefinition();
-        statement.executeUpdate("ALTER SESSION SET SCRIPT_OUTPUT_ADDRESS = '127.0.0.1:3000';");
     }
 
     @AfterAll
