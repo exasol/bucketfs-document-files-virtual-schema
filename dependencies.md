@@ -35,7 +35,7 @@
 | ------------------------------------------------------- | ---------------------------------------------- |
 | [Maven Surefire Plugin][26]                             | [Apache License, Version 2.0][27]              |
 | [Maven Failsafe Plugin][28]                             | [Apache License, Version 2.0][27]              |
-| [JaCoCo :: Maven Plugin][16]                            | [Eclipse Public License 2.0][17]               |
+| [JaCoCo :: Maven Plugin][30]                            | [Eclipse Public License 2.0][17]               |
 | [Apache Maven Compiler Plugin][32]                      | [Apache License, Version 2.0][27]              |
 | [Maven Dependency Plugin][34]                           | [The Apache Software License, Version 2.0][35] |
 | [Versions Maven Plugin][36]                             | [Apache License, Version 2.0][27]              |
@@ -62,12 +62,15 @@
 [1]: https://opensource.org/licenses/MIT
 [2]: https://github.com/mockito/mockito
 [28]: https://maven.apache.org/surefire/maven-failsafe-plugin/
+[18]: https://github.com/exasol/test-db-builder-java
 [34]: http://maven.apache.org/plugins/maven-dependency-plugin/
 [36]: http://www.mojohaus.org/versions-maven-plugin/
 [50]: https://maven.apache.org/plugins/maven-shade-plugin/
 [11]: http://opensource.org/licenses/BSD-3-Clause
 [32]: https://maven.apache.org/plugins/maven-compiler-plugin/
 [17]: https://www.eclipse.org/legal/epl-2.0/
+[30]: https://www.jacoco.org/jacoco/trunk/doc/maven.html
+[3]: https://github.com/mockito/mockito/blob/main/LICENSE
 [20]: https://github.com/exasol/hamcrest-resultset-matcher
 [48]: http://zlika.github.io/reproducible-build-maven-plugin
 [56]: http://maven.apache.org/plugins/maven-jar-plugin/
@@ -78,7 +81,6 @@
 [58]: http://maven.apache.org/plugins/maven-install-plugin/
 [12]: https://junit.org/junit5/
 [38]: https://sonatype.github.io/ossindex-maven/maven-plugin/
-[3]: https://github.com/mockito/mockito/blob/master/LICENSE
 [22]: https://github.com/exasol/udf-debugging-java
 [10]: http://hamcrest.org/JavaHamcrest/
 [6]: http://www.slf4j.org
@@ -88,4 +90,3 @@
 [42]: https://github.com/exasol/artifact-reference-checker-maven-plugin
 [46]: https://github.com/exasol/error-code-crawler-maven-plugin
 [4]: https://github.com/exasol/exasol-test-setup-abstraction-java
-[18]: https://github.com/exasol/test-db-builder
