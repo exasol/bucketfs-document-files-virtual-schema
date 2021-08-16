@@ -5,9 +5,9 @@ import java.nio.file.*;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-import com.exasol.adapter.document.AfterAllCallbackIterator;
 import com.exasol.adapter.document.files.stringfilter.StringFilter;
 import com.exasol.adapter.document.files.stringfilter.matcher.Matcher;
+import com.exasol.adapter.document.iterators.AfterAllCallbackIterator;
 import com.exasol.errorreporting.ExaError;
 
 /**

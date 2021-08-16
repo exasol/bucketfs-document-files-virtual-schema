@@ -2,8 +2,6 @@ package com.exasol.adapter.document.files;
 
 import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADAPTER_NAME;
 
-import java.util.Set;
-
 import com.exasol.adapter.AdapterFactory;
 import com.exasol.adapter.VirtualSchemaAdapter;
 import com.exasol.logging.VersionCollector;
@@ -12,11 +10,6 @@ import com.exasol.logging.VersionCollector;
  * Factory for {@link DocumentFilesAdapter}.
  */
 public class BucketfsDocumentFilesAdapterFactory implements AdapterFactory {
-    @Override
-    public Set<String> getSupportedAdapterNames() {
-        return Set.of(ADAPTER_NAME);
-    }
-
     @Override
     public VirtualSchemaAdapter createAdapter() {
         return new BucketfsDocumentFilesAdapter();
