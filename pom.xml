@@ -13,12 +13,12 @@
         M5 fails in integration tests with a strange error
         -->
         <surefire.and.failsafe.plugin.version>3.0.0-M3</surefire.and.failsafe.plugin.version>
-        <vs-commom-document-files.version>2.0.0</vs-commom-document-files.version>
+        <vs-commom-document-files.version>2.1.0</vs-commom-document-files.version>
     </properties>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.exasol</groupId>
     <artifactId>bucketfs-document-files-virtual-schema</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
     <licenses>
         <license>
             <name>MIT</name>
@@ -44,6 +44,23 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <test.excludeTags>regression</test.excludeTags>
+            </properties>
+        </profile>
+        <profile>
+            <id>regressionTests</id>
+            <properties>
+                <groups>regression</groups>
+            </properties>
+        </profile>
+    </profiles>
     <repositories>
         <repository>
             <id>maven.exasol.com</id>
@@ -158,6 +175,7 @@
                     <excludes>
                         <exclude>**IT.java</exclude>
                     </excludes>
+                    <excludedGroups>${test.excludeTags}</excludedGroups>
                 </configuration>
             </plugin>
             <plugin>
@@ -174,6 +192,7 @@
                     <systemPropertyVariables>
                         <test.coverage>true</test.coverage>
                     </systemPropertyVariables>
+                    <excludedGroups>${test.excludeTags}</excludedGroups>
                 </configuration>
                 <executions>
                     <execution>

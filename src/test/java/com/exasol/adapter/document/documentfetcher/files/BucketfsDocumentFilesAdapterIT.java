@@ -25,7 +25,7 @@ import com.exasol.udfdebugging.UdfTestSetup;
 
 @Tag("integration")
 class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-2.0.0-bucketfs-0.3.0.jar";
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-2.1.0-bucketfs-0.3.1.jar";
     private static final ExasolTestSetup EXASOL = new ExasolTestcontainerTestSetup();
     private static final String BUCKETS_BFSDEFAULT_DEFAULT = "/buckets/bfsdefault/default/";
     private static UdfTestSetup udfTestSetup;
@@ -110,10 +110,10 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
     }
 
     @Override
-    protected void createVirtualSchema(final String schemaName, final Supplier<InputStream> mapping) {
+    protected void createVirtualSchema(final String schemaName, final String mapping) {
         try {
             final String mappingInBucketfs = "mapping.json";
-            EXASOL.getDefaultBucket().uploadInputStream(mapping, mappingInBucketfs);
+            EXASOL.getDefaultBucket().uploadStringContent(mapping, mappingInBucketfs);
             this.createdObjects.add(testDbBuilder//
                     .createVirtualSchemaBuilder(schemaName)//
                     .connectionDefinition(connectionDefinition)//
@@ -121,7 +121,7 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
                     .dialectName(ADAPTER_NAME)//
                     .properties(Map.of("MAPPING", "/bfsdefault/default/" + mappingInBucketfs, "MAX_PARALLEL_UDFS", "1"))//
                     .build());
-        } catch (final BucketAccessException | TimeoutException exception) {
+        } catch (final BucketAccessException | TimeoutException | InterruptedException exception) {
             throw new IllegalStateException("Failed to create virtual schema.", exception);
         }
     }
