@@ -41,7 +41,6 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
     static void beforeAll() throws Exception {
         connection = EXASOL.createConnection();
         statement = connection.createStatement();
-        // statement.executeUpdate("ALTER SESSION SET SCRIPT_OUTPUT_ADDRESS = '127.0.0.1:3000';");
         udfTestSetup = new UdfTestSetup(EXASOL);
         final List<String> jvmOptions = new ArrayList<>(Arrays.asList(udfTestSetup.getJvmOptions()));
         jvmOptions.add("-Xmx500m");
