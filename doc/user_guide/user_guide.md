@@ -17,7 +17,7 @@ Next create the Adapter Script:
  ```
 CREATE OR REPLACE JAVA ADAPTER SCRIPT ADAPTER.BUCKET_FS_FILES_ADAPTER AS
     %scriptclass com.exasol.adapter.RequestDispatcher;
-    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-2.1.0-bucketfs-0.3.1.jar;
+    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-2.2.0-bucketfs-0.4.0.jar;
 /
 ```
 
@@ -30,7 +30,7 @@ CREATE OR REPLACE JAVA SET SCRIPT ADAPTER.IMPORT_FROM_BUCKETFS_DOCUMENT_FILES(
   CONNECTION_NAME VARCHAR(500))
   EMITS(...) AS
     %scriptclass com.exasol.adapter.document.UdfEntryPoint;
-    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-2.1.0-bucketfs-0.3.1.jar;
+    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-2.2.0-bucketfs-0.4.0.jar;
 /
 ```
 

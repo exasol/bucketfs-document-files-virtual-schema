@@ -5,7 +5,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
-        <junit.version>5.7.2</junit.version>
+        <junit.version>5.8.1</junit.version>
         <jacoco.version>0.8.7</jacoco.version>
         <gpg.skip>true</gpg.skip>
         <!--
@@ -13,12 +13,13 @@
         M5 fails in integration tests with a strange error
         -->
         <surefire.and.failsafe.plugin.version>3.0.0-M3</surefire.and.failsafe.plugin.version>
-        <vs-commom-document-files.version>2.1.0</vs-commom-document-files.version>
+        <vs-commom-document-files.version>2.2.0</vs-commom-document-files.version>
     </properties>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.exasol</groupId>
     <artifactId>bucketfs-document-files-virtual-schema</artifactId>
-    <version>0.3.1</version>
+    <name>Virtual Schema for document data on BucketFS</name>
+    <version>0.4.0</version>
     <licenses>
         <license>
             <name>MIT</name>
@@ -116,13 +117,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.11.2</version>
+            <version>3.12.4</version>
         </dependency>
         <!-- integration tests -->
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>exasol-test-setup-abstraction-java</artifactId>
-            <version>0.1.1</version>
+            <version>0.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -135,7 +136,7 @@
             <artifactId>org.jacoco.agent</artifactId>
             <version>${jacoco.version}</version>
             <classifier>runtime</classifier>
-            <scope>runtime</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jacoco</groupId>
@@ -146,13 +147,13 @@
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>test-db-builder-java</artifactId>
-            <version>3.2.0</version>
+            <version>3.2.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>hamcrest-resultset-matcher</artifactId>
-            <version>1.4.0</version>
+            <version>1.5.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -350,7 +351,7 @@
             <plugin>
                 <groupId>com.exasol</groupId>
                 <artifactId>project-keeper-maven-plugin</artifactId>
-                <version>0.10.0</version>
+                <version>1.2.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -364,10 +365,6 @@
                         <module>jar_artifact</module>
                         <module>udf_coverage</module>
                     </modules>
-                    <excludedPlugins>
-                        <excludedPlugin>org.apache.maven.plugins:maven-assembly-plugin</excludedPlugin>
-                        <excludedPlugin>org.apache.maven.plugins:maven-jar-plugin</excludedPlugin>
-                    </excludedPlugins>
                 </configuration>
             </plugin>
             <plugin>
@@ -397,39 +394,36 @@
                 </executions>
             </plugin>
             <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.3.0</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/all-dependencies.xml</descriptor>
+                    </descriptors>
+                    <finalName>
+                        document-files-virtual-schema-dist-${vs-commom-document-files.version}-bucketfs-${version}
+                    </finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>shade-my-jar</id>
+                        <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>single</goal>
                         </goals>
-                        <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <finalName>
-                                document-files-virtual-schema-dist-${vs-commom-document-files.version}-bucketfs-${version}
-                            </finalName>
-                            <artifactSet>
-                                <includes>
-                                    <include>*:*</include>
-                                </includes>
-                            </artifactSet>
-                            <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>reference.conf</resource>
-                                </transformer>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <manifestEntries>
-                                        <Main-Class>myapp.Main</Main-Class>
-                                    </manifestEntries>
-                                </transformer>
-                            </transformers>
-                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>none</phase>
                     </execution>
                 </executions>
             </plugin>
