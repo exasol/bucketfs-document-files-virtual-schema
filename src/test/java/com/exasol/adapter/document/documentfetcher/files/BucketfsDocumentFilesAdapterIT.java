@@ -25,7 +25,7 @@ import com.exasol.udfdebugging.UdfTestSetup;
 
 @Tag("integration")
 class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-2.1.0-bucketfs-0.3.1.jar";
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-2.2.0-bucketfs-0.4.0.jar";
     private static final ExasolTestSetup EXASOL = new ExasolTestcontainerTestSetup();
     private static final String BUCKETS_BFSDEFAULT_DEFAULT = "/buckets/bfsdefault/default/";
     private static UdfTestSetup udfTestSetup;
@@ -41,10 +41,11 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
     static void beforeAll() throws Exception {
         connection = EXASOL.createConnection();
         statement = connection.createStatement();
+        // statement.executeUpdate("ALTER SESSION SET SCRIPT_OUTPUT_ADDRESS = '127.0.0.1:3000';");
         udfTestSetup = new UdfTestSetup(EXASOL);
         final List<String> jvmOptions = new ArrayList<>(Arrays.asList(udfTestSetup.getJvmOptions()));
         jvmOptions.add("-Xmx500m");
-        testDbBuilder = new ExasolObjectFactory(EXASOL.createConnection(),
+        testDbBuilder = new ExasolObjectFactory(connection,
                 ExasolObjectConfiguration.builder().withJvmOptions(jvmOptions.toArray(String[]::new)).build());
         final ExasolSchema adapterSchema = testDbBuilder.createSchema("ADAPTER");
         adapterScript = createAdapterScript(adapterSchema);
@@ -111,18 +112,12 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
 
     @Override
     protected void createVirtualSchema(final String schemaName, final String mapping) {
-        try {
-            final String mappingInBucketfs = "mapping.json";
-            EXASOL.getDefaultBucket().uploadStringContent(mapping, mappingInBucketfs);
-            this.createdObjects.add(testDbBuilder//
-                    .createVirtualSchemaBuilder(schemaName)//
-                    .connectionDefinition(connectionDefinition)//
-                    .adapterScript(adapterScript)//
-                    .dialectName(ADAPTER_NAME)//
-                    .properties(Map.of("MAPPING", "/bfsdefault/default/" + mappingInBucketfs, "MAX_PARALLEL_UDFS", "1"))//
-                    .build());
-        } catch (final BucketAccessException | TimeoutException | InterruptedException exception) {
-            throw new IllegalStateException("Failed to create virtual schema.", exception);
-        }
+        this.createdObjects.add(testDbBuilder//
+                .createVirtualSchemaBuilder(schemaName)//
+                .connectionDefinition(connectionDefinition)//
+                .adapterScript(adapterScript)//
+                .dialectName(ADAPTER_NAME)//
+                .properties(Map.of("MAPPING", mapping, "MAX_PARALLEL_UDFS", "1"))//
+                .build());
     }
 }
