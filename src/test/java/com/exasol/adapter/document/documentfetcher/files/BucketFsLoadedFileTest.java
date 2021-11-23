@@ -12,28 +12,28 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-class BucketFsLoadedFileTest {
+class BucketFsRemoteFileTest {
     private static final String EXPECTED_CONTENT = "test123";
     @TempDir
     static Path tempDir;
-    private static BucketFsLoadedFile loadedFile;
+    private static BucketFsRemoteFile remoteFile;
 
     @BeforeAll
     static void beforeAll() throws IOException {
         final Path testFile = tempDir.resolve("aFile.txt");
         Files.writeString(testFile, EXPECTED_CONTENT);
-        loadedFile = new BucketFsLoadedFile(testFile, "test");
+        remoteFile = new BucketFsRemoteFile(testFile, "test");
     }
 
     @Test
     void testGetInputStream() throws IOException {
-        final String result = new String(loadedFile.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+        final String result = new String(remoteFile.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
         assertThat(result, equalTo(EXPECTED_CONTENT));
     }
 
     @Test
     void testGetRandomAccessInputStream() throws IOException {
-        final String result = new String(loadedFile.getRandomAccessInputStream().readAllBytes(),
+        final String result = new String(remoteFile.getRandomAccessInputStream().readAllBytes(),
                 StandardCharsets.UTF_8);
         assertThat(result, equalTo(EXPECTED_CONTENT));
     }

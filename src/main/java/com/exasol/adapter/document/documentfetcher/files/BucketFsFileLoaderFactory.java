@@ -10,8 +10,7 @@ public class BucketFsFileLoaderFactory implements FileLoaderFactory {
     private static final long serialVersionUID = 3468167710047185881L;
 
     @Override
-    public FileLoader getLoader(final StringFilter filePattern, final SegmentDescription segmentDescription,
-            final ExaConnectionInformation connectionInformation) {
-        return new BucketfsFileLoader(filePattern, segmentDescription);
+    public FileLoader getLoader(final StringFilter filePattern, final ExaConnectionInformation connectionInformation) {
+        return new BucketfsFileLoader(filePattern);
     }
 }

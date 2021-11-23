@@ -13,13 +13,13 @@
         M5 fails in integration tests with a strange error
         -->
         <surefire.and.failsafe.plugin.version>3.0.0-M3</surefire.and.failsafe.plugin.version>
-        <vs-commom-document-files.version>2.2.0</vs-commom-document-files.version>
+        <vs-commom-document-files.version>3.0.0</vs-commom-document-files.version>
     </properties>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.exasol</groupId>
     <artifactId>bucketfs-document-files-virtual-schema</artifactId>
     <name>Virtual Schema for document data on BucketFS</name>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
     <licenses>
         <license>
             <name>MIT</name>

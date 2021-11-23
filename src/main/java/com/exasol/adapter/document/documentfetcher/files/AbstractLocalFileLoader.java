@@ -17,30 +17,25 @@ import com.exasol.errorreporting.ExaError;
  */
 abstract class AbstractLocalFileLoader implements FileLoader {
     private final StringFilter filePattern;
-    private final SegmentMatcher segmentMatcher;
     private final Path baseDirectory;
 
     /**
      * Create a new instance of {@link AbstractLocalFileLoader}.
      *
-     * @param filePattern        GLOB pattern for the file set to load
-     * @param segmentDescription files to load
+     * @param filePattern GLOB pattern for the file set to load
      */
-    AbstractLocalFileLoader(final Path baseDirectory, final StringFilter filePattern,
-            final SegmentDescription segmentDescription) {
+    AbstractLocalFileLoader(final Path baseDirectory, final StringFilter filePattern) {
         this.baseDirectory = baseDirectory;
         this.filePattern = filePattern;
-        this.segmentMatcher = new SegmentMatcher(segmentDescription);
     }
 
     @Override
-    public Iterator<LoadedFile> loadFiles() {
+    public Iterator<RemoteFile> loadFiles() {
         final Path nonGlobPath = getPrefixPathSafely();
         final Matcher matcher = this.filePattern.getDirectoryAwareMatcher(FileSystems.getDefault().getSeparator());
         final Stream<Path> filesStream = walkFiles(nonGlobPath);
-        final Iterator<LoadedFile> iterator = filesStream
-                .filter(path -> matcher.matches(this.relativize(path)) && isFilePartOfThisSegment(path))
-                .map(path -> (LoadedFile) new BucketFsLoadedFile(path, relativize(path))).iterator();
+        final Iterator<RemoteFile> iterator = filesStream.filter(path -> matcher.matches(this.relativize(path)))
+                .map(path -> (RemoteFile) new BucketFsRemoteFile(path, relativize(path))).iterator();
         return new AfterAllCallbackIterator<>(iterator, filesStream::close);
     }
 
@@ -98,9 +93,5 @@ abstract class AbstractLocalFileLoader implements FileLoader {
                             staticPrefix)
                     .mitigation("Please add the trailing slash to the address in the CONNECTION.").toString());
         }
-    }
-
-    private boolean isFilePartOfThisSegment(final Path path) {
-        return this.segmentMatcher.matches(path.toString());
     }
 }
