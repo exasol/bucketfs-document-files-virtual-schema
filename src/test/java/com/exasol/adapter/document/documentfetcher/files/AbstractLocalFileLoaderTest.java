@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -25,7 +24,7 @@ class AbstractLocalFileLoaderTest {
     @Test
     void testInjection() {
         final FileLoaderStub loaderStub = new FileLoaderStub(Path.of("/buckets/"),
-                WildcardExpression.fromGlob("/../etc/passwd*.json"), SegmentDescription.NO_SEGMENTATION);
+                WildcardExpression.fromGlob("/../etc/passwd*.json"));
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, loaderStub::loadFiles);
         assertThat(exception.getMessage(), containsString("E-BFSVS-2"));
     }
@@ -33,23 +32,22 @@ class AbstractLocalFileLoaderTest {
     @Test
     void testNotStartingWithSlash() {
         final FileLoaderStub loaderStub = new FileLoaderStub(Path.of("/buckets/"),
-                WildcardExpression.fromGlob("test.json"), SegmentDescription.NO_SEGMENTATION);
+                WildcardExpression.fromGlob("test.json"));
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, loaderStub::loadFiles);
         assertThat(exception.getMessage(), containsString("E-BFSVS-3"));
     }
 
     @Test
-    void testLoadWithGlob(@TempDir final Path tempDir) throws IOException, ExecutionException, InterruptedException {
+    void testLoadWithGlob(@TempDir final Path tempDir) throws IOException {
         final Path testFile1 = createTestFile(tempDir, "testFile", "file-1");
         final Path testFile2 = createTestFile(tempDir, "testFile", "file-2");
         createTestFile(tempDir, "otherFiles", "file-3");
-        final FileLoaderStub fileLoader = new FileLoaderStub(tempDir, WildcardExpression.fromGlob("/testFile*.json"),
-                SegmentDescription.NO_SEGMENTATION);
-        final List<LoadedFile> result = new ArrayList<>();
+        final FileLoaderStub fileLoader = new FileLoaderStub(tempDir, WildcardExpression.fromGlob("/testFile*.json"));
+        final List<RemoteFile> result = new ArrayList<>();
         fileLoader.loadFiles().forEachRemaining(result::add);
         final List<String> firstLines = readFirstLineFromStreams(
-                result.stream().map(LoadedFile::getInputStream).collect(Collectors.toList()));
-        final List<String> resourceNames = result.stream().map(LoadedFile::getResourceName)
+                result.stream().map(RemoteFile::getInputStream).collect(Collectors.toList()));
+        final List<String> resourceNames = result.stream().map(RemoteFile::getResourceName)
                 .collect(Collectors.toList());
         assertAll(//
                 () -> assertThat(firstLines, containsInAnyOrder("file-1", "file-2")),
@@ -80,9 +78,8 @@ class AbstractLocalFileLoaderTest {
 
     private static class FileLoaderStub extends AbstractLocalFileLoader {
 
-        public FileLoaderStub(final Path baseDirectory, final StringFilter filePattern,
-                final SegmentDescription segmentDescription) {
-            super(baseDirectory, filePattern, segmentDescription);
+        public FileLoaderStub(final Path baseDirectory, final StringFilter filePattern) {
+            super(baseDirectory, filePattern);
         }
     }
 }

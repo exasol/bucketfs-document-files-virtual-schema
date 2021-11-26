@@ -6,16 +6,16 @@ import java.nio.file.Path;
 import com.exasol.adapter.document.documentfetcher.files.randomaccessinputstream.*;
 import com.exasol.errorreporting.ExaError;
 
-class BucketFsLoadedFile extends LoadedFile {
+class BucketFsRemoteFile extends RemoteFile {
     private static final int SIZE_1_MB = 1000000;
     private final Path filePath;
 
     /**
-     * Create a new instance of {@link BucketFsLoadedFile}.
+     * Create a new instance of {@link BucketFsRemoteFile}.
      *
      * @param resourceName description of the file e.g. file name; used for error messages
      */
-    BucketFsLoadedFile(final Path filePath, final String resourceName) {
+    BucketFsRemoteFile(final Path filePath, final String resourceName) {
         super(resourceName);
         this.filePath = filePath;
     }
@@ -25,7 +25,7 @@ class BucketFsLoadedFile extends LoadedFile {
         try {
             return new FileInputStream(this.filePath.toFile());
         } catch (final FileNotFoundException exception) {
-            throw new IllegalStateException(ExaError.messageBuilder("F-BFSVS-3")
+            throw new IllegalStateException(ExaError.messageBuilder("F-BFSVS-6")
                     .message("Could not open {{file}}'.", this.filePath).ticketMitigation().toString());
         }
     }
