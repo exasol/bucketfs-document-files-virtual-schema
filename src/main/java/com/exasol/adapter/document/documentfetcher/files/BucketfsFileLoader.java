@@ -12,8 +12,7 @@ class BucketfsFileLoader extends AbstractLocalFileLoader {
     /**
      * Create a new instance of {@link BucketfsFileLoader}.
      *
-     * @param filePattern        files to load
-     * @param segmentDescription segmentation for parallel execution
+     * @param filePattern files to load
      */
     public BucketfsFileLoader(final StringFilter filePattern) {
         super(Path.of("/buckets"), filePattern);

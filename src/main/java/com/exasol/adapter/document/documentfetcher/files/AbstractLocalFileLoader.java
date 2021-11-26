@@ -7,7 +7,8 @@ import java.util.stream.Stream;
 
 import com.exasol.adapter.document.files.stringfilter.StringFilter;
 import com.exasol.adapter.document.files.stringfilter.matcher.Matcher;
-import com.exasol.adapter.document.iterators.AfterAllCallbackIterator;
+import com.exasol.adapter.document.iterators.CloseableIterator;
+import com.exasol.adapter.document.iterators.CloseableIteratorWrapper;
 import com.exasol.errorreporting.ExaError;
 
 /**
@@ -30,20 +31,20 @@ abstract class AbstractLocalFileLoader implements FileLoader {
     }
 
     @Override
-    public Iterator<RemoteFile> loadFiles() {
+    public CloseableIterator<RemoteFile> loadFiles() {
         final Path nonGlobPath = getPrefixPathSafely();
         final Matcher matcher = this.filePattern.getDirectoryAwareMatcher(FileSystems.getDefault().getSeparator());
         final Stream<Path> filesStream = walkFiles(nonGlobPath);
         final Iterator<RemoteFile> iterator = filesStream.filter(path -> matcher.matches(this.relativize(path)))
                 .map(path -> (RemoteFile) new BucketFsRemoteFile(path, relativize(path))).iterator();
-        return new AfterAllCallbackIterator<>(iterator, filesStream::close);
+        return new CloseableIteratorWrapper<>(iterator, filesStream::close);
     }
 
     private Stream<Path> walkFiles(final Path nonGlobPath) {
         try {
             return Files.walk(nonGlobPath);
         } catch (final IOException exception) {
-            throw new IllegalStateException(ExaError.messageBuilder("F-VFSVS-5")
+            throw new IllegalStateException(ExaError.messageBuilder("F-BFSVS-5")
                     .message("Failed to list / open file from BucketFs.").ticketMitigation().toString(), exception);
         }
     }

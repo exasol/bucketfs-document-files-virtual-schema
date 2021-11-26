@@ -1,0 +1,4 @@
+error-tags:
+  BFSVS:
+    packages:
+      - com.exasol.adapter.document
