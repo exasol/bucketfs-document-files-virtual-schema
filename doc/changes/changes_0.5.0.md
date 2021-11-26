@@ -1,4 +1,4 @@
-# Virtual Schema for document data on BucketFS 0.5.0, released 2021-11-23
+# Virtual Schema for document data on BucketFS 0.5.0, released 2021-11-26
 
 Code name: Improved Parquet Loading Performance
 
@@ -23,4 +23,4 @@ In this release, we updated the base of this implementation (virtual-schema-comm
 ### Plugin Dependency Updates
 
 * Updated `com.exasol:error-code-crawler-maven-plugin:0.1.1` to `0.6.0`
-* Updated `com.exasol:project-keeper-maven-plugin:1.2.0` to `1.3.2`
+* Updated `com.exasol:project-keeper-maven-plugin:1.2.0` to `1.3.4`
