@@ -78,7 +78,6 @@ Finally create the Virtual Schema using:
 ```
 CREATE VIRTUAL SCHEMA FILES_VS_TEST USING ADAPTER.BUCKET_FS_FILES_ADAPTER WITH
     CONNECTION_NAME = 'BUCKETFS_CONNECTION'
-    SQL_DIALECT     = 'BUCKETFS_DOCUMENT_FILES'
     MAPPING         = '/bfsdefault/default/path/to/mappings/in/bucketfs';
 ```
 

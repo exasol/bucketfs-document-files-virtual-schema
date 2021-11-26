@@ -1,10 +1,14 @@
-# Virtual Schema for document data on BucketFS 0.5.0, released 2021-11-26
+# Virtual Schema for document data on BucketFS 0.5.0, released 2021-XX-XX
 
 Code name: Improved Parquet Loading Performance
 
 ## Summary
 
 In this release, we updated the base of this implementation (virtual-schema-common-document-files). By that, we improved the performance for loading parquet files. The improvements will give you a speed-up when you load a few (<200) files.
+
+## Documentation
+
+* #12: Removed SQL_DIALECT property from documentation
 
 ## Dependency Updates
 
