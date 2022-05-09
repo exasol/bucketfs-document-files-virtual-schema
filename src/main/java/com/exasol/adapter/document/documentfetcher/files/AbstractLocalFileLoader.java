@@ -75,9 +75,11 @@ abstract class AbstractLocalFileLoader implements FileLoader {
     private Path getPrefixPathSafely() {
         final Path path = getPrefixPath();
         try {
-            if (!path.toFile().getCanonicalPath().startsWith(this.baseDirectory.toString())) {
+            final String canonicalPath = path.toFile().getCanonicalPath();
+            final String canonicalBaseDirectory = this.baseDirectory.toFile().getCanonicalPath();
+            if (!canonicalPath.startsWith(canonicalBaseDirectory)) {
                 throw new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-2")
-                        .message("The path {{path}} is outside of BucketFS.", path)
+                        .message("The path {{path}} is outside of BucketFS {{basePath}}.", canonicalPath, canonicalBaseDirectory)
                         .mitigation("Please make sure, that you do not use '../' to leave BucketFS.").toString());
             } else {
                 return path;
