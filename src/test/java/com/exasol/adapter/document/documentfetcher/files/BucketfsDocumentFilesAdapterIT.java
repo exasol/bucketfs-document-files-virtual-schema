@@ -25,7 +25,7 @@ import com.exasol.udfdebugging.UdfTestSetup;
 
 @Tag("integration")
 class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-4.0.0-SNAPSHOT-bucketfs-0.5.0.jar";
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-4.0.0-bucketfs-0.5.0.jar";
     private static final ExasolTestSetup EXASOL = new ExasolTestcontainerTestSetup();
     private static final String BUCKETS_BFSDEFAULT_DEFAULT = "/buckets/bfsdefault/default/";
     private static UdfTestSetup udfTestSetup;
@@ -41,7 +41,7 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
     static void beforeAll() throws Exception {
         connection = EXASOL.createConnection();
         statement = connection.createStatement();
-        udfTestSetup = new UdfTestSetup(EXASOL);
+        udfTestSetup = new UdfTestSetup(EXASOL.getConnectionInfo().getHost(), EXASOL.getDefaultBucket(), connection);
         final List<String> jvmOptions = new ArrayList<>(Arrays.asList(udfTestSetup.getJvmOptions()));
         jvmOptions.add("-Xmx500m");
         testDbBuilder = new ExasolObjectFactory(connection,

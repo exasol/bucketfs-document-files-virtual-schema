@@ -13,7 +13,7 @@
             M5 fails in integration tests with a strange error
             -->
         <surefire.and.failsafe.plugin.version>3.0.0-M3</surefire.and.failsafe.plugin.version>
-        <vs-commom-document-files.version>4.0.0-SNAPSHOT</vs-commom-document-files.version>
+        <vs-commom-document-files.version>4.0.0</vs-commom-document-files.version>
     </properties>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.exasol</groupId>
@@ -130,7 +130,7 @@
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>exasol-test-setup-abstraction-java</artifactId>
-            <version>0.3.0</version>
+            <version>0.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

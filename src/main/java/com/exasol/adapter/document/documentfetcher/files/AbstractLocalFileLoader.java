@@ -1,6 +1,7 @@
 package com.exasol.adapter.document.documentfetcher.files;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.*;
 import java.util.Iterator;
 import java.util.stream.Stream;
@@ -36,8 +37,26 @@ abstract class AbstractLocalFileLoader implements FileLoader {
         final Matcher matcher = this.filePattern.getDirectoryAwareMatcher(FileSystems.getDefault().getSeparator());
         final Stream<Path> filesStream = walkFiles(nonGlobPath);
         final Iterator<RemoteFile> iterator = filesStream.filter(path -> matcher.matches(this.relativize(path)))
-                .map(path -> (RemoteFile) new BucketFsRemoteFile(path, relativize(path))).iterator();
+                .map(this::createRemoteFile).iterator();
         return new CloseableIteratorWrapper<>(iterator, filesStream::close);
+    }
+
+    private RemoteFile createRemoteFile(final Path path) {
+        return new RemoteFile(relativize(path), getFileSize(path), getFileContent(path));
+    }
+
+    private RemoteFileContent getFileContent(final Path path) {
+        return new BucketFsFileContent(path);
+    }
+
+    private long getFileSize(final Path path) {
+        try {
+            return Files.size(path);
+        } catch (final IOException exception) {
+            throw new UncheckedIOException(ExaError.messageBuilder("E-BFSVS-7")
+                    .message("Failed to get file size of file {{file}}", path).ticketMitigation().toString(),
+                    exception);
+        }
     }
 
     private Stream<Path> walkFiles(final Path nonGlobPath) {
