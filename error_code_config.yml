@@ -2,4 +2,4 @@ error-tags:
   BFSVS:
     packages:
       - com.exasol.adapter.document
-    highest-index: 7
+    highest-index: 8

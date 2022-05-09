@@ -77,9 +77,8 @@ class AbstractLocalFileLoaderTest {
     }
 
     private static class FileLoaderStub extends AbstractLocalFileLoader {
-
         public FileLoaderStub(final Path baseDirectory, final StringFilter filePattern) {
-            super(baseDirectory, filePattern);
+            super(new ExecutorServiceFactory(), baseDirectory, filePattern);
         }
     }
 }

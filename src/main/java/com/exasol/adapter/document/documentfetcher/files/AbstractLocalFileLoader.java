@@ -18,6 +18,7 @@ import com.exasol.errorreporting.ExaError;
  * @implNote This class is only used by the {@link BucketfsFileLoader}. It is introduced to support unit testing.
  */
 abstract class AbstractLocalFileLoader implements FileLoader {
+    private ExecutorServiceFactory executorServiceFactory;
     private final StringFilter filePattern;
     private final Path baseDirectory;
 
@@ -26,7 +27,8 @@ abstract class AbstractLocalFileLoader implements FileLoader {
      *
      * @param filePattern GLOB pattern for the file set to load
      */
-    AbstractLocalFileLoader(final Path baseDirectory, final StringFilter filePattern) {
+    AbstractLocalFileLoader(ExecutorServiceFactory executorServiceFactory, final Path baseDirectory, final StringFilter filePattern) {
+        this.executorServiceFactory = executorServiceFactory;
         this.baseDirectory = baseDirectory;
         this.filePattern = filePattern;
     }
@@ -46,7 +48,7 @@ abstract class AbstractLocalFileLoader implements FileLoader {
     }
 
     private RemoteFileContent getFileContent(final Path path) {
-        return new BucketFsFileContent(path);
+        return new BucketFsFileContent(executorServiceFactory, path);
     }
 
     private long getFileSize(final Path path) {

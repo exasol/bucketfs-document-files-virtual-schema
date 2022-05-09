@@ -8,9 +8,11 @@ import com.exasol.errorreporting.ExaError;
 
 class BucketFsFileContent implements RemoteFileContent {
 
+    private final ExecutorServiceFactory executorServiceFactory;
     private final Path filePath;
 
-    BucketFsFileContent(final Path filePath) {
+    BucketFsFileContent(final ExecutorServiceFactory executorServiceFactory, final Path filePath) {
+        this.executorServiceFactory = executorServiceFactory;
         this.filePath = filePath;
     }
 
@@ -26,6 +28,14 @@ class BucketFsFileContent implements RemoteFileContent {
 
     @Override
     public Future<byte[]> loadAsync() {
-        throw new UnsupportedOperationException("blubb");
+        return executorServiceFactory.getExecutorService().submit(this::readAllBytes);
+    }
+
+    private byte[] readAllBytes() {
+        try (InputStream stream = getInputStream()) {
+            return stream.readAllBytes();
+        } catch (final IOException exception) {
+            throw new UncheckedIOException(ExaError.messageBuilder("F-BFSVS-8").message("Failed to read file").toString(), exception);
+        }
     }
 }
