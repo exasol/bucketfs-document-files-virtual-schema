@@ -41,7 +41,7 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
     static void beforeAll() throws Exception {
         connection = EXASOL.createConnection();
         statement = connection.createStatement();
-        udfTestSetup = new UdfTestSetup(EXASOL.getConnectionInfo().getHost(), EXASOL.getDefaultBucket(), connection);
+        udfTestSetup = new UdfTestSetup(EXASOL, connection);
         final List<String> jvmOptions = new ArrayList<>(Arrays.asList(udfTestSetup.getJvmOptions()));
         jvmOptions.add("-Xmx500m");
         testDbBuilder = new ExasolObjectFactory(connection,
@@ -54,6 +54,7 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
 
     @AfterAll
     static void afterAll() throws SQLException {
+        udfTestSetup.close();
         statement.close();
         connection.close();
     }
