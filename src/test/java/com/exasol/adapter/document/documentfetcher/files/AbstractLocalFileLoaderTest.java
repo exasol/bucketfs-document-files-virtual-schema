@@ -45,8 +45,8 @@ class AbstractLocalFileLoaderTest {
         final FileLoaderStub fileLoader = new FileLoaderStub(tempDir, WildcardExpression.fromGlob("/testFile*.json"));
         final List<RemoteFile> result = new ArrayList<>();
         fileLoader.loadFiles().forEachRemaining(result::add);
-        final List<String> firstLines = readFirstLineFromStreams(
-                result.stream().map(RemoteFile::getInputStream).collect(Collectors.toList()));
+        final List<String> firstLines = readFirstLineFromStreams(result.stream()
+                .map(remoteFile -> remoteFile.getContent().getInputStream()).collect(Collectors.toList()));
         final List<String> resourceNames = result.stream().map(RemoteFile::getResourceName)
                 .collect(Collectors.toList());
         assertAll(//
@@ -77,9 +77,8 @@ class AbstractLocalFileLoaderTest {
     }
 
     private static class FileLoaderStub extends AbstractLocalFileLoader {
-
         public FileLoaderStub(final Path baseDirectory, final StringFilter filePattern) {
-            super(baseDirectory, filePattern);
+            super(new ExecutorServiceFactory(), baseDirectory, filePattern);
         }
     }
 }

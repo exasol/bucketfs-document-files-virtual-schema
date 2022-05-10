@@ -1,6 +1,7 @@
 package com.exasol.adapter.document.documentfetcher.files;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.*;
 import java.util.Iterator;
 import java.util.stream.Stream;
@@ -17,6 +18,7 @@ import com.exasol.errorreporting.ExaError;
  * @implNote This class is only used by the {@link BucketfsFileLoader}. It is introduced to support unit testing.
  */
 abstract class AbstractLocalFileLoader implements FileLoader {
+    private ExecutorServiceFactory executorServiceFactory;
     private final StringFilter filePattern;
     private final Path baseDirectory;
 
@@ -25,7 +27,8 @@ abstract class AbstractLocalFileLoader implements FileLoader {
      *
      * @param filePattern GLOB pattern for the file set to load
      */
-    AbstractLocalFileLoader(final Path baseDirectory, final StringFilter filePattern) {
+    AbstractLocalFileLoader(ExecutorServiceFactory executorServiceFactory, final Path baseDirectory, final StringFilter filePattern) {
+        this.executorServiceFactory = executorServiceFactory;
         this.baseDirectory = baseDirectory;
         this.filePattern = filePattern;
     }
@@ -36,8 +39,26 @@ abstract class AbstractLocalFileLoader implements FileLoader {
         final Matcher matcher = this.filePattern.getDirectoryAwareMatcher(FileSystems.getDefault().getSeparator());
         final Stream<Path> filesStream = walkFiles(nonGlobPath);
         final Iterator<RemoteFile> iterator = filesStream.filter(path -> matcher.matches(this.relativize(path)))
-                .map(path -> (RemoteFile) new BucketFsRemoteFile(path, relativize(path))).iterator();
+                .map(this::createRemoteFile).iterator();
         return new CloseableIteratorWrapper<>(iterator, filesStream::close);
+    }
+
+    private RemoteFile createRemoteFile(final Path path) {
+        return new RemoteFile(relativize(path), getFileSize(path), getFileContent(path));
+    }
+
+    private RemoteFileContent getFileContent(final Path path) {
+        return new BucketFsFileContent(executorServiceFactory, path);
+    }
+
+    private long getFileSize(final Path path) {
+        try {
+            return Files.size(path);
+        } catch (final IOException exception) {
+            throw new UncheckedIOException(ExaError.messageBuilder("E-BFSVS-7")
+                    .message("Failed to get file size of file {{file}}", path).ticketMitigation().toString(),
+                    exception);
+        }
     }
 
     private Stream<Path> walkFiles(final Path nonGlobPath) {
@@ -56,9 +77,11 @@ abstract class AbstractLocalFileLoader implements FileLoader {
     private Path getPrefixPathSafely() {
         final Path path = getPrefixPath();
         try {
-            if (!path.toFile().getCanonicalPath().startsWith(this.baseDirectory.toString())) {
+            final String canonicalPath = path.toFile().getCanonicalPath();
+            final String canonicalBaseDirectory = this.baseDirectory.toFile().getCanonicalPath();
+            if (!canonicalPath.startsWith(canonicalBaseDirectory)) {
                 throw new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-2")
-                        .message("The path {{path}} is outside of BucketFS.", path)
+                        .message("The path {{path}} is outside of BucketFS {{basePath}}.", canonicalPath, canonicalBaseDirectory)
                         .mitigation("Please make sure, that you do not use '../' to leave BucketFS.").toString());
             } else {
                 return path;
