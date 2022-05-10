@@ -22,7 +22,7 @@ class BucketFsFileContent implements RemoteFileContent {
             return new FileInputStream(this.filePath.toFile());
         } catch (final FileNotFoundException exception) {
             throw new IllegalStateException(ExaError.messageBuilder("F-BFSVS-6")
-                    .message("Could not open {{file}}'.", this.filePath).ticketMitigation().toString());
+                    .message("Could not open {{file}}.", this.filePath).ticketMitigation().toString());
         }
     }
 
