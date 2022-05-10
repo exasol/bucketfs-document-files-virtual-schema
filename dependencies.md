@@ -64,6 +64,7 @@
 [11]: http://opensource.org/licenses/BSD-3-Clause
 [28]: https://maven.apache.org/plugins/maven-compiler-plugin/
 [21]: https://github.com/exasol/test-db-builder-java/blob/main/LICENSE
+[4]: https://github.com/exasol/exasol-test-setup-abstraction-java/
 [17]: https://www.eclipse.org/legal/epl-2.0/
 [27]: http://www.gnu.org/licenses/lgpl.txt
 [52]: https://www.jacoco.org/jacoco/trunk/doc/maven.html
@@ -89,6 +90,5 @@
 [60]: http://maven.apache.org/plugins/maven-resources-plugin/
 [46]: https://github.com/exasol/artifact-reference-checker-maven-plugin
 [56]: https://github.com/exasol/error-code-crawler-maven-plugin
-[4]: https://github.com/exasol/exasol-test-setup-abstraction-java
 [44]: https://maven.apache.org/plugins/maven-jar-plugin/
 [42]: https://maven.apache.org/plugins/maven-assembly-plugin/
