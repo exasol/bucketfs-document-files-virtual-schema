@@ -18,7 +18,7 @@ In this release, we updated the base of this implementation (virtual-schema-comm
 
 ### Compile Dependency Updates
 
-* Updated `com.exasol:exasol-test-setup-abstraction-java:0.2.0` to `0.3.1`
+* Updated `com.exasol:exasol-test-setup-abstraction-java:0.2.0` to `0.3.0`
 * Updated `com.exasol:virtual-schema-common-document-files:2.2.0` to `4.0.0`
 * Updated `org.mockito:mockito-core:3.12.4` to `4.5.1`
 * Updated `org.slf4j:slf4j-jdk14:1.7.32` to `1.7.36`
