@@ -41,6 +41,8 @@ This release updates dependencies to fix vulnerabilities:
 ### Compile Dependency Updates
 
 * Updated `com.exasol:exasol-test-setup-abstraction-java:0.3.1` to `0.3.2`
+* Added `com.exasol:parquet-io-java:1.3.1`
+* Added `com.fasterxml.jackson.core:jackson-databind:2.13.3`
 * Updated `org.mockito:mockito-core:4.5.1` to `4.6.1`
 
 ### Test Dependency Updates
