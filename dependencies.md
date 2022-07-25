@@ -5,7 +5,7 @@
 
 | Dependency                                     | License                                       |
 | ---------------------------------------------- | --------------------------------------------- |
-| [Virtual Schema for document data in files][0] | [MIT][1]                                      |
+| [Virtual Schema for document data in files][0] | [MIT License][1]                              |
 | [Parquet for Java][2]                          | [MIT License][3]                              |
 | [jackson-databind][4]                          | [The Apache Software License, Version 2.0][5] |
 | [mockito-core][6]                              | [The MIT License][7]                          |
@@ -16,13 +16,13 @@
 
 | Dependency                                     | License                           |
 | ---------------------------------------------- | --------------------------------- |
-| [Virtual Schema for document data in files][0] | [MIT][1]                          |
+| [Virtual Schema for document data in files][0] | [MIT License][1]                  |
 | [Hamcrest][14]                                 | [BSD License 3][15]               |
 | [JUnit Jupiter Engine][16]                     | [Eclipse Public License v2.0][17] |
 | [JUnit Jupiter Params][16]                     | [Eclipse Public License v2.0][17] |
 | [Test Database Builder for Java][20]           | [MIT License][21]                 |
-| [Matcher for SQL Result Sets][22]              | [MIT][1]                          |
-| [udf-debugging-java][24]                       | [MIT][1]                          |
+| [Matcher for SQL Result Sets][22]              | [MIT][23]                         |
+| [udf-debugging-java][24]                       | [MIT][23]                         |
 | [JaCoCo :: Agent][26]                          | [Eclipse Public License 2.0][27]  |
 
 ## Plugin Dependencies
@@ -40,11 +40,11 @@
 | [Project keeper maven plugin][44]                       | [The MIT License][45]                         |
 | [Apache Maven Assembly Plugin][46]                      | [Apache License, Version 2.0][31]             |
 | [Apache Maven JAR Plugin][48]                           | [Apache License, Version 2.0][31]             |
-| [Artifact reference checker and unifier][50]            | [MIT][1]                                      |
+| [Artifact reference checker and unifier][50]            | [MIT][23]                                     |
 | [Apache Maven Dependency Plugin][52]                    | [Apache License, Version 2.0][31]             |
 | [Maven Failsafe Plugin][54]                             | [Apache License, Version 2.0][31]             |
 | [JaCoCo :: Maven Plugin][56]                            | [Eclipse Public License 2.0][27]              |
-| [error-code-crawler-maven-plugin][58]                   | [MIT][1]                                      |
+| [error-code-crawler-maven-plugin][58]                   | [MIT][23]                                     |
 | [Maven Clean Plugin][60]                                | [The Apache Software License, Version 2.0][5] |
 | [Maven Resources Plugin][62]                            | [The Apache Software License, Version 2.0][5] |
 | [Maven Install Plugin][64]                              | [The Apache Software License, Version 2.0][5] |
@@ -52,13 +52,12 @@
 | [Maven Site Plugin 3][68]                               | [The Apache Software License, Version 2.0][5] |
 
 [26]: https://www.eclemma.org/jacoco/index.html
-[0]: https://github.com/exasol/virtual-schema-common-document-files
 [20]: https://github.com/exasol/test-db-builder-java/
 [5]: http://www.apache.org/licenses/LICENSE-2.0.txt
 [40]: https://maven.apache.org/surefire/maven-surefire-plugin/
 [60]: http://maven.apache.org/plugins/maven-clean-plugin/
-[1]: https://opensource.org/licenses/MIT
 [6]: https://github.com/mockito/mockito
+[23]: https://opensource.org/licenses/MIT
 [54]: https://maven.apache.org/surefire/maven-failsafe-plugin/
 [3]: https://github.com/exasol/parquet-io-java/blob/main/LICENSE
 [34]: https://www.mojohaus.org/flatten-maven-plugin/
@@ -87,6 +86,8 @@
 [64]: http://maven.apache.org/plugins/maven-install-plugin/
 [16]: https://junit.org/junit5/
 [36]: https://sonatype.github.io/ossindex-maven/maven-plugin/
+[1]: https://github.com/exasol/virtual-schema-common-document-files/blob/main/LICENSE
+[0]: https://github.com/exasol/virtual-schema-common-document-files/
 [2]: https://github.com/exasol/parquet-io-java/
 [14]: http://hamcrest.org/JavaHamcrest/
 [10]: http://www.slf4j.org

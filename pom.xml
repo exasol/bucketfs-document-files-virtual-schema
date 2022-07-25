@@ -6,10 +6,10 @@
     <name>Virtual Schema for document data on BucketFS</name>
     <description>Virtual Schemas that allows you to access document files stored in BucketFS like any regular Exasol table.</description>
     <url>https://github.com/exasol/bucketfs-document-files-virtual-schema/</url>
-    <version>0.5.1</version>
+    <version>0.6.0</version>
     <properties>
         <junit.version>5.8.2</junit.version>
-        <vs-commom-document-files.version>4.0.0</vs-commom-document-files.version>
+        <vs-common-document-files.version>7.1.0</vs-common-document-files.version>
     </properties>
     <distributionManagement>
         <snapshotRepository>
@@ -69,7 +69,7 @@
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>virtual-schema-common-document-files</artifactId>
-            <version>${vs-commom-document-files.version}</version>
+            <version>${vs-common-document-files.version}</version>
         </dependency>
         <!-- Explicitly upgrade transitive dependency of virtual-schema-common-document-files to fix CVE-2021-0341,
             sonatype-2018-0035, CVE-2022-26612, CVE-2021-22569, sonatype-2021-1694 -->
@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>virtual-schema-common-document-files</artifactId>
-            <version>${vs-commom-document-files.version}</version>
+            <version>${vs-common-document-files.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
@@ -165,7 +165,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <version>3.3.0</version>
                 <configuration>
-                    <finalName>document-files-virtual-schema-dist-${vs-commom-document-files.version}-bucketfs-${project.version}</finalName>
+                    <finalName>document-files-virtual-schema-dist-${vs-common-document-files.version}-bucketfs-${project.version}</finalName>
                 </configuration>
             </plugin>
             <plugin>
@@ -193,7 +193,7 @@
     <parent>
         <artifactId>bucketfs-document-files-virtual-schema-generated-parent</artifactId>
         <groupId>com.exasol</groupId>
-        <version>0.5.1</version>
+        <version>0.6.0</version>
         <relativePath>pk_generated_parent.pom</relativePath>
     </parent>
 </project>
