@@ -6,7 +6,7 @@
     <name>Virtual Schema for document data on BucketFS</name>
     <description>Virtual Schemas that allows you to access document files stored in BucketFS like any regular Exasol table.</description>
     <url>https://github.com/exasol/bucketfs-document-files-virtual-schema/</url>
-    <version>0.6.0</version>
+    <version>1.0.0</version>
     <properties>
         <junit.version>5.9.1</junit.version>
         <vs-commom-document-files.version>7.1.1</vs-commom-document-files.version>
@@ -170,7 +170,7 @@
     <parent>
         <artifactId>bucketfs-document-files-virtual-schema-generated-parent</artifactId>
         <groupId>com.exasol</groupId>
-        <version>0.6.0</version>
+        <version>1.0.0</version>
         <relativePath>pk_generated_parent.pom</relativePath>
     </parent>
 </project>

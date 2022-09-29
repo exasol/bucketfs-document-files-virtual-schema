@@ -17,7 +17,7 @@ Next create the Adapter Script:
 ```sql
 CREATE OR REPLACE JAVA ADAPTER SCRIPT ADAPTER.BUCKET_FS_FILES_ADAPTER AS
     %scriptclass com.exasol.adapter.RequestDispatcher;
-    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-7.1.1-bucketfs-0.6.0.jar;
+    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-7.1.1-bucketfs-1.0.0.jar;
 /
 ```
 
@@ -30,7 +30,7 @@ CREATE OR REPLACE JAVA SET SCRIPT ADAPTER.IMPORT_FROM_BUCKETFS_DOCUMENT_FILES(
   CONNECTION_NAME VARCHAR(500))
   EMITS(...) AS
     %scriptclass com.exasol.adapter.document.UdfEntryPoint;
-    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-7.1.1-bucketfs-0.6.0.jar;
+    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-7.1.1-bucketfs-1.0.0.jar;
 /
 ```
 
@@ -40,7 +40,7 @@ Now you need to define a connection that includes the location of stored files:
 
 ```sql
 CREATE CONNECTION BUCKETFS_CONNECTION
-    TO '/bfsdefualt/default/'
+    TO '/bfsdefault/default/'
     USER ''
     IDENTIFIED BY '';
 ```
