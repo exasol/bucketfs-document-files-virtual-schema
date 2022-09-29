@@ -4,7 +4,7 @@ Code name: Fixed Vulnerabilities in Dependencies
 
 ## Summary
 
-Updated dependencies.
+In this release we fixed [sonatype-2022-5401](https://ossindex.sonatype.org/vulnerability/sonatype-2022-5401) in reload4j.
 
 ## Features
 
