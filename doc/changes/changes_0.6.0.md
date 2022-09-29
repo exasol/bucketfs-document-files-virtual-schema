@@ -15,7 +15,7 @@ In this release we fixed [sonatype-2022-5401](https://ossindex.sonatype.org/vuln
 
 ### Compile Dependency Updates
 
-* Updated `com.exasol:parquet-io-java:1.3.1` to `1.3.3`
+* Updated `com.exasol:parquet-io-java:1.3.2` to `1.3.3`
 * Updated `com.exasol:virtual-schema-common-document-files:4.0.0` to `7.1.1`
 * Updated `com.fasterxml.jackson.core:jackson-databind:2.13.3` to `2.13.4`
 * Updated `org.mockito:mockito-core:4.6.1` to `4.8.0`
@@ -33,5 +33,5 @@ In this release we fixed [sonatype-2022-5401](https://ossindex.sonatype.org/vuln
 ### Plugin Dependency Updates
 
 * Updated `com.exasol:error-code-crawler-maven-plugin:1.1.1` to `1.1.2`
-* Updated `com.exasol:project-keeper-maven-plugin:2.4.6` to `2.8.0`
+* Updated `com.exasol:project-keeper-maven-plugin:2.5.0` to `2.8.0`
 * Updated `org.apache.maven.plugins:maven-enforcer-plugin:3.0.0` to `3.1.0`
