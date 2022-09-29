@@ -38,35 +38,6 @@
             </properties>
         </profile>
     </profiles>
-    <!--
-    <repositories>
-        <repository>
-            <id>maven.exasol.com</id>
-            <url>https://maven.exasol.com/artifactory/exasol-releases</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>maven.exasol.com-snapshots</id>
-            <url>https://maven.exasol.com/artifactory/exasol-snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    -->
     <dependencies>
         <dependency>
             <groupId>com.exasol</groupId>
@@ -122,6 +93,12 @@
             <groupId>com.exasol</groupId>
             <artifactId>exasol-test-setup-abstraction-java</artifactId>
             <version>0.3.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-handler</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -183,8 +160,6 @@
                 <artifactId>ossindex-maven-plugin</artifactId>
                 <configuration>
                     <excludeVulnerabilityIds>
-                        <!-- io.netty:netty-handler:4.1.77.Final: AWS SDK is not affected: https://github.com/aws/aws-sdk-java-v2/issues/3263#issuecomment-1163600532 -->
-                        <exclude>sonatype-2020-0026</exclude>
                         <!-- com.google.guava:guava:31.1-jre: Excluded because we assume that the attacker does not have access to the machine. -->
                         <exclude>sonatype-2020-0926</exclude>
                     </excludeVulnerabilityIds>
