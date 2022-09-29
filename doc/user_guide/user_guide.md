@@ -2,19 +2,19 @@
 
 This user guide helps you with getting started with the BucketFS Files Virtual Schemas.
 
-### Installation
+## Installation
 
 Upload the latest available [release of this adapter](https://github.com/exasol/bucketfs-document-files-virtual-schema/releases) to BucketFS. See [Create a bucket in BucketFS](https://docs.exasol.com/administration/on-premise/bucketfs/create_new_bucket_in_bucketfs_service.htm) and [Upload the driver to BucketFS](https://docs.exasol.com/administration/on-premise/bucketfs/accessfiles.htm) for details.
 
 Then create a schema to hold the adapter script.
 
-```
+```sql
 CREATE SCHEMA ADAPTER;
 ```
 
 Next create the Adapter Script:
 
- ```
+```sql
 CREATE OR REPLACE JAVA ADAPTER SCRIPT ADAPTER.BUCKET_FS_FILES_ADAPTER AS
     %scriptclass com.exasol.adapter.RequestDispatcher;
     %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-7.1.1-bucketfs-0.6.0.jar;
@@ -23,7 +23,7 @@ CREATE OR REPLACE JAVA ADAPTER SCRIPT ADAPTER.BUCKET_FS_FILES_ADAPTER AS
 
 In addition to the adapter script you need to create a UDF function that will handle the loading of the data:
 
-```
+```sql
 CREATE OR REPLACE JAVA SET SCRIPT ADAPTER.IMPORT_FROM_BUCKETFS_DOCUMENT_FILES(
   DATA_LOADER VARCHAR(2000000),
   SCHEMA_MAPPING_REQUEST VARCHAR(2000000),
@@ -38,7 +38,7 @@ CREATE OR REPLACE JAVA SET SCRIPT ADAPTER.IMPORT_FROM_BUCKETFS_DOCUMENT_FILES(
 
 Now you need to define a connection that includes the location of stored files:
 
- ```
+```sql
 CREATE CONNECTION BUCKETFS_CONNECTION
     TO '/bfsdefualt/default/'
     USER ''
