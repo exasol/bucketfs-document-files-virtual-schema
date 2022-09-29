@@ -7,14 +7,14 @@ import com.exasol.adapter.document.files.stringfilter.StringFilter;
 /**
  * {@link FileLoader} for BucketFS.
  */
-class BucketfsFileLoader extends AbstractLocalFileLoader {
+class BucketfsFileFinder extends AbstractLocalFileFinder {
 
     /**
-     * Create a new instance of {@link BucketfsFileLoader}.
+     * Create a new instance of {@link BucketfsFileFinder}.
      *
      * @param filePattern files to load
      */
-    public BucketfsFileLoader(final StringFilter filePattern) {
+    public BucketfsFileFinder(final StringFilter filePattern) {
         super(new ExecutorServiceFactory(),Path.of("/buckets"), filePattern);
     }
 }

@@ -76,7 +76,7 @@ class AbstractLocalFileLoaderTest {
         return testFile;
     }
 
-    private static class FileLoaderStub extends AbstractLocalFileLoader {
+    private static class FileLoaderStub extends AbstractLocalFileFinder {
         public FileLoaderStub(final Path baseDirectory, final StringFilter filePattern) {
             super(new ExecutorServiceFactory(), baseDirectory, filePattern);
         }

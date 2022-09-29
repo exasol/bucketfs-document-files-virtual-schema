@@ -15,19 +15,20 @@ import com.exasol.errorreporting.ExaError;
 /**
  * Abstract basis for {@link FileLoader}s local files.
  *
- * @implNote This class is only used by the {@link BucketfsFileLoader}. It is introduced to support unit testing.
+ * @implNote This class is only used by the {@link BucketfsFileFinder}. It is introduced to support unit testing.
  */
-abstract class AbstractLocalFileLoader implements FileLoader {
-    private ExecutorServiceFactory executorServiceFactory;
+abstract class AbstractLocalFileFinder implements RemoteFileFinder {
+    private final ExecutorServiceFactory executorServiceFactory;
     private final StringFilter filePattern;
     private final Path baseDirectory;
 
     /**
-     * Create a new instance of {@link AbstractLocalFileLoader}.
+     * Create a new instance of {@link AbstractLocalFileFinder}.
      *
      * @param filePattern GLOB pattern for the file set to load
      */
-    AbstractLocalFileLoader(ExecutorServiceFactory executorServiceFactory, final Path baseDirectory, final StringFilter filePattern) {
+    AbstractLocalFileFinder(final ExecutorServiceFactory executorServiceFactory, final Path baseDirectory,
+            final StringFilter filePattern) {
         this.executorServiceFactory = executorServiceFactory;
         this.baseDirectory = baseDirectory;
         this.filePattern = filePattern;
@@ -48,7 +49,7 @@ abstract class AbstractLocalFileLoader implements FileLoader {
     }
 
     private RemoteFileContent getFileContent(final Path path) {
-        return new BucketFsFileContent(executorServiceFactory, path);
+        return new BucketFsFileContent(this.executorServiceFactory, path);
     }
 
     private long getFileSize(final Path path) {
@@ -81,7 +82,8 @@ abstract class AbstractLocalFileLoader implements FileLoader {
             final String canonicalBaseDirectory = this.baseDirectory.toFile().getCanonicalPath();
             if (!canonicalPath.startsWith(canonicalBaseDirectory)) {
                 throw new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-2")
-                        .message("The path {{path}} is outside of BucketFS {{basePath}}.", canonicalPath, canonicalBaseDirectory)
+                        .message("The path {{path}} is outside of BucketFS {{basePath}}.", canonicalPath,
+                                canonicalBaseDirectory)
                         .mitigation("Please make sure, that you do not use '../' to leave BucketFS.").toString());
             } else {
                 return path;

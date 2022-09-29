@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThrows;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,9 +39,14 @@ class BucketFsFileContentTest {
     void getInputStreamReturnsFile() throws IOException {
         final Path file = this.tempDir.resolve("file");
         Files.writeString(file, FILE_CONTENT);
-        final BucketFsFileContent content = create(file);
-        final String readContent = new String(content.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-        assertThat(readContent, equalTo(FILE_CONTENT));
+        final String fromBucket = read(create(file));
+        assertThat(fromBucket, equalTo(FILE_CONTENT));
+    }
+
+    private String read(final BucketFsFileContent content) throws IOException {
+        try (InputStream is = content.getInputStream()) {
+            return new String(is.readAllBytes(), StandardCharsets.UTF_8);
+        }
     }
 
     @Test
@@ -49,8 +55,8 @@ class BucketFsFileContentTest {
         final BucketFsFileContent content = create(file);
         final IllegalStateException exception = assertThrows(IllegalStateException.class,
                 () -> content.getInputStream());
-        assertThat(exception.getMessage(), equalTo("F-BFSVS-6: Could not open " + file
-                + ". This is an internal error that should not happen. Please report it by opening a GitHub issue."));
+        assertThat(exception.getMessage(), equalTo("F-BFSVS-6: Could not open '" + file
+                + "'. This is an internal error that should not happen. Please report it by opening a GitHub issue."));
     }
 
     @Test
@@ -58,8 +64,8 @@ class BucketFsFileContentTest {
         final Path file = this.tempDir.resolve("non-existing-file");
         final Future<byte[]> content = create(file).loadAsync();
         final ExecutionException exception = assertThrows(ExecutionException.class, () -> content.get());
-        assertThat(exception.getMessage(), equalTo("java.lang.IllegalStateException: F-BFSVS-6: Could not open " + file
-                + ". This is an internal error that should not happen. Please report it by opening a GitHub issue."));
+        assertThat(exception.getMessage(), equalTo("java.lang.IllegalStateException: F-BFSVS-6: Could not open '" + file
+                + "'. This is an internal error that should not happen. Please report it by opening a GitHub issue."));
     }
 
     @Test
