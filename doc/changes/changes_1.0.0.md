@@ -1,4 +1,4 @@
-# Virtual Schema for document data on BucketFS 1.0.0, released 2022-09-29
+# Virtual Schema for document data on BucketFS 1.0.0, released 2022-09-30
 
 Code name: Upgrade virtual-schema-common-document-files
 
