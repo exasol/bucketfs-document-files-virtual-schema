@@ -8,22 +8,27 @@
 | [Virtual Schema for document data in files][0] | [MIT License][1]                              |
 | [Parquet for Java][2]                          | [MIT License][3]                              |
 | [jackson-databind][4]                          | [The Apache Software License, Version 2.0][5] |
-| [mockito-core][6]                              | [The MIT License][7]                          |
-| [exasol-test-setup-abstraction-java][8]        | [MIT License][9]                              |
-| [SLF4J JDK14 Binding][10]                      | [MIT License][11]                             |
 
 ## Test Dependencies
 
-| Dependency                                     | License                           |
-| ---------------------------------------------- | --------------------------------- |
-| [Virtual Schema for document data in files][0] | [MIT License][1]                  |
-| [Hamcrest][12]                                 | [BSD License 3][13]               |
-| [JUnit Jupiter Engine][14]                     | [Eclipse Public License v2.0][15] |
-| [JUnit Jupiter Params][14]                     | [Eclipse Public License v2.0][15] |
-| [Test Database Builder for Java][16]           | [MIT License][17]                 |
-| [Matcher for SQL Result Sets][18]              | [MIT License][19]                 |
-| [udf-debugging-java][20]                       | [MIT][21]                         |
-| [JaCoCo :: Agent][22]                          | [Eclipse Public License 2.0][23]  |
+| Dependency                                     | License                          |
+| ---------------------------------------------- | -------------------------------- |
+| [Virtual Schema for document data in files][0] | [MIT License][1]                 |
+| [Hamcrest][6]                                  | [BSD License 3][7]               |
+| [JUnit Jupiter Engine][8]                      | [Eclipse Public License v2.0][9] |
+| [JUnit Jupiter Params][8]                      | [Eclipse Public License v2.0][9] |
+| [mockito-core][10]                             | [The MIT License][11]            |
+| [exasol-test-setup-abstraction-java][12]       | [MIT License][13]                |
+| [Test Database Builder for Java][14]           | [MIT License][15]                |
+| [Matcher for SQL Result Sets][16]              | [MIT License][17]                |
+| [udf-debugging-java][18]                       | [MIT][19]                        |
+| [JaCoCo :: Agent][20]                          | [Eclipse Public License 2.0][21] |
+
+## Runtime Dependencies
+
+| Dependency                | License           |
+| ------------------------- | ----------------- |
+| [SLF4J JDK14 Binding][22] | [MIT License][23] |
 
 ## Plugin Dependencies
 
@@ -39,10 +44,10 @@
 | [Project keeper maven plugin][33]                       | [The MIT License][34]                         |
 | [Apache Maven Assembly Plugin][35]                      | [Apache License, Version 2.0][27]             |
 | [Apache Maven JAR Plugin][36]                           | [Apache License, Version 2.0][27]             |
-| [Artifact reference checker and unifier][37]            | [MIT][21]                                     |
+| [Artifact reference checker and unifier][37]            | [MIT][19]                                     |
 | [Apache Maven Dependency Plugin][38]                    | [Apache License, Version 2.0][27]             |
 | [Maven Failsafe Plugin][39]                             | [Apache License, Version 2.0][27]             |
-| [JaCoCo :: Maven Plugin][40]                            | [Eclipse Public License 2.0][23]              |
+| [JaCoCo :: Maven Plugin][40]                            | [Eclipse Public License 2.0][21]              |
 | [error-code-crawler-maven-plugin][41]                   | [MIT License][42]                             |
 | [Reproducible Build Maven Plugin][43]                   | [Apache 2.0][5]                               |
 | [Maven Clean Plugin][44]                                | [The Apache Software License, Version 2.0][5] |
@@ -57,24 +62,24 @@
 [3]: https://github.com/exasol/parquet-io-java/blob/main/LICENSE
 [4]: http://github.com/FasterXML/jackson
 [5]: http://www.apache.org/licenses/LICENSE-2.0.txt
-[6]: https://github.com/mockito/mockito
-[7]: https://github.com/mockito/mockito/blob/main/LICENSE
-[8]: https://github.com/exasol/exasol-test-setup-abstraction-java/
-[9]: https://github.com/exasol/exasol-test-setup-abstraction-java/blob/main/LICENSE
-[10]: http://www.slf4j.org
-[11]: http://www.opensource.org/licenses/mit-license.php
-[12]: http://hamcrest.org/JavaHamcrest/
-[13]: http://opensource.org/licenses/BSD-3-Clause
-[14]: https://junit.org/junit5/
-[15]: https://www.eclipse.org/legal/epl-v20.html
-[16]: https://github.com/exasol/test-db-builder-java/
-[17]: https://github.com/exasol/test-db-builder-java/blob/main/LICENSE
-[18]: https://github.com/exasol/hamcrest-resultset-matcher/
-[19]: https://github.com/exasol/hamcrest-resultset-matcher/blob/main/LICENSE
-[20]: https://github.com/exasol/udf-debugging-java/
-[21]: https://opensource.org/licenses/MIT
-[22]: https://www.eclemma.org/jacoco/index.html
-[23]: https://www.eclipse.org/legal/epl-2.0/
+[6]: http://hamcrest.org/JavaHamcrest/
+[7]: http://opensource.org/licenses/BSD-3-Clause
+[8]: https://junit.org/junit5/
+[9]: https://www.eclipse.org/legal/epl-v20.html
+[10]: https://github.com/mockito/mockito
+[11]: https://github.com/mockito/mockito/blob/main/LICENSE
+[12]: https://github.com/exasol/exasol-test-setup-abstraction-java/
+[13]: https://github.com/exasol/exasol-test-setup-abstraction-java/blob/main/LICENSE
+[14]: https://github.com/exasol/test-db-builder-java/
+[15]: https://github.com/exasol/test-db-builder-java/blob/main/LICENSE
+[16]: https://github.com/exasol/hamcrest-resultset-matcher/
+[17]: https://github.com/exasol/hamcrest-resultset-matcher/blob/main/LICENSE
+[18]: https://github.com/exasol/udf-debugging-java/
+[19]: https://opensource.org/licenses/MIT
+[20]: https://www.eclemma.org/jacoco/index.html
+[21]: https://www.eclipse.org/legal/epl-2.0/
+[22]: http://www.slf4j.org
+[23]: http://www.opensource.org/licenses/mit-license.php
 [24]: http://sonarsource.github.io/sonar-scanner-maven/
 [25]: http://www.gnu.org/licenses/lgpl.txt
 [26]: https://maven.apache.org/plugins/maven-compiler-plugin/
