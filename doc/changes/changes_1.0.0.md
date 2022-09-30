@@ -6,7 +6,7 @@ Code name: Upgrade virtual-schema-common-document-files
 
 In this release we upgraded version 7.1.1 of `virtual-schema-common-document-files`, which means that it now uses the new [connection parameter specification](https://github.com/exasol/connection-parameter-specification/blob/main/specification.md). This means you need to update the connection, see the [user guide](https://github.com/exasol/bucketfs-document-files-virtual-schema/blob/main/doc/user_guide/user_guide.md#creating-a-connection) for details.
 
-In previous versions you could configure a base path for the connection, however this was always ignored. If you need this configuration, please vote for [issue #25](https://github.com/exasol/bucketfs-document-files-virtual-schema/issues/25).
+In previous versions you could configure a base path for the connection. Now the virtual schema only uses bucket `/buckets/bfsdefault`. If you need this configuration, please vote for [issue #25](https://github.com/exasol/bucketfs-document-files-virtual-schema/issues/25).
 
 We also fixed [sonatype-2022-5401](https://ossindex.sonatype.org/vulnerability/sonatype-2022-5401) in reload4j.
 
