@@ -2,6 +2,9 @@ package com.exasol.adapter.document.files;
 
 import static com.exasol.adapter.document.GenericUdfCallHandler.*;
 import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADAPTER_NAME;
+import static com.exasol.matcher.ResultSetStructureMatcher.table;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -127,5 +130,16 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
     @Test
     void testReadJsonLines() throws SQLException, IOException {
         super.testReadJsonLines();
+    }
+
+    @Override
+    @Test
+    void testReadJson() throws SQLException, IOException {
+        createJsonVirtualSchema();
+        final ResultSet result = getStatement()
+                .executeQuery("SELECT ID, SOURCE_REFERENCE FROM TEST.BOOKS ORDER BY ID ASC;");
+        final String expectedPrefix = "/bfsdefault/default/";
+        assertThat(result, table().row("book-1", allOf(startsWith(expectedPrefix), endsWith("/testData-1.json")))
+                .row("book-2", allOf(startsWith(expectedPrefix), endsWith("/testData-2.json"))).matches());
     }
 }
