@@ -15,19 +15,20 @@ import com.exasol.errorreporting.ExaError;
 /**
  * Abstract basis for {@link FileLoader}s local files.
  *
- * @implNote This class is only used by the {@link BucketfsFileLoader}. It is introduced to support unit testing.
+ * @implNote This class is only used by the {@link BucketfsFileFinder}. It is introduced to support unit testing.
  */
-abstract class AbstractLocalFileLoader implements FileLoader {
-    private ExecutorServiceFactory executorServiceFactory;
+abstract class AbstractLocalFileFinder implements RemoteFileFinder {
+    private final ExecutorServiceFactory executorServiceFactory;
     private final StringFilter filePattern;
     private final Path baseDirectory;
 
     /**
-     * Create a new instance of {@link AbstractLocalFileLoader}.
+     * Create a new instance of {@link AbstractLocalFileFinder}.
      *
      * @param filePattern GLOB pattern for the file set to load
      */
-    AbstractLocalFileLoader(ExecutorServiceFactory executorServiceFactory, final Path baseDirectory, final StringFilter filePattern) {
+    AbstractLocalFileFinder(final ExecutorServiceFactory executorServiceFactory, final Path baseDirectory,
+            final StringFilter filePattern) {
         this.executorServiceFactory = executorServiceFactory;
         this.baseDirectory = baseDirectory;
         this.filePattern = filePattern;
@@ -48,14 +49,14 @@ abstract class AbstractLocalFileLoader implements FileLoader {
     }
 
     private RemoteFileContent getFileContent(final Path path) {
-        return new BucketFsFileContent(executorServiceFactory, path);
+        return new BucketFsFileContent(this.executorServiceFactory, path);
     }
 
     private long getFileSize(final Path path) {
         try {
             return Files.size(path);
         } catch (final IOException exception) {
-            throw new UncheckedIOException(ExaError.messageBuilder("E-BFSVS-7")
+            throw new UncheckedIOException(ExaError.messageBuilder("E-VSBFS-7")
                     .message("Failed to get file size of file {{file}}", path).ticketMitigation().toString(),
                     exception);
         }
@@ -65,7 +66,7 @@ abstract class AbstractLocalFileLoader implements FileLoader {
         try {
             return Files.walk(nonGlobPath);
         } catch (final IOException exception) {
-            throw new IllegalStateException(ExaError.messageBuilder("F-BFSVS-5")
+            throw new IllegalStateException(ExaError.messageBuilder("F-VSBFS-5")
                     .message("Failed to list / open file from BucketFs.").ticketMitigation().toString(), exception);
         }
     }
@@ -80,8 +81,9 @@ abstract class AbstractLocalFileLoader implements FileLoader {
             final String canonicalPath = path.toFile().getCanonicalPath();
             final String canonicalBaseDirectory = this.baseDirectory.toFile().getCanonicalPath();
             if (!canonicalPath.startsWith(canonicalBaseDirectory)) {
-                throw new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-2")
-                        .message("The path {{path}} is outside of BucketFS {{basePath}}.", canonicalPath, canonicalBaseDirectory)
+                throw new IllegalArgumentException(ExaError.messageBuilder("E-VSBFS-2")
+                        .message("The path {{path}} is outside of BucketFS {{basePath}}.", canonicalPath,
+                                canonicalBaseDirectory)
                         .mitigation("Please make sure, that you do not use '../' to leave BucketFS.").toString());
             } else {
                 return path;
@@ -92,7 +94,7 @@ abstract class AbstractLocalFileLoader implements FileLoader {
     }
 
     private IllegalArgumentException getCouldNotOpenException(final Path path, final Exception cause) {
-        return new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-1")
+        return new IllegalArgumentException(ExaError.messageBuilder("E-VSBFS-1")
                 .message("Could not open {{path}}.", path)
                 .mitigation(
                         "Please make sure that you defined the correct path in the CONNECTION and the mapping definition.")
@@ -112,7 +114,7 @@ abstract class AbstractLocalFileLoader implements FileLoader {
 
     private void validatePrefixStartsWithSlash(final String staticPrefix) {
         if (!staticPrefix.startsWith("/")) {
-            throw new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-3")
+            throw new IllegalArgumentException(ExaError.messageBuilder("E-VSBFS-3")
                     .message("Invalid path {{path}}. The BucketFS path must have the format '/<bucket>/...'.",
                             staticPrefix)
                     .mitigation("Please add the trailing slash to the address in the CONNECTION.").toString());

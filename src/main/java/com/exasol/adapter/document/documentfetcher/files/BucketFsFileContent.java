@@ -21,7 +21,7 @@ class BucketFsFileContent implements RemoteFileContent {
         try {
             return new FileInputStream(this.filePath.toFile());
         } catch (final FileNotFoundException exception) {
-            throw new IllegalStateException(ExaError.messageBuilder("F-BFSVS-6")
+            throw new IllegalStateException(ExaError.messageBuilder("F-VSBFS-6")
                     .message("Could not open {{file}}.", this.filePath).ticketMitigation().toString());
         }
     }
@@ -35,7 +35,8 @@ class BucketFsFileContent implements RemoteFileContent {
         try (InputStream stream = getInputStream()) {
             return stream.readAllBytes();
         } catch (final IOException exception) {
-            throw new UncheckedIOException(ExaError.messageBuilder("F-BFSVS-8").message("Failed to read file").toString(), exception);
+            throw new UncheckedIOException(
+                    ExaError.messageBuilder("F-VSBFS-8").message("Failed to read file").toString(), exception);
         }
     }
 }

@@ -4,6 +4,8 @@ import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADA
 
 import com.exasol.adapter.AdapterFactory;
 import com.exasol.adapter.VirtualSchemaAdapter;
+import com.exasol.adapter.document.DocumentAdapter;
+import com.exasol.adapter.document.documentfetcher.files.BucketFsFileFinderFactory;
 import com.exasol.logging.VersionCollector;
 
 /**
@@ -12,7 +14,7 @@ import com.exasol.logging.VersionCollector;
 public class BucketfsDocumentFilesAdapterFactory implements AdapterFactory {
     @Override
     public VirtualSchemaAdapter createAdapter() {
-        return new BucketfsDocumentFilesAdapter();
+        return new DocumentAdapter(new DocumentFilesAdapter(ADAPTER_NAME, new BucketFsFileFinderFactory()));
     }
 
     @Override

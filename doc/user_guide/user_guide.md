@@ -2,35 +2,35 @@
 
 This user guide helps you with getting started with the BucketFS Files Virtual Schemas.
 
-### Installation
+## Installation
 
 Upload the latest available [release of this adapter](https://github.com/exasol/bucketfs-document-files-virtual-schema/releases) to BucketFS. See [Create a bucket in BucketFS](https://docs.exasol.com/administration/on-premise/bucketfs/create_new_bucket_in_bucketfs_service.htm) and [Upload the driver to BucketFS](https://docs.exasol.com/administration/on-premise/bucketfs/accessfiles.htm) for details.
 
 Then create a schema to hold the adapter script.
 
-```
+```sql
 CREATE SCHEMA ADAPTER;
 ```
 
 Next create the Adapter Script:
 
- ```
+```sql
 CREATE OR REPLACE JAVA ADAPTER SCRIPT ADAPTER.BUCKET_FS_FILES_ADAPTER AS
     %scriptclass com.exasol.adapter.RequestDispatcher;
-    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-4.0.0-bucketfs-0.5.2.jar;
+    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-7.1.1-bucketfs-1.0.0.jar;
 /
 ```
 
 In addition to the adapter script you need to create a UDF function that will handle the loading of the data:
 
-```
+```sql
 CREATE OR REPLACE JAVA SET SCRIPT ADAPTER.IMPORT_FROM_BUCKETFS_DOCUMENT_FILES(
   DATA_LOADER VARCHAR(2000000),
   SCHEMA_MAPPING_REQUEST VARCHAR(2000000),
   CONNECTION_NAME VARCHAR(500))
   EMITS(...) AS
     %scriptclass com.exasol.adapter.document.UdfEntryPoint;
-    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-4.0.0-bucketfs-0.5.2.jar;
+    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-7.1.1-bucketfs-1.0.0.jar;
 /
 ```
 
@@ -38,16 +38,16 @@ CREATE OR REPLACE JAVA SET SCRIPT ADAPTER.IMPORT_FROM_BUCKETFS_DOCUMENT_FILES(
 
 Now you need to define a connection that includes the location of stored files:
 
- ```
+```sql
 CREATE CONNECTION BUCKETFS_CONNECTION
-    TO '/bfsdefualt/default/'
+    TO ''
     USER ''
-    IDENTIFIED BY '';
+    IDENTIFIED BY '{}';
 ```
 
-You can leave `USER` and `IDENTIFIED BY` empty.
+You must leave `TO` and `USER` empty and set `IDENTIFIED BY` to an empty JSON object `{}`.
 
-The path you define in the `CONNECTION` is the base path for the file names you define in the mapping definition. The adapter will concatenate the base path and the path defined in the mapping definition. For security reasons you can however not navigate to directories outside of the base path (using `../`).
+The virtual schema will import files only from the default bucket `/buckets/bfsdefault`. In previous versions you could configure a base path for the connection. This option was removed in version 1.0.0. If you need this configuration, please vote for [issue #25](https://github.com/exasol/bucketfs-document-files-virtual-schema/issues/25).
 
 ## Defining the Schema Mapping
 
@@ -61,9 +61,7 @@ This Virtual Schema adapter automatically detects the type of the document file 
 
 ### Example
 
-You want to define a mapping for the file `test.json` that you uploaded to the default BucketFS (`bfsdefault`) to the default bucket (`default`).
-
-In your `CONNECTION` you set the address to `/bfsdefault/default/`
+You want to define a mapping for the file `test.json` that you uploaded to the default BucketFS (`bfsdefault`) to the default bucket (`default`). Other locations are not supported currently, see [issue #25](https://github.com/exasol/bucketfs-document-files-virtual-schema/issues/25).
 
 Now you create a mapping definition definition with `source` set to `test.json`.
 

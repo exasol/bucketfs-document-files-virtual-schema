@@ -1,5 +1,5 @@
 error-tags:
-  BFSVS:
+  VSBFS:
     packages:
       - com.exasol.adapter.document
     highest-index: 8
