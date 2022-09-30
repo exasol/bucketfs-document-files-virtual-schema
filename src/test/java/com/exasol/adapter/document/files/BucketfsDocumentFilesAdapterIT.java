@@ -63,7 +63,7 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
     }
 
     private static ConnectionDefinition createConnectionDefinition() {
-        return testDbBuilder.createConnectionDefinition("CONNECTION", "/bfsdefault/default/", "", "");
+        return testDbBuilder.createConnectionDefinition("CONNECTION", "", "", "{}");
     }
 
     private static AdapterScript createAdapterScript(final ExasolSchema adapterSchema)

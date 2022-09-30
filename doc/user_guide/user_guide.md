@@ -40,14 +40,14 @@ Now you need to define a connection that includes the location of stored files:
 
 ```sql
 CREATE CONNECTION BUCKETFS_CONNECTION
-    TO '/bfsdefault/default/'
+    TO ''
     USER ''
-    IDENTIFIED BY '';
+    IDENTIFIED BY '{}';
 ```
 
-You can leave `USER` and `IDENTIFIED BY` empty.
+You must leave `TO` and `USER` empty and set `IDENTIFIED BY` to an empty JSON object `{}`.
 
-The path you define in the `CONNECTION` is the base path for the file names you define in the mapping definition. The adapter will concatenate the base path and the path defined in the mapping definition. For security reasons you can however not navigate to directories outside of the base path (using `../`).
+In previous versions you could configure a base path for the connection, however this was always ignored. If you need this configuration, please vote for [issue #25](https://github.com/exasol/bucketfs-document-files-virtual-schema/issues/25).
 
 ## Defining the Schema Mapping
 
@@ -62,8 +62,6 @@ This Virtual Schema adapter automatically detects the type of the document file 
 ### Example
 
 You want to define a mapping for the file `test.json` that you uploaded to the default BucketFS (`bfsdefault`) to the default bucket (`default`).
-
-In your `CONNECTION` you set the address to `/bfsdefault/default/`
 
 Now you create a mapping definition definition with `source` set to `test.json`.
 

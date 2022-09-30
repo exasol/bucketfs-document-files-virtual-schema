@@ -15,6 +15,6 @@ class BucketfsFileFinder extends AbstractLocalFileFinder {
      * @param filePattern files to load
      */
     public BucketfsFileFinder(final StringFilter filePattern) {
-        super(new ExecutorServiceFactory(),Path.of("/buckets"), filePattern);
+        super(new ExecutorServiceFactory(), Path.of("/buckets"), filePattern);
     }
 }
