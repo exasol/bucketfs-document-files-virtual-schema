@@ -47,7 +47,7 @@ CREATE CONNECTION BUCKETFS_CONNECTION
 
 You must leave `TO` and `USER` empty and set `IDENTIFIED BY` to an empty JSON object `{}`.
 
-In previous versions you could configure a base path for the connection, however this was always ignored. If you need this configuration, please vote for [issue #25](https://github.com/exasol/bucketfs-document-files-virtual-schema/issues/25).
+The virtual schema will import files only from the default bucket `/buckets/bfsdefault`. In previous versions you could configure a base path for the connection. This option was removed in version 1.0.0. If you need this configuration, please vote for [issue #25](https://github.com/exasol/bucketfs-document-files-virtual-schema/issues/25).
 
 ## Defining the Schema Mapping
 
@@ -61,7 +61,7 @@ This Virtual Schema adapter automatically detects the type of the document file 
 
 ### Example
 
-You want to define a mapping for the file `test.json` that you uploaded to the default BucketFS (`bfsdefault`) to the default bucket (`default`).
+You want to define a mapping for the file `test.json` that you uploaded to the default BucketFS (`bfsdefault`) to the default bucket (`default`). Other locations are not supported currently, see [issue #25](https://github.com/exasol/bucketfs-document-files-virtual-schema/issues/25).
 
 Now you create a mapping definition definition with `source` set to `test.json`.
 
