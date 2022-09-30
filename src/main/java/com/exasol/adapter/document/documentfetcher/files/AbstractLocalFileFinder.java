@@ -56,7 +56,7 @@ abstract class AbstractLocalFileFinder implements RemoteFileFinder {
         try {
             return Files.size(path);
         } catch (final IOException exception) {
-            throw new UncheckedIOException(ExaError.messageBuilder("E-BFSVS-7")
+            throw new UncheckedIOException(ExaError.messageBuilder("E-VSBFS-7")
                     .message("Failed to get file size of file {{file}}", path).ticketMitigation().toString(),
                     exception);
         }
@@ -66,7 +66,7 @@ abstract class AbstractLocalFileFinder implements RemoteFileFinder {
         try {
             return Files.walk(nonGlobPath);
         } catch (final IOException exception) {
-            throw new IllegalStateException(ExaError.messageBuilder("F-BFSVS-5")
+            throw new IllegalStateException(ExaError.messageBuilder("F-VSBFS-5")
                     .message("Failed to list / open file from BucketFs.").ticketMitigation().toString(), exception);
         }
     }
@@ -81,7 +81,7 @@ abstract class AbstractLocalFileFinder implements RemoteFileFinder {
             final String canonicalPath = path.toFile().getCanonicalPath();
             final String canonicalBaseDirectory = this.baseDirectory.toFile().getCanonicalPath();
             if (!canonicalPath.startsWith(canonicalBaseDirectory)) {
-                throw new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-2")
+                throw new IllegalArgumentException(ExaError.messageBuilder("E-VSBFS-2")
                         .message("The path {{path}} is outside of BucketFS {{basePath}}.", canonicalPath,
                                 canonicalBaseDirectory)
                         .mitigation("Please make sure, that you do not use '../' to leave BucketFS.").toString());
@@ -94,7 +94,7 @@ abstract class AbstractLocalFileFinder implements RemoteFileFinder {
     }
 
     private IllegalArgumentException getCouldNotOpenException(final Path path, final Exception cause) {
-        return new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-1")
+        return new IllegalArgumentException(ExaError.messageBuilder("E-VSBFS-1")
                 .message("Could not open {{path}}.", path)
                 .mitigation(
                         "Please make sure that you defined the correct path in the CONNECTION and the mapping definition.")
@@ -114,7 +114,7 @@ abstract class AbstractLocalFileFinder implements RemoteFileFinder {
 
     private void validatePrefixStartsWithSlash(final String staticPrefix) {
         if (!staticPrefix.startsWith("/")) {
-            throw new IllegalArgumentException(ExaError.messageBuilder("E-BFSVS-3")
+            throw new IllegalArgumentException(ExaError.messageBuilder("E-VSBFS-3")
                     .message("Invalid path {{path}}. The BucketFS path must have the format '/<bucket>/...'.",
                             staticPrefix)
                     .mitigation("Please add the trailing slash to the address in the CONNECTION.").toString());

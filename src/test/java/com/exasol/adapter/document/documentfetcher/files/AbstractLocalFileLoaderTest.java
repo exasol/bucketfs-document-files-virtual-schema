@@ -26,7 +26,7 @@ class AbstractLocalFileLoaderTest {
         final FileLoaderStub loaderStub = new FileLoaderStub(Path.of("/buckets/"),
                 WildcardExpression.fromGlob("/../etc/passwd*.json"));
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, loaderStub::loadFiles);
-        assertThat(exception.getMessage(), containsString("E-BFSVS-2"));
+        assertThat(exception.getMessage(), containsString("E-VSBFS-2"));
     }
 
     @Test
@@ -34,7 +34,7 @@ class AbstractLocalFileLoaderTest {
         final FileLoaderStub loaderStub = new FileLoaderStub(Path.of("/buckets/"),
                 WildcardExpression.fromGlob("test.json"));
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, loaderStub::loadFiles);
-        assertThat(exception.getMessage(), containsString("E-BFSVS-3"));
+        assertThat(exception.getMessage(), containsString("E-VSBFS-3"));
     }
 
     @Test

@@ -55,7 +55,7 @@ class BucketFsFileContentTest {
         final BucketFsFileContent content = create(file);
         final IllegalStateException exception = assertThrows(IllegalStateException.class,
                 () -> content.getInputStream());
-        assertThat(exception.getMessage(), equalTo("F-BFSVS-6: Could not open '" + file
+        assertThat(exception.getMessage(), equalTo("F-VSBFS-6: Could not open '" + file
                 + "'. This is an internal error that should not happen. Please report it by opening a GitHub issue."));
     }
 
@@ -64,7 +64,7 @@ class BucketFsFileContentTest {
         final Path file = this.tempDir.resolve("non-existing-file");
         final Future<byte[]> content = create(file).loadAsync();
         final ExecutionException exception = assertThrows(ExecutionException.class, () -> content.get());
-        assertThat(exception.getMessage(), equalTo("java.lang.IllegalStateException: F-BFSVS-6: Could not open '" + file
+        assertThat(exception.getMessage(), equalTo("java.lang.IllegalStateException: F-VSBFS-6: Could not open '" + file
                 + "'. This is an internal error that should not happen. Please report it by opening a GitHub issue."));
     }
 
