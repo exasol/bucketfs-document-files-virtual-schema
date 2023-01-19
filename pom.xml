@@ -44,19 +44,6 @@
             <artifactId>virtual-schema-common-document-files</artifactId>
             <version>${vs-commom-document-files.version}</version>
         </dependency>
-        <!-- Explicitly upgrade transitive dependency of virtual-schema-common-document-files to fix CVE-2021-0341,
-            sonatype-2018-0035, CVE-2022-26612, CVE-2021-22569, sonatype-2021-1694 -->
-        <dependency>
-            <groupId>com.exasol</groupId>
-            <artifactId>parquet-io-java</artifactId>
-            <version>2.0.0</version>
-        </dependency>
-        <!-- Explicitly upgrade transtive dependency of to fix CVE-2020-36518 & sonatype-2021-4682-->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.14.1</version>
-        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
@@ -69,6 +56,13 @@
             <artifactId>virtual-schema-common-document-files</artifactId>
             <version>${vs-commom-document-files.version}</version>
             <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <!-- overriding transitive dependency of virtual-schema-common-document-files to avoid vulnerability CVE-2021-37533 -->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.9.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -171,6 +165,16 @@
                         <!-- org.apache.hadoop:hadoop-hdfs-client:jar:3.3.4 -->
                         <!-- Rationale for exclusion: No update available, yet. -->
                         <exclude>sonatype-2022-5732</exclude>
+                        <!-- Ignore vulnerability com.fasterxml.jackson.core:jackson-core:2.14.1
+                             as an exploit requires write access to the source code repository
+                             and attempts to inject malicious code will be detected during regular
+                             code reviews. -->
+                        <exclude>sonatype-2022-6438</exclude>
+                        <!-- Ignore vulnerability in Transitive dependency fr.turri:aXMLRPC
+                             via com.exasol:exasol-test-setup-abstraction-java:jar.
+                             CVE-2020-36641 is reported to be fixed in aXMLRPC 1.12.1, while ETAJ uses version 1.13.0,
+                             so this is a false positive. -->
+                        <exclude>CVE-2020-36641</exclude>
                     </excludeVulnerabilityIds>
                 </configuration>
             </plugin>
