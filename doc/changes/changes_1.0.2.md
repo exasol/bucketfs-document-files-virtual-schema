@@ -31,9 +31,9 @@ Ignored vulnerabilities
 
 ### Test Dependency Updates
 
-* Updated `com.exasol:exasol-test-setup-abstraction-java:0.3.2` to `1.1.1`
+* Updated `com.exasol:exasol-test-setup-abstraction-java:0.3.2` to `2.0.0`
 * Updated `com.exasol:test-db-builder-java:3.3.4` to `3.4.2`
-* Updated `com.exasol:udf-debugging-java:0.6.4` to `0.6.6`
+* Updated `com.exasol:udf-debugging-java:0.6.4` to `0.6.7`
 * Updated `com.exasol:virtual-schema-common-document-files:7.1.1` to `7.1.4`
 * Added `commons-net:commons-net:3.9.0`
 * Updated `org.junit.jupiter:junit-jupiter-engine:5.9.1` to `5.9.2`

@@ -20,7 +20,7 @@
 | [exasol-test-setup-abstraction-java][10]       | [MIT License][11]                |
 | [Test Database Builder for Java][12]           | [MIT License][13]                |
 | [Matcher for SQL Result Sets][14]              | [MIT License][15]                |
-| [udf-debugging-java][16]                       | [MIT][17]                        |
+| [udf-debugging-java][16]                       | [MIT License][17]                |
 | [JaCoCo :: Agent][18]                          | [Eclipse Public License 2.0][19] |
 
 ## Runtime Dependencies
@@ -72,7 +72,7 @@
 [14]: https://github.com/exasol/hamcrest-resultset-matcher/
 [15]: https://github.com/exasol/hamcrest-resultset-matcher/blob/main/LICENSE
 [16]: https://github.com/exasol/udf-debugging-java/
-[17]: https://opensource.org/licenses/MIT
+[17]: https://github.com/exasol/udf-debugging-java/blob/main/LICENSE
 [18]: https://www.eclemma.org/jacoco/index.html
 [19]: https://www.eclipse.org/legal/epl-2.0/
 [20]: http://www.slf4j.org
