@@ -1,4 +1,4 @@
-# Virtual Schema for document data on BucketFS 1.0.1, released 2022-10-25
+# Virtual Schema for document data on BucketFS 1.0.1, released 2023-01-23
 
 Code name: Dependency upgrade
 
