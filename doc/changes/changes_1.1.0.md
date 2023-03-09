@@ -16,6 +16,7 @@ Code name: Auto-inference for Parquet files
 
 ### Test Dependency Updates
 
+* Added `com.exasol:exasol-testcontainers:6.5.1`
 * Updated `com.exasol:udf-debugging-java:0.6.7` to `0.6.8`
 * Updated `com.exasol:virtual-schema-common-document-files:7.1.4` to `7.2.0`
 * Updated `org.mockito:mockito-core:5.0.0` to `5.1.1`
