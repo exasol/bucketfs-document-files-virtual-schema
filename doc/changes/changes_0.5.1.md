@@ -8,29 +8,29 @@ This release updates dependencies to fix vulnerabilities:
 
 * com.squareup.okhttp:okhttp:jar:2.7.5:compile
   * CVE-2021-0341
-  * https://ossindex.sonatype.org/vulnerability/sonatype-2018-0035
+  * sonatype-2018-0035
 * com.fasterxml.jackson.core:jackson-databind:jar:2.13.0:compile
   * CVE-2020-36518
-  * https://ossindex.sonatype.org/vulnerability/sonatype-2021-4682
+  * sonatype-2021-4682
 * io.netty:netty-common:jar:4.1.72.Final:runtime
   * CVE-2022-24823
 * org.apache.hadoop:hadoop-common:jar:3.3.1:compile
   * CVE-2022-26612
 * com.google.guava:guava:jar:31.0.1-jre:compile
-  * https://ossindex.sonatype.org/vulnerability/sonatype-2020-0926
+  * sonatype-2020-0926
 * io.netty:netty-handler:jar:4.1.72.Final:runtime;
-  * https://ossindex.sonatype.org/vulnerability/sonatype-2020-0026
+  * sonatype-2020-0026
 * org.apache.xmlrpc:xmlrpc-common:jar:3.1.3:compile
   * CVE-2016-5003
   * CVE-2016-5002
 * com.google.protobuf:protobuf-java:jar:2.5.0:compile
   * CVE-2021-22569
 * commons-codec:commons-codec:jar:1.11:compile
-  * https://ossindex.sonatype.org/vulnerability/sonatype-2012-0050
+  * sonatype-2012-0050
 * org.apache.xmlrpc:xmlrpc-client:jar:3.1.3:compile
   * CVE-2016-5004
 * com.google.code.gson:gson:jar:2.2.4:compile
-  * https://ossindex.sonatype.org/vulnerability/sonatype-2021-1694
+  * sonatype-2021-1694
 
 ## Bugfixes
 
