@@ -9,17 +9,17 @@ Removed references to discontinued repository `maven.exasol.com`, fixed and revi
 ## Bugfixes
 
 * #28 Fixed vulnerabilities
-  * Overrode transitive test dependency [commons-net:commons-net:jar:3.6](https://ossindex.sonatype.org/component/pkg:maven/commons-net/commons-net@3.6?utm_source=ossindex-client&utm_medium=integration&utm_content=1.8.1) via `com.exasol:virtual-schema-common-document-files` to fix vulnerability `CVE-2021-37533`.
+  * Overrode transitive test dependency `commons-net:commons-net:jar:3.6` via `com.exasol:virtual-schema-common-document-files` to fix vulnerability `CVE-2021-37533`.
   * Ignored vulnerabilities
-    * [sonatype-2022-6438](https://ossindex.sonatype.org/vulnerability/sonatype-2022-6438) in [com.fasterxml.jackson.core:jackson-core:jar:2.14.1](https://ossindex.sonatype.org/component/pkg:maven/com.fasterxml.jackson.core/jackson-core@2.14.1?utm_source=ossindex-client&utm_medium=integration&utm_content=1.8.1) in compile as an exploit requires write access to the source code repository and attempts to inject malicious code will be detected during regular code reviews.
-    * [CVE-2020-36641](https://nvd.nist.gov/vuln/detail/CVE-2020-36641) in transitive test dependency to [fr.turri:aXMLRPC:jar:1.13.0](https://ossindex.sonatype.org/component/pkg:maven/fr.turri/aXMLRPC@1.13.0?utm_source=ossindex-client&utm_medium=integration&utm_content=1.8.1) via `com.exasol:exasol-test-setup-abstraction-java` as vulnerability is rated as a false positive since CVE-2020-36641 is reported to be fixed in aXMLRPC 1.12.1, while ETAJ uses version 1.13.0.
+    * sonatype-2022-6438 in `com.fasterxml.jackson.core:jackson-core:jar:2.14.1` in compile as an exploit requires write access to the source code repository and attempts to inject malicious code will be detected during regular code reviews.
+    * CVE-2020-36641 in transitive test dependency to `fr.turri:aXMLRPC:jar:1.13.0` via `com.exasol:exasol-test-setup-abstraction-java` as vulnerability is rated as a false positive since CVE-2020-36641 is reported to be fixed in aXMLRPC 1.12.1, while ETAJ uses version 1.13.0.
 
 * #26: Fixed vulnerabilities.
-  * [org.apache.hadoop:hadoop-common:jar:3.3.4](https://ossindex.sonatype.org/component/pkg:maven/org.apache.hadoop/hadoop-common@3.3.4?utm_source=ossindex-client&utm_medium=integration&utm_content=1.8.1) in compile
-    * [sonatype-2022-5820](https://ossindex.sonatype.org/vulnerability/sonatype-2022-5820): 1 vulnerability (8.2)
-  * [org.apache.hadoop:hadoop-hdfs-client:jar:3.3.4](https://ossindex.sonatype.org/component/pkg:maven/org.apache.hadoop/hadoop-hdfs-client@3.3.4?utm_source=ossindex-client&utm_medium=integration&utm_content=1.8.1) in compile
-    * [sonatype-2022-5732](https://ossindex.sonatype.org/vulnerability/sonatype-2022-5732): 1 vulnerability (8.6)
-  * [com.fasterxml.jackson.core:jackson-databind:jar:2.13.4](https://ossindex.sonatype.org/component/pkg:maven/com.fasterxml.jackson.core/jackson-databind@2.13.4?utm_source=ossindex-client&utm_medium=integration&utm_content=1.8.1) in compile
+  * `org.apache.hadoop:hadoop-common:jar:3.3.4` in compile
+    * sonatype-2022-5820: 1 vulnerability (8.2)
+  * `org.apache.hadoop:hadoop-hdfs-client:jar:3.3.4` in compile
+    * sonatype-2022-5732: 1 vulnerability (8.6)
+  * `com.fasterxml.jackson.core:jackson-databind:jar:2.13.4` in compile
     * CVE-2022-42003, severity CWE-502: Deserialization of Untrusted Data (7.5)
 
 ## Dependency Updates

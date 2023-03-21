@@ -8,7 +8,7 @@ This release upgraded to version 7.1.1 of `virtual-schema-common-document-files`
 
 Previous versions of Virtual Schema for document data on BucketFS allowed to configure a base path for the connection while the current release only uses bucket `/buckets/bfsdefault`. If you need this configuration, please vote for [issue #25](https://github.com/exasol/bucketfs-document-files-virtual-schema/issues/25).
 
-This release also fixes [sonatype-2022-5401](https://ossindex.sonatype.org/vulnerability/sonatype-2022-5401) in reload4j.
+This release also fixes sonatype-2022-5401 in reload4j.
 
 ## Features
 
