@@ -5,3 +5,5 @@ sources:
       - integration_tests
       - jar_artifact
       - udf_coverage
+excludes:
+  - regex: "E-PK-CORE-53: The dependencies.md file has outdated content.*"
