@@ -32,29 +32,29 @@
 
 ## Plugin Dependencies
 
-| Dependency                                              | License                          |
-| ------------------------------------------------------- | -------------------------------- |
-| [SonarQube Scanner for Maven][24]                       | [GNU LGPL 3][25]                 |
-| [Apache Maven Compiler Plugin][26]                      | [Apache License, Version 2.0][3] |
-| [Apache Maven Enforcer Plugin][27]                      | [Apache-2.0][3]                  |
-| [Maven Flatten Plugin][28]                              | [Apache Software Licenese][3]    |
-| [org.sonatype.ossindex.maven:ossindex-maven-plugin][29] | [ASL2][30]                       |
-| [Maven Surefire Plugin][31]                             | [Apache License, Version 2.0][3] |
-| [Versions Maven Plugin][32]                             | [Apache License, Version 2.0][3] |
-| [Project keeper maven plugin][33]                       | [The MIT License][34]            |
-| [Apache Maven Assembly Plugin][35]                      | [Apache License, Version 2.0][3] |
-| [Apache Maven JAR Plugin][36]                           | [Apache License, Version 2.0][3] |
-| [Artifact reference checker and unifier][37]            | [MIT License][38]                |
-| [Apache Maven Dependency Plugin][39]                    | [Apache License, Version 2.0][3] |
-| [Maven Failsafe Plugin][40]                             | [Apache License, Version 2.0][3] |
-| [JaCoCo :: Maven Plugin][41]                            | [Eclipse Public License 2.0][21] |
-| [error-code-crawler-maven-plugin][42]                   | [MIT License][43]                |
-| [Reproducible Build Maven Plugin][44]                   | [Apache 2.0][30]                 |
-| [Apache Maven Clean Plugin][45]                         | [Apache License, Version 2.0][3] |
-| [Apache Maven Resources Plugin][46]                     | [Apache License, Version 2.0][3] |
-| [Apache Maven Install Plugin][47]                       | [Apache License, Version 2.0][3] |
-| [Apache Maven Deploy Plugin][48]                        | [Apache License, Version 2.0][3] |
-| [Apache Maven Site Plugin][49]                          | [Apache License, Version 2.0][3] |
+| Dependency                                              | License                           |
+| ------------------------------------------------------- | --------------------------------- |
+| [SonarQube Scanner for Maven][24]                       | [GNU LGPL 3][25]                  |
+| [Apache Maven Compiler Plugin][26]                      | [Apache License, Version 2.0][3]  |
+| [Apache Maven Enforcer Plugin][27]                      | [Apache-2.0][3]                   |
+| [Maven Flatten Plugin][28]                              | [Apache Software Licenese][3]     |
+| [org.sonatype.ossindex.maven:ossindex-maven-plugin][29] | [ASL2][30]                        |
+| [Maven Surefire Plugin][31]                             | [Apache License, Version 2.0][3]  |
+| [Versions Maven Plugin][32]                             | [Apache License, Version 2.0][3]  |
+| [Project keeper maven plugin][33]                       | [The MIT License][34]             |
+| [Apache Maven Assembly Plugin][35]                      | [Apache License, Version 2.0][3]  |
+| [Apache Maven JAR Plugin][36]                           | [Apache License, Version 2.0][3]  |
+| [Artifact reference checker and unifier][37]            | [MIT License][38]                 |
+| [Apache Maven Dependency Plugin][39]                    | [Apache License, Version 2.0][3]  |
+| [Maven Failsafe Plugin][40]                             | [Apache License, Version 2.0][3]  |
+| [JaCoCo :: Maven Plugin][41]                            | [Eclipse Public License 2.0][21]  |
+| [error-code-crawler-maven-plugin][42]                   | [MIT License][43]                 |
+| [Reproducible Build Maven Plugin][44]                   | [Apache 2.0][30]                  |
+| [Maven Clean Plugin][45]                                | [Apache License, Version 2.0][30] |
+| [Maven Resources Plugin][46]                            | [Apache License, Version 2.0][30] |
+| [Maven Install Plugin][47]                              | [Apache License, Version 2.0][30] |
+| [Maven Deploy Plugin][48]                               | [Apache License, Version 2.0][30] |
+| [Maven Site Plugin 3][49]                               | [Apache License, Version 2.0][30] |
 
 [0]: https://github.com/exasol/virtual-schema-common-document-files/
 [1]: https://github.com/exasol/virtual-schema-common-document-files/blob/main/LICENSE
