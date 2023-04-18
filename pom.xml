@@ -166,6 +166,16 @@
                     </excludeVulnerabilityIds>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.basepom.maven</groupId>
+                <artifactId>duplicate-finder-maven-plugin</artifactId>
+                <configuration>
+                    <!-- org.apache.parquet:parquet-column and org.apache.parquet:parquet-hadoop both contain classes shaded.parquet.it.unimi.dsi.fastutil.** -->
+                    <failBuildInCaseOfEqualContentConflict>false</failBuildInCaseOfEqualContentConflict>
+                    <failBuildInCaseOfConflict>false</failBuildInCaseOfConflict>
+                    <printEqualFiles>false</printEqualFiles>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <parent>
