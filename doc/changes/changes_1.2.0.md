@@ -21,7 +21,7 @@ Code name:
 * Updated `com.exasol:hamcrest-resultset-matcher:1.5.2` to `1.6.0`
 * Updated `com.exasol:virtual-schema-common-document-files:7.2.0` to `7.3.0`
 * Updated `org.jacoco:org.jacoco.agent:0.8.8` to `0.8.9`
-* Updated `org.mockito:mockito-core:5.2.0` to `5.3.0`
+* Updated `org.mockito:mockito-core:5.2.0` to `5.3.1`
 
 ### Plugin Dependency Updates
 
