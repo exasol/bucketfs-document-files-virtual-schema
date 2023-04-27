@@ -7,7 +7,7 @@
     <url>https://github.com/exasol/bucketfs-document-files-virtual-schema/</url>
     <version>1.2.0</version>
     <properties>
-        <junit.version>5.9.2</junit.version>
+        <junit.version>5.9.3</junit.version>
         <vs-commom-document-files.version>7.3.0</vs-commom-document-files.version>
     </properties>
     <distributionManagement>
