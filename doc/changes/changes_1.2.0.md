@@ -1,12 +1,14 @@
 # Virtual Schema for Document Data on BucketFS 1.2.0, released 2023-??-??
 
-Code name:
+Code name: Auto-inference for CSV
 
 ## Summary
 
+This release adds automatic schema inference for CSV files. This means that you don't need to specify a `mapping` element in the EDML definition. Instead VSBFS will automatically detect the mapping from the CSV files. See the [EDML user guide](https://github.com/exasol/virtual-schema-common-document/blob/main/doc/user_guide/edml_user_guide.md#automatic-mapping-inference) for details.
+
 ## Features
 
-* ISSUE_NUMBER: description
+* #33: Added automatic schema inference for CSV files
 
 ## Dependency Updates
 
