@@ -94,13 +94,6 @@
             <artifactId>exasol-test-setup-abstraction-java</artifactId>
             <version>2.0.1</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <!-- Exclude to fix https://ossindex.sonatype.org/vulnerability/sonatype-2020-0026 -->
-                    <groupId>io.netty</groupId>
-                    <artifactId>netty-handler</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.exasol</groupId>
@@ -155,9 +148,6 @@
                 <artifactId>ossindex-maven-plugin</artifactId>
                 <configuration>
                     <excludeVulnerabilityIds>
-                        <!-- org.apache.hadoop:hadoop-hdfs-client:jar:3.3.4 -->
-                        <!-- Rationale for exclusion: No update available, yet. -->
-                        <exclude>sonatype-2022-5732</exclude>
                         <!-- Ignore vulnerability in Transitive dependency fr.turri:aXMLRPC
                              via com.exasol:exasol-test-setup-abstraction-java:jar.
                              CVE-2020-36641 is reported to be fixed in aXMLRPC 1.12.1, while ETAJ uses version 1.13.0,
