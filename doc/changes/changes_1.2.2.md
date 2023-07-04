@@ -6,7 +6,7 @@ Code name:
 
 ## Features
 
-* ISSUE_NUMBER: description
+<!-- * ISSUE_NUMBER: description -->
 
 ## Dependency Updates
 
