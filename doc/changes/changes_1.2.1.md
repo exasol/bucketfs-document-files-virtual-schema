@@ -2,8 +2,9 @@
 
 Code name: Dependency Upgrade
 
-This release fixes vulnerabilities in transitive dependencies by updating `exasol-test-setup-abstraction-java`:
+## Summary
 
+This release fixes vulnerabilities in transitive dependencies by updating `exasol-test-setup-abstraction-java`:
 * `io.netty:netty-handler:jar:4.1.86.Final` (test dependency):
     * CVE-2023-34462, severity CWE-770: Allocation of Resources Without Limits or Throttling (6.5)
 * `org.xerial.snappy:snappy-java:jar:1.1.8.3` (compile dependency):
@@ -11,11 +12,10 @@ This release fixes vulnerabilities in transitive dependencies by updating `exaso
     * CVE-2023-34454, severity CWE-190: Integer Overflow or Wraparound (7.5)
     * CVE-2023-34455, severity CWE-770: Allocation of Resources Without Limits or Throttling (7.5)
 
-## Summary
-
-## Features
+## Security
 
 * #35: Updated dependencies
+
 ## Dependency Updates
 
 ### Compile Dependency Updates
