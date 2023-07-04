@@ -4,10 +4,6 @@ Code name:
 
 ## Summary
 
-## Features
-
-<!-- * ISSUE_NUMBER: description -->
-
 ## Dependency Updates
 
 ### Compile Dependency Updates
