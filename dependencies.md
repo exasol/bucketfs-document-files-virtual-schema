@@ -25,9 +25,9 @@
 
 ## Runtime Dependencies
 
-| Dependency                | License           |
-| ------------------------- | ----------------- |
-| [SLF4J JDK14 Binding][20] | [MIT License][21] |
+| Dependency                 | License           |
+| -------------------------- | ----------------- |
+| [SLF4J JDK14 Provider][20] | [MIT License][21] |
 
 ## Plugin Dependencies
 
@@ -42,10 +42,10 @@
 | [Versions Maven Plugin][30]                             | [Apache License, Version 2.0][3]               |
 | [duplicate-finder-maven-plugin Maven Mojo][31]          | [Apache License 2.0][32]                       |
 | [Project keeper maven plugin][33]                       | [The MIT License][34]                          |
-| [Apache Maven Assembly Plugin][35]                      | [Apache License, Version 2.0][3]               |
+| [Apache Maven Assembly Plugin][35]                      | [Apache-2.0][3]                                |
 | [Apache Maven JAR Plugin][36]                           | [Apache License, Version 2.0][3]               |
 | [Artifact reference checker and unifier][37]            | [MIT License][38]                              |
-| [Apache Maven Dependency Plugin][39]                    | [Apache License, Version 2.0][3]               |
+| [Apache Maven Dependency Plugin][39]                    | [Apache-2.0][3]                                |
 | [Maven Failsafe Plugin][40]                             | [Apache-2.0][3]                                |
 | [JaCoCo :: Maven Plugin][41]                            | [Eclipse Public License 2.0][19]               |
 | [error-code-crawler-maven-plugin][42]                   | [MIT License][43]                              |
@@ -87,7 +87,7 @@
 [28]: http://www.apache.org/licenses/LICENSE-2.0.txt
 [29]: https://maven.apache.org/surefire/maven-surefire-plugin/
 [30]: https://www.mojohaus.org/versions/versions-maven-plugin/
-[31]: https://github.com/basepom/duplicate-finder-maven-plugin
+[31]: https://basepom.github.io/duplicate-finder-maven-plugin
 [32]: http://www.apache.org/licenses/LICENSE-2.0.html
 [33]: https://github.com/exasol/project-keeper/
 [34]: https://github.com/exasol/project-keeper/blob/main/LICENSE
