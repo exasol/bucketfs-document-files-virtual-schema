@@ -60,7 +60,7 @@
 [6]: https://junit.org/junit5/
 [7]: https://www.eclipse.org/legal/epl-v20.html
 [8]: https://github.com/mockito/mockito
-[9]: https://github.com/mockito/mockito/blob/main/LICENSE
+[9]: https://opensource.org/licenses/MIT
 [10]: https://github.com/exasol/exasol-test-setup-abstraction-java/
 [11]: https://github.com/exasol/exasol-test-setup-abstraction-java/blob/main/LICENSE
 [12]: https://github.com/exasol/test-db-builder-java/
