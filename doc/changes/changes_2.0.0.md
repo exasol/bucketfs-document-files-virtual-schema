@@ -33,7 +33,7 @@ See the [documentation for `ALTER SCHEMA`](https://docs.exasol.com/db/latest/sql
 
 ## Features
 
-* #42: Add tests with Exasol v8
+* #42: Added support for Exasol 8
 
 ## Dependency Updates
 
