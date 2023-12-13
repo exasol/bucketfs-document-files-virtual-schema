@@ -5,10 +5,10 @@
     <name>Virtual Schema for document data on BucketFS</name>
     <description>Virtual Schemas that allows you to access document files stored in BucketFS like any regular Exasol table.</description>
     <url>https://github.com/exasol/bucketfs-document-files-virtual-schema/</url>
-    <version>1.2.4</version>
+    <version>2.0.0</version>
     <properties>
         <junit.version>5.10.1</junit.version>
-        <vs-commom-document-files.version>7.3.6</vs-commom-document-files.version>
+        <vs-commom-document-files.version>8.0.0</vs-commom-document-files.version>
     </properties>
     <profiles>
         <profile>
@@ -75,7 +75,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.7.0</version>
+            <version>5.8.0</version>
             <scope>test</scope>
         </dependency>
         <!-- integration tests -->
@@ -88,13 +88,13 @@
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>test-db-builder-java</artifactId>
-            <version>3.5.1</version>
+            <version>3.5.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>hamcrest-resultset-matcher</artifactId>
-            <version>1.6.2</version>
+            <version>1.6.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -109,7 +109,7 @@
             <plugin>
                 <groupId>com.exasol</groupId>
                 <artifactId>project-keeper-maven-plugin</artifactId>
-                <version>2.9.16</version>
+                <version>2.9.17</version>
                 <executions>
                     <execution>
                         <goals>
@@ -164,7 +164,7 @@
     <parent>
         <artifactId>bucketfs-document-files-virtual-schema-generated-parent</artifactId>
         <groupId>com.exasol</groupId>
-        <version>1.2.4</version>
+        <version>2.0.0</version>
         <relativePath>pk_generated_parent.pom</relativePath>
     </parent>
 </project>
