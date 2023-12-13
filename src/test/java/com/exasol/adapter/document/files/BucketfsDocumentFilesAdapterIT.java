@@ -128,13 +128,8 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
 
     @Override
     @Test
-    void testReadJsonLines() throws SQLException, IOException {
-        super.testReadJsonLines();
-    }
-
-    @Override
-    @Test
-    void testReadJson() throws SQLException, IOException {
+    public void testReadJson() throws SQLException, IOException {
+        // Override to verify source references column
         createJsonVirtualSchema();
         final ResultSet result = getStatement()
                 .executeQuery("SELECT ID, SOURCE_REFERENCE FROM TEST.BOOKS ORDER BY ID ASC;");
