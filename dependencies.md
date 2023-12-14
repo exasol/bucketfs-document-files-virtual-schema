@@ -41,7 +41,7 @@
 | [Maven Surefire Plugin][29]                             | [Apache-2.0][3]                  |
 | [Versions Maven Plugin][30]                             | [Apache License, Version 2.0][3] |
 | [duplicate-finder-maven-plugin Maven Mojo][31]          | [Apache License 2.0][32]         |
-| [Project keeper maven plugin][33]                       | [The MIT License][34]            |
+| [Project Keeper Maven plugin][33]                       | [The MIT License][34]            |
 | [Apache Maven Assembly Plugin][35]                      | [Apache-2.0][3]                  |
 | [Apache Maven JAR Plugin][36]                           | [Apache License, Version 2.0][3] |
 | [Artifact reference checker and unifier][37]            | [MIT License][38]                |
@@ -60,7 +60,7 @@
 [6]: https://junit.org/junit5/
 [7]: https://www.eclipse.org/legal/epl-v20.html
 [8]: https://github.com/mockito/mockito
-[9]: https://github.com/mockito/mockito/blob/main/LICENSE
+[9]: https://opensource.org/licenses/MIT
 [10]: https://github.com/exasol/exasol-test-setup-abstraction-java/
 [11]: https://github.com/exasol/exasol-test-setup-abstraction-java/blob/main/LICENSE
 [12]: https://github.com/exasol/test-db-builder-java/

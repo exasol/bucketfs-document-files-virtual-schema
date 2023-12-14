@@ -26,7 +26,7 @@ import com.exasol.udfdebugging.UdfTestSetup;
 
 @Tag("integration")
 class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-7.3.5-bucketfs-1.2.3.jar";
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-8.0.0-bucketfs-2.0.0.jar";
     private static final ExasolTestSetup EXASOL = new ExasolTestcontainerTestSetup();
     private static final String BUCKETS_BFSDEFAULT_DEFAULT = "/buckets/bfsdefault/default/";
     private static UdfTestSetup udfTestSetup;
@@ -128,13 +128,8 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
 
     @Override
     @Test
-    void testReadJsonLines() throws SQLException, IOException {
-        super.testReadJsonLines();
-    }
-
-    @Override
-    @Test
-    void testReadJson() throws SQLException, IOException {
+    public void testReadJson() throws SQLException, IOException {
+        // Override to verify source references column
         createJsonVirtualSchema();
         final ResultSet result = getStatement()
                 .executeQuery("SELECT ID, SOURCE_REFERENCE FROM TEST.BOOKS ORDER BY ID ASC;");
