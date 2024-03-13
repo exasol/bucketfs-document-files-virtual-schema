@@ -5,10 +5,10 @@
     <name>Virtual Schema for document data on BucketFS</name>
     <description>Virtual Schemas that allows you to access document files stored in BucketFS like any regular Exasol table.</description>
     <url>https://github.com/exasol/bucketfs-document-files-virtual-schema/</url>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <properties>
-        <junit.version>5.10.1</junit.version>
-        <vs-commom-document-files.version>8.0.0</vs-commom-document-files.version>
+        <junit.version>5.10.2</junit.version>
+        <vs-commom-document-files.version>8.0.2</vs-commom-document-files.version>
     </properties>
     <profiles>
         <profile>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
-            <version>2.0.9</version>
+            <version>2.0.12</version>
             <scope>runtime</scope>
         </dependency>
         <!-- Test dependencies -->
@@ -75,41 +75,59 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.8.0</version>
+            <version>5.11.0</version>
             <scope>test</scope>
         </dependency>
         <!-- integration tests -->
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>exasol-test-setup-abstraction-java</artifactId>
-            <version>2.1.0</version>
+            <version>2.1.1</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <!-- Fix CVE-2017-10355 in transitive dependency xerces:xercesImpl:jar:2.12.2 of exasol-test-setup-abstraction-java.
+                         Excluding is safe because we don't run tests against an Exasol cluster. -->
+                    <groupId>fr.turri</groupId>
+                    <artifactId>aXMLRPC</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>test-db-builder-java</artifactId>
-            <version>3.5.3</version>
+            <version>3.5.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>hamcrest-resultset-matcher</artifactId>
-            <version>1.6.3</version>
+            <version>1.6.5</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>udf-debugging-java</artifactId>
-            <version>0.6.11</version>
+            <version>0.6.12</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgs>
+                        <arg>-Xlint:all</arg>
+                        <arg>-Werror</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>com.exasol</groupId>
                 <artifactId>project-keeper-maven-plugin</artifactId>
-                <version>2.9.17</version>
+                <version>4.2.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -134,19 +152,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.sonatype.ossindex.maven</groupId>
-                <artifactId>ossindex-maven-plugin</artifactId>
-                <configuration>
-                    <excludeVulnerabilityIds>
-                        <!-- Ignore vulnerability in Transitive dependency fr.turri:aXMLRPC
-                             via com.exasol:exasol-test-setup-abstraction-java:jar.
-                             CVE-2020-36641 is reported to be fixed in aXMLRPC 1.12.1, while ETAJ uses version 1.13.0,
-                             so this is a false positive. -->
-                        <exclude>CVE-2020-36641</exclude>
-                    </excludeVulnerabilityIds>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.basepom.maven</groupId>
                 <artifactId>duplicate-finder-maven-plugin</artifactId>
                 <configuration>
@@ -161,7 +166,7 @@
     <parent>
         <artifactId>bucketfs-document-files-virtual-schema-generated-parent</artifactId>
         <groupId>com.exasol</groupId>
-        <version>2.0.0</version>
+        <version>2.0.1</version>
         <relativePath>pk_generated_parent.pom</relativePath>
     </parent>
 </project>
