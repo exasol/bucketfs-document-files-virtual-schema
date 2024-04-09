@@ -14,9 +14,14 @@ This release fixed vulnerabilities CVE-2024-29025, CVE-2024-29133 & CVE-2024-291
 
 ## Dependency Updates
 
+### Compile Dependency Updates
+
+* Updated `com.exasol:virtual-schema-common-document-files:8.0.2` to `8.0.3`
+
 ### Test Dependency Updates
 
 * Updated `com.exasol:exasol-test-setup-abstraction-java:2.1.1` to `2.1.2`
+* Updated `com.exasol:virtual-schema-common-document-files:8.0.2` to `8.0.3`
 
 ### Plugin Dependency Updates
 

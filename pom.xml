@@ -8,7 +8,7 @@
     <version>2.0.2</version>
     <properties>
         <junit.version>5.10.2</junit.version>
-        <vs-commom-document-files.version>8.0.2</vs-commom-document-files.version>
+        <vs-commom-document-files.version>8.0.3</vs-commom-document-files.version>
     </properties>
     <profiles>
         <profile>
