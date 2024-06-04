@@ -21,7 +21,7 @@
 | [Test Database Builder for Java][12]           | [MIT License][13]                |
 | [Matcher for SQL Result Sets][14]              | [MIT License][15]                |
 | [udf-debugging-java][16]                       | [MIT License][17]                |
-| [JaCoCo :: Agent][18]                          | [Eclipse Public License 2.0][19] |
+| [JaCoCo :: Agent][18]                          | [EPL-2.0][19]                    |
 
 ## Runtime Dependencies
 
@@ -34,7 +34,7 @@
 | Dependency                                              | License                          |
 | ------------------------------------------------------- | -------------------------------- |
 | [SonarQube Scanner for Maven][22]                       | [GNU LGPL 3][23]                 |
-| [Apache Maven Toolchains Plugin][24]                    | [Apache License, Version 2.0][3] |
+| [Apache Maven Toolchains Plugin][24]                    | [Apache-2.0][3]                  |
 | [Apache Maven Compiler Plugin][25]                      | [Apache-2.0][3]                  |
 | [Apache Maven Enforcer Plugin][26]                      | [Apache-2.0][3]                  |
 | [Maven Flatten Plugin][27]                              | [Apache Software Licenese][3]    |
@@ -44,7 +44,7 @@
 | [duplicate-finder-maven-plugin Maven Mojo][32]          | [Apache License 2.0][33]         |
 | [Project Keeper Maven plugin][34]                       | [The MIT License][35]            |
 | [Apache Maven Assembly Plugin][36]                      | [Apache-2.0][3]                  |
-| [Apache Maven JAR Plugin][37]                           | [Apache License, Version 2.0][3] |
+| [Apache Maven JAR Plugin][37]                           | [Apache-2.0][3]                  |
 | [Artifact reference checker and unifier][38]            | [MIT License][39]                |
 | [Apache Maven Dependency Plugin][40]                    | [Apache-2.0][3]                  |
 | [Maven Failsafe Plugin][41]                             | [Apache-2.0][3]                  |
