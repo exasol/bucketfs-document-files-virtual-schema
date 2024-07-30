@@ -3,7 +3,6 @@ package com.exasol.adapter.document.files;
 import static com.exasol.adapter.document.GenericUdfCallHandler.*;
 import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADAPTER_NAME;
 import static com.exasol.matcher.ResultSetStructureMatcher.table;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import java.io.*;
@@ -133,12 +132,14 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
     }
 
     @Test
-    void testReadJsonVerifySourceReferenceColumn() throws SQLException, IOException {
+    @Override
+    public void testReadJson() throws IOException {
+        // Source reference column returns "/bfsdefault/default/1722320233480/testData-1.json" instead of
+        // "1722320233480/testData-1.json"
         createJsonVirtualSchema();
-        final ResultSet result = getStatement()
-                .executeQuery("SELECT ID, SOURCE_REFERENCE FROM TEST.BOOKS ORDER BY ID ASC;");
         final String expectedPrefix = "/bfsdefault/default/";
-        assertThat(result, table().row("book-1", allOf(startsWith(expectedPrefix), endsWith("/testData-1.json")))
-                .row("book-2", allOf(startsWith(expectedPrefix), endsWith("/testData-2.json"))).matches());
+        assertQuery("SELECT ID, SOURCE_REFERENCE FROM TEST.BOOKS ORDER BY ID ASC",
+                table().row("book-1", allOf(startsWith(expectedPrefix), endsWith("/testData-1.json")))
+                        .row("book-2", allOf(startsWith(expectedPrefix), endsWith("/testData-2.json"))).matches());
     }
 }
