@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 import org.junit.jupiter.api.*;
 
 import com.exasol.adapter.document.UdfEntryPoint;
+import com.exasol.bucketfs.Bucket;
 import com.exasol.bucketfs.BucketAccessException;
 import com.exasol.dbbuilder.dialects.DatabaseObject;
 import com.exasol.dbbuilder.dialects.exasol.*;
@@ -26,8 +27,8 @@ import com.exasol.udfdebugging.UdfTestSetup;
 
 @Tag("integration")
 class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-8.0.4-bucketfs-2.0.3.jar";
-    private static final ExasolTestSetup EXASOL = new ExasolTestcontainerTestSetup();
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-8.1.2-bucketfs-2.0.4.jar";
+    private static final ExasolTestSetup EXASOL = ExasolTestcontainerTestSetup.start();
     private static final String BUCKETS_BFSDEFAULT_DEFAULT = "/buckets/bfsdefault/default/";
     private static UdfTestSetup udfTestSetup;
     private static ExasolObjectFactory testDbBuilder;
@@ -58,6 +59,11 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
         udfTestSetup.close();
         statement.close();
         connection.close();
+    }
+
+    @Override
+    protected Bucket getBucketFSDefaultBucket() {
+        return EXASOL.getDefaultBucket();
     }
 
     @Override
@@ -126,10 +132,8 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
                 .build());
     }
 
-    @Override
     @Test
-    public void testReadJson() throws SQLException, IOException {
-        // Override to verify source references column
+    void testReadJsonVerifySourceReferenceColumn() throws SQLException, IOException {
         createJsonVirtualSchema();
         final ResultSet result = getStatement()
                 .executeQuery("SELECT ID, SOURCE_REFERENCE FROM TEST.BOOKS ORDER BY ID ASC;");
