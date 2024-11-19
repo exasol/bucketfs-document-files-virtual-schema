@@ -26,7 +26,7 @@ import com.exasol.udfdebugging.UdfTestSetup;
 
 @Tag("integration")
 class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-8.1.2-bucketfs-2.0.4.jar";
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-8.1.5-bucketfs-2.0.4.jar";
     private static final ExasolTestSetup EXASOL = ExasolTestcontainerTestSetup.start();
     private static final String BUCKETS_BFSDEFAULT_DEFAULT = "/buckets/bfsdefault/default/";
     private static UdfTestSetup udfTestSetup;
