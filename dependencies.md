@@ -25,9 +25,9 @@
 
 ## Runtime Dependencies
 
-| Dependency                 | License           |
-| -------------------------- | ----------------- |
-| [SLF4J JDK14 Provider][20] | [MIT License][21] |
+| Dependency                 | License   |
+| -------------------------- | --------- |
+| [SLF4J JDK14 Provider][20] | [MIT][21] |
 
 ## Plugin Dependencies
 
@@ -78,7 +78,7 @@
 [18]: https://www.eclemma.org/jacoco/index.html
 [19]: https://www.eclipse.org/legal/epl-2.0/
 [20]: http://www.slf4j.org
-[21]: http://www.opensource.org/licenses/mit-license.php
+[21]: https://opensource.org/license/mit
 [22]: https://maven.apache.org/plugins/maven-clean-plugin/
 [23]: https://maven.apache.org/plugins/maven-install-plugin/
 [24]: https://maven.apache.org/plugins/maven-resources-plugin/
