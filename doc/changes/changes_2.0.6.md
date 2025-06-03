@@ -1,4 +1,4 @@
-# Virtual Schema for Document Data on BucketFS 2.0.6, released 2025-??-??
+# Virtual Schema for Document Data on BucketFS 2.0.6, released 2025-06-03
 
 Code name: Upgrade dependencies on top of 2.0.5
 
