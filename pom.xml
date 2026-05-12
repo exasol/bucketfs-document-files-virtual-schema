@@ -48,15 +48,6 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-        <!-- overriding transitive dependency of virtual-schema-common-document-files to avoid vulnerability CVE-2021-37533 -->
-        <!-- 
-            <dependency>
-                <groupId>commons-net</groupId>
-                <artifactId>commons-net</artifactId>
-                <version>3.11.1</version>
-                <scope>test</scope>
-            </dependency>
-            -->
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest</artifactId>
