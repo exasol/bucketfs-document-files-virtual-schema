@@ -2,6 +2,12 @@
 
 This user guide helps you with getting started with the BucketFS Files Virtual Schemas.
 
+## Telemetry
+
+This application uses `telemetry-java` to send anonymous feature-usage events.
+
+For details on what is collected and how to disable telemetry, see the [documentation](https://github.com/exasol/telemetry-java/blob/main/doc/app-user-guide.md).
+
 ## Installation
 
 Upload the latest available [release of this adapter](https://github.com/exasol/bucketfs-document-files-virtual-schema/releases) to BucketFS. See [Create a bucket in BucketFS](https://docs.exasol.com/administration/on-premise/bucketfs/create_new_bucket_in_bucketfs_service.htm) and [Upload the driver to BucketFS](https://docs.exasol.com/administration/on-premise/bucketfs/accessfiles.htm) for details.
@@ -17,7 +23,7 @@ Next create the Adapter Script:
 ```sql
 CREATE OR REPLACE JAVA ADAPTER SCRIPT ADAPTER.BUCKET_FS_FILES_ADAPTER AS
     %scriptclass com.exasol.adapter.RequestDispatcher;
-    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-8.1.7-bucketfs-2.0.7.jar;
+    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-9.0.1-bucketfs-2.0.7.jar;
 /
 ```
 
@@ -30,7 +36,7 @@ CREATE OR REPLACE JAVA SET SCRIPT ADAPTER.IMPORT_FROM_BUCKETFS_DOCUMENT_FILES(
   CONNECTION_NAME VARCHAR(500))
   EMITS(...) AS
     %scriptclass com.exasol.adapter.document.UdfEntryPoint;
-    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-8.1.7-bucketfs-2.0.7.jar;
+    %jar /buckets/bfsdefault/default/document-files-virtual-schema-dist-9.0.1-bucketfs-2.0.7.jar;
 /
 ```
 
