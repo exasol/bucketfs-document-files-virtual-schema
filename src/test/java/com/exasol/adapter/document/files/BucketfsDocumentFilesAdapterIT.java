@@ -127,7 +127,7 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
                 .connectionDefinition(connectionDefinition)//
                 .adapterScript(adapterScript)//
                 .dialectName(ADAPTER_NAME)//
-                .properties(Map.of("MAPPING", mapping, "MAX_PARALLEL_UDFS", "1"))//
+                .addProperties(Map.of("MAPPING", mapping, "MAX_PARALLEL_UDFS", "1"))//
                 .build());
     }
 
