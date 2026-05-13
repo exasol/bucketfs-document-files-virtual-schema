@@ -2,8 +2,7 @@ package com.exasol.adapter.document.files;
 
 import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADAPTER_NAME;
 
-import com.exasol.adapter.AdapterFactory;
-import com.exasol.adapter.VirtualSchemaAdapter;
+import com.exasol.adapter.*;
 import com.exasol.adapter.document.DocumentAdapter;
 import com.exasol.adapter.document.documentfetcher.files.BucketFsFileFinderFactory;
 import com.exasol.logging.VersionCollector;
@@ -13,7 +12,7 @@ import com.exasol.logging.VersionCollector;
  */
 public class BucketfsDocumentFilesAdapterFactory implements AdapterFactory {
     @Override
-    public VirtualSchemaAdapter createAdapter() {
+    public VirtualSchemaAdapter createAdapter(final AdapterContext adapterContext) {
         return new DocumentAdapter(new DocumentFilesAdapter(ADAPTER_NAME, new BucketFsFileFinderFactory()));
     }
 
@@ -27,5 +26,10 @@ public class BucketfsDocumentFilesAdapterFactory implements AdapterFactory {
     @Override
     public String getAdapterName() {
         return ADAPTER_NAME;
+    }
+
+    @Override
+    public String getAdapterProjectShortTag() {
+        return "VSBFS";
     }
 }
