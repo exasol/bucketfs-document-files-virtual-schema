@@ -1,4 +1,4 @@
-# Virtual Schema for Document Data on BucketFS 2.0.7, released 2026-05-??
+# Virtual Schema for Document Data on BucketFS 2.0.7, released 2026-05-13
 
 Code name: Anonymous telemetry & fixes for vulnerability CVE-2025-48924
 
