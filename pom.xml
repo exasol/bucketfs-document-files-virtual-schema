@@ -5,11 +5,11 @@
     <name>Virtual Schema for document data on BucketFS</name>
     <description>Virtual Schemas that allows you to access document files stored in BucketFS like any regular Exasol table.</description>
     <url>https://github.com/exasol/bucketfs-document-files-virtual-schema/</url>
-    <version>2.0.7</version>
+    <version>2.0.8</version>
     <properties>
         <!-- Version 6 requires Java 17 -->
         <junit.version>5.14.4</junit.version>
-        <vs-common-document-files.version>9.0.1</vs-common-document-files.version>
+        <vs-common-document-files.version>9.0.2</vs-common-document-files.version>
     </properties>
     <profiles>
         <profile>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
-            <version>2.0.17</version>
+            <version>2.0.18</version>
             <scope>runtime</scope>
         </dependency>
         <!-- Test dependencies -->
@@ -76,33 +76,25 @@
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>exasol-test-setup-abstraction-java</artifactId>
-            <version>2.1.11</version>
+            <version>3.0.0</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <!-- Fix CVE-2017-10355 in transitive dependency xerces:xercesImpl:jar:2.12.2 of exasol-test-setup-abstraction-java.
-                         Excluding is safe because we don't run tests against an Exasol cluster. -->
-                    <groupId>fr.turri</groupId>
-                    <artifactId>aXMLRPC</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>test-db-builder-java</artifactId>
-            <version>4.0.0</version>
+            <version>4.0.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>hamcrest-resultset-matcher</artifactId>
-            <version>1.7.2</version>
+            <version>1.7.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>udf-debugging-java</artifactId>
-            <version>0.6.18</version>
+            <version>0.6.20</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -121,7 +113,7 @@
             <plugin>
                 <groupId>com.exasol</groupId>
                 <artifactId>project-keeper-maven-plugin</artifactId>
-                <version>5.6.2</version>
+                <version>5.7.4</version>
                 <executions>
                     <execution>
                         <goals>
@@ -160,7 +152,7 @@
     <parent>
         <artifactId>bucketfs-document-files-virtual-schema-generated-parent</artifactId>
         <groupId>com.exasol</groupId>
-        <version>2.0.7</version>
+        <version>2.0.8</version>
         <relativePath>pk_generated_parent.pom</relativePath>
     </parent>
 </project>
