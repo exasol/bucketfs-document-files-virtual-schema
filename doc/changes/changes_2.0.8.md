@@ -36,8 +36,6 @@ In Eclipse Parsson published Maven Central artifacts before version 1.1.8, the J
 * Updated `com.exasol:udf-debugging-java:0.6.18` to `0.6.20`
 * Updated `com.exasol:virtual-schema-common-document-files:9.0.1` to `9.0.2`
 * Updated `org.jacoco:org.jacoco.agent:0.8.14` to `0.8.15`
-* Updated `org.junit.jupiter:junit-jupiter-api:5.14.4` to `6.1.2`
-* Updated `org.junit.jupiter:junit-jupiter-params:5.14.4` to `6.1.2`
 
 ### Plugin Dependency Updates
 
