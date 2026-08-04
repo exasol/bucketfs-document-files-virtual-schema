@@ -5,7 +5,8 @@ import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADA
 import static com.exasol.matcher.ResultSetStructureMatcher.table;
 import static org.hamcrest.Matchers.*;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.sql.*;
 import java.util.*;
@@ -122,18 +123,18 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
 
     @Override
     protected void createVirtualSchema(final String schemaName, final String mapping) {
-        this.createdObjects.add(testDbBuilder//
-                .createVirtualSchemaBuilder(schemaName)//
-                .connectionDefinition(connectionDefinition)//
-                .adapterScript(adapterScript)//
-                .dialectName(ADAPTER_NAME)//
-                .addProperties(Map.of("MAPPING", mapping, "MAX_PARALLEL_UDFS", "1"))//
+        this.createdObjects.add(testDbBuilder
+                .createVirtualSchemaBuilder(schemaName)
+                .connectionDefinition(connectionDefinition)
+                .adapterScript(adapterScript)
+                .dialectName(ADAPTER_NAME)
+                .addProperties(Map.of("MAPPING", mapping, "MAX_PARALLEL_UDFS", "1"))
                 .build());
     }
 
     @Test
     @Override
-    public void testReadJson() throws IOException {
+    public void testReadJson() {
         // Source reference column returns "/bfsdefault/default/1722320233480/testData-1.json" instead of
         // "1722320233480/testData-1.json"
         createJsonVirtualSchema();

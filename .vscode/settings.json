@@ -11,7 +11,8 @@
     "java.test.config": {
         "vmArgs": [
             "-Djava.util.logging.config.file=src/test/resources/logging.properties",
-            "-Dcom.exasol.dockerdb.image=2026.1.0"
+            "-Dcom.exasol.dockerdb.image=2026.1.0",
+            //"-Dtest.udf-logs=true"
         ]
     },
     "sonarlint.connectedMode.project": {
