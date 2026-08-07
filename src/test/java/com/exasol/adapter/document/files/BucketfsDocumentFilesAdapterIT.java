@@ -5,7 +5,8 @@ import static com.exasol.adapter.document.files.BucketfsDocumentFilesAdapter.ADA
 import static com.exasol.matcher.ResultSetStructureMatcher.table;
 import static org.hamcrest.Matchers.*;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.sql.*;
 import java.util.*;
@@ -26,7 +27,7 @@ import com.exasol.udfdebugging.UdfTestSetup;
 
 @Tag("integration")
 class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
-    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-9.0.2-bucketfs-2.0.8.jar";
+    private static final String ADAPTER_JAR = "document-files-virtual-schema-dist-9.1.0-bucketfs-2.1.0.jar";
     private static final ExasolTestSetup EXASOL = ExasolTestcontainerTestSetup.start();
     private static final String BUCKETS_BFSDEFAULT_DEFAULT = "/buckets/bfsdefault/default/";
     private static UdfTestSetup udfTestSetup;
@@ -122,18 +123,18 @@ class BucketfsDocumentFilesAdapterIT extends AbstractDocumentFilesAdapterIT {
 
     @Override
     protected void createVirtualSchema(final String schemaName, final String mapping) {
-        this.createdObjects.add(testDbBuilder//
-                .createVirtualSchemaBuilder(schemaName)//
-                .connectionDefinition(connectionDefinition)//
-                .adapterScript(adapterScript)//
-                .dialectName(ADAPTER_NAME)//
-                .addProperties(Map.of("MAPPING", mapping, "MAX_PARALLEL_UDFS", "1"))//
+        this.createdObjects.add(testDbBuilder
+                .createVirtualSchemaBuilder(schemaName)
+                .connectionDefinition(connectionDefinition)
+                .adapterScript(adapterScript)
+                .dialectName(ADAPTER_NAME)
+                .addProperties(Map.of("MAPPING", mapping, "MAX_PARALLEL_UDFS", "1"))
                 .build());
     }
 
     @Test
     @Override
-    public void testReadJson() throws IOException {
+    public void testReadJson() {
         // Source reference column returns "/bfsdefault/default/1722320233480/testData-1.json" instead of
         // "1722320233480/testData-1.json"
         createJsonVirtualSchema();
