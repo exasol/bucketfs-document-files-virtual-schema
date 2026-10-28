@@ -1,4 +1,4 @@
-# Virtual Schema for Document Data on BucketFS 3.0.0, released 2026-10-28
+# Virtual Schema for Document Data on BucketFS 3.0.0, released 2026-10-29
 
 Code name: Fix vulnerabilities
 
