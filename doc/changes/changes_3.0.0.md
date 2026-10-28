@@ -8,8 +8,6 @@ This release upgrades `virtual-schema-common-document-files` to version 10.0.1, 
 
 Exasol 8 is no longer supported.
 
-## Features
-
 ## Security
 
 * #74
