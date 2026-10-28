@@ -4,7 +4,7 @@ Code name: Fix vulnerabilities
 
 ## Summary
 
-This release upgrades `virtual-schema-common-document-files` to version 10.0.0, fixing vulnerabilities in CSV processing, Snappy compression, and ASM bytecode handling. Java 17 is now required to build and run this Virtual Schema.
+This release upgrades `virtual-schema-common-document-files` to version 10.0.1, fixing vulnerabilities in CSV processing, Snappy compression, and ASM bytecode handling. Java 17 is now required to build and run this Virtual Schema.
 
 ## Features
 
@@ -12,13 +12,13 @@ This release upgrades `virtual-schema-common-document-files` to version 10.0.0, 
 
 ### Compile Dependency Updates
 
-* Updated `com.exasol:virtual-schema-common-document-files:9.1.0` to `10.0.0`
+* Updated `com.exasol:virtual-schema-common-document-files:9.1.0` to `10.0.1`
 
 ### Test Dependency Updates
 
 * Updated `com.exasol:exasol-test-setup-abstraction-java:3.0.0` to `3.0.1`
 * Updated `com.exasol:udf-debugging-java:0.6.20` to `0.6.22`
-* Updated `com.exasol:virtual-schema-common-document-files:9.1.0` to `10.0.0`
+* Updated `com.exasol:virtual-schema-common-document-files:9.1.0` to `10.0.1`
 * Added `org.objenesis:objenesis:3.6`
 
 ### Plugin Dependency Updates
