@@ -1,4 +1,4 @@
-# Virtual Schema for Document Data on BucketFS 3.0.0, released 2026-??-??
+# Virtual Schema for Document Data on BucketFS 3.0.0, released 2026-10-28
 
 Code name: Fix vulnerabilities
 
@@ -6,7 +6,31 @@ Code name: Fix vulnerabilities
 
 This release upgrades `virtual-schema-common-document-files` to version 10.0.1, fixing vulnerabilities in CSV processing, Snappy compression, and ASM bytecode handling. Java 17 is now required to build and run this Virtual Schema.
 
+Exasol 8 is no longer supported.
+
 ## Features
+
+## Security
+
+* #74
+* #75
+* #76
+* #77
+* #78
+* #80
+* #82
+* #83
+* #85
+* #87
+* #88
+* #90
+* #91
+* #92
+* #93
+* #94
+* #95
+* #96
+* #97
 
 ## Dependency Updates
 
@@ -19,6 +43,8 @@ This release upgrades `virtual-schema-common-document-files` to version 10.0.1, 
 * Updated `com.exasol:exasol-test-setup-abstraction-java:3.0.0` to `3.0.1`
 * Updated `com.exasol:udf-debugging-java:0.6.20` to `0.6.22`
 * Updated `com.exasol:virtual-schema-common-document-files:9.1.0` to `10.0.1`
+* Updated `org.junit.jupiter:junit-jupiter-api:5.14.4` to `6.1.3`
+* Updated `org.junit.jupiter:junit-jupiter-params:5.14.4` to `6.1.3`
 * Added `org.objenesis:objenesis:3.6`
 
 ### Plugin Dependency Updates
