@@ -5,11 +5,12 @@
     <name>Virtual Schema for document data on BucketFS</name>
     <description>Virtual Schemas that allows you to access document files stored in BucketFS like any regular Exasol table.</description>
     <url>https://github.com/exasol/bucketfs-document-files-virtual-schema/</url>
-    <version>2.1.0</version>
+    <version>3.0.0</version>
     <properties>
         <!-- Version 6 requires Java 17 -->
         <junit.version>5.14.4</junit.version>
-        <vs-common-document-files.version>9.1.0</vs-common-document-files.version>
+        <java.version>17</java.version>
+        <vs-common-document-files.version>10.0.0</vs-common-document-files.version>
     </properties>
     <profiles>
         <profile>
@@ -72,11 +73,17 @@
             <version>5.23.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>3.6</version>
+            <scope>test</scope>
+        </dependency>
         <!-- integration tests -->
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>exasol-test-setup-abstraction-java</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -94,7 +101,7 @@
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>udf-debugging-java</artifactId>
-            <version>0.6.20</version>
+            <version>0.6.22</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -113,7 +120,7 @@
             <plugin>
                 <groupId>com.exasol</groupId>
                 <artifactId>project-keeper-maven-plugin</artifactId>
-                <version>5.7.4</version>
+                <version>5.8.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -152,7 +159,7 @@
     <parent>
         <artifactId>bucketfs-document-files-virtual-schema-generated-parent</artifactId>
         <groupId>com.exasol</groupId>
-        <version>2.1.0</version>
+        <version>3.0.0</version>
         <relativePath>pk_generated_parent.pom</relativePath>
     </parent>
 </project>

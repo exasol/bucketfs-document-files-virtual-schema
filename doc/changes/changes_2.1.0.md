@@ -17,7 +17,6 @@ Please note that JSON files only support timestamps for number fields, interpret
 ### Compile Dependency Updates
 
 * Updated `com.exasol:virtual-schema-common-document-files:9.0.2` to `9.1.0`
-
 ### Test Dependency Updates
 
 * Updated `com.exasol:virtual-schema-common-document-files:9.0.2` to `9.1.0`
