@@ -10,25 +10,25 @@ Exasol 8 is no longer supported.
 
 ## Security
 
-* #74
-* #75
-* #76
-* #77
-* #78
-* #80
-* #82
-* #83
-* #85
-* #87
-* #88
-* #90
-* #91
-* #92
-* #93
-* #94
-* #95
-* #96
-* #97
+* #74: Fixed CVE-2026-73334 (untrusted KMS URL) in `org.apache.parquet:parquet-hadoop:1.17.1`.
+* #75: Fixed CVE-2026-86231 (certificate-revocation bypass) in `com.github.mwiede:jsch:2.28.4`.
+* #76: Fixed CVE-2026-87795 (dictionary bounds read) in `com.github.luben:zstd-jni:1.5.7-3`.
+* #77: Fixed CVE-2026-87823 (signed bounds overflow) in `com.github.luben:zstd-jni:1.5.7-3`.
+* #78: Fixed CVE-2026-89045 (negative-length infinite loop) in `com.github.luben:zstd-jni:1.5.7-3`.
+* #80: Fixed CVE-2026-90559 (ByteBuffer out-of-bounds write) in `org.xerial.snappy:snappy-java:1.1.10.7`.
+* #82: Fixed CVE-2026-93451 (typed-array buffer overflow) in `org.xerial.snappy:snappy-java:1.1.10.7`.
+* #83: Fixed CVE-2026-93452 (ByteBuffer buffer overflow) in `org.xerial.snappy:snappy-java:1.1.10.7`.
+* #85: Fixed CVE-2026-104880 (CSV interpretation conflict) in `de.siegmar:fastcsv:3.7.0`.
+* #87: Fixed CVE-2026-108104 (pooled-buffer double release) in `org.xerial.snappy:snappy-java:1.1.10.7`.
+* #88: Fixed CVE-2026-108106 (unbounded decompression allocation) in `org.xerial.snappy:snappy-java:1.1.10.7`.
+* #90: Fixed CVE-2026-110262 (AdviceAdapter memory exhaustion) in `org.ow2.asm:asm-commons:9.10.1`.
+* #91: Fixed CVE-2026-110270 (JSR inlining memory exhaustion) in `org.ow2.asm:asm-commons:9.10.1`.
+* #92: Fixed CVE-2026-110257 (bootstrap-method allocation) in `org.ow2.asm:asm:9.10.1`.
+* #93: Fixed CVE-2026-110258 (invalid RET allocation) in `org.ow2.asm:asm:9.10.1`.
+* #94: Fixed CVE-2026-110259 (recursive instruction rewriting) in `org.ow2.asm:asm:9.10.1`.
+* #95: Fixed CVE-2026-110260 (exception-handler memory exhaustion) in `org.ow2.asm:asm:9.10.1`.
+* #96: Fixed CVE-2026-110261 (frame-computation CPU exhaustion) in `org.ow2.asm:asm:9.10.1`.
+* #97: Fixed CVE-2026-110263 (nested-signature stack exhaustion) in `org.ow2.asm:asm:9.10.1`.
 
 ## Dependency Updates
 
